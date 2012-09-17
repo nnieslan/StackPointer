@@ -633,14 +633,14 @@
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
 <XPD:ATTR name="Left" type="integer">244</XPD:ATTR>
-<XPD:ATTR name="Top" type="integer">96</XPD:ATTR>
+<XPD:ATTR name="Top" type="integer">132</XPD:ATTR>
 <XPD:ATTR name="Width" type="integer">101</XPD:ATTR>
-<XPD:ATTR name="Height" type="integer">95</XPD:ATTR>
+<XPD:ATTR name="Height" type="integer">59</XPD:ATTR>
 <XPD:REF name="Model">E6vmEKMuDEuM22LrfrB9sQAA</XPD:REF>
 <XPD:OBJ name="NameCompartment" type="UMLNameCompartmentView" guid="yHlo4MOqN0Oxu6bzghp14QAA">
 <XPD:OBJ name="NameLabel" type="LabelView" guid="gZGVxlAVhEeKIdgXEtH1DQAA">
 <XPD:ATTR name="FontStyle" type="integer">1</XPD:ATTR>
-<XPD:ATTR name="Text" type="string">AreaOfInterest</XPD:ATTR>
+<XPD:ATTR name="Text" type="string">TopicOfInterest</XPD:ATTR>
 </XPD:OBJ>
 <XPD:OBJ name="StereotypeLabel" type="LabelView" guid="jBm5ALC3RkCIOat0wx++ggAA">
 <XPD:ATTR name="Visible" type="boolean">False</XPD:ATTR>
@@ -747,7 +747,7 @@
 <XPD:OBJ name="OwnedViews[12]" type="UMLAssociationView" guid="6Aqsz8NALE+jBJg/uim1NgAA">
 <XPD:ATTR name="LineColor" type="string">clMaroon</XPD:ATTR>
 <XPD:ATTR name="FillColor" type="string">$00B9FFFF</XPD:ATTR>
-<XPD:ATTR name="Points" type="Points">504,177;344,151</XPD:ATTR>
+<XPD:ATTR name="Points" type="Points">504,180;344,166</XPD:ATTR>
 <XPD:REF name="Model">C0UVOaSWv0WbOnAXhzTF0QAA</XPD:REF>
 <XPD:REF name="Head">xRqYB4FseU2LGqhqtImuVQAA</XPD:REF>
 <XPD:REF name="Tail">8p4NGv0xa0W9XeTUX+u2ygAA</XPD:REF>
@@ -1672,7 +1672,7 @@
 </XPD:OBJ>
 </XPD:OBJ>
 <XPD:OBJ name="OwnedElements[13]" type="UMLClass" guid="E6vmEKMuDEuM22LrfrB9sQAA">
-<XPD:ATTR name="Name" type="string">AreaOfInterest</XPD:ATTR>
+<XPD:ATTR name="Name" type="string">TopicOfInterest</XPD:ATTR>
 <XPD:REF name="Namespace">QK/ZDL444UK0alnVSsZEtAAA</XPD:REF>
 <XPD:ATTR name="#Views" type="integer">4</XPD:ATTR>
 <XPD:REF name="Views[0]">xRqYB4FseU2LGqhqtImuVQAA</XPD:REF>
@@ -1682,21 +1682,9 @@
 <XPD:ATTR name="#Associations" type="integer">2</XPD:ATTR>
 <XPD:REF name="Associations[0]">Z/YH1MYm9k2Z8AQezS1DQwAA</XPD:REF>
 <XPD:REF name="Associations[1]">Ydcval1rrkegjQU+ZCLYuwAA</XPD:REF>
-<XPD:ATTR name="#Attributes" type="integer">4</XPD:ATTR>
-<XPD:OBJ name="Attributes[0]" type="UMLAttribute" guid="bbTMJ7Ba0Eu4WiYZdscsLgAA">
-<XPD:ATTR name="Name" type="string">City</XPD:ATTR>
-<XPD:REF name="Owner">E6vmEKMuDEuM22LrfrB9sQAA</XPD:REF>
-</XPD:OBJ>
-<XPD:OBJ name="Attributes[1]" type="UMLAttribute" guid="f0mNW499JEqPv3hE+uvO6AAA">
-<XPD:ATTR name="Name" type="string">State</XPD:ATTR>
-<XPD:REF name="Owner">E6vmEKMuDEuM22LrfrB9sQAA</XPD:REF>
-</XPD:OBJ>
-<XPD:OBJ name="Attributes[2]" type="UMLAttribute" guid="C2Ley4INPkymv0juzWxmpwAA">
-<XPD:ATTR name="Name" type="string">Country</XPD:ATTR>
-<XPD:REF name="Owner">E6vmEKMuDEuM22LrfrB9sQAA</XPD:REF>
-</XPD:OBJ>
-<XPD:OBJ name="Attributes[3]" type="UMLAttribute" guid="IE2ByXg9MEWyOaQ5sGnJrAAA">
-<XPD:ATTR name="Name" type="string">Post Code</XPD:ATTR>
+<XPD:ATTR name="#Attributes" type="integer">1</XPD:ATTR>
+<XPD:OBJ name="Attributes[0]" type="UMLAttribute" guid="IE2ByXg9MEWyOaQ5sGnJrAAA">
+<XPD:ATTR name="Name" type="string">Keywords</XPD:ATTR>
 <XPD:REF name="Owner">E6vmEKMuDEuM22LrfrB9sQAA</XPD:REF>
 </XPD:OBJ>
 </XPD:OBJ>
