@@ -31,6 +31,7 @@
         <script type='text/javascript' src='https://api.stackexchange.com/js/2.0/all.js'></script>
         <script type='text/javascript' src='/StackPointer/script/jquery/jquery-1.8.1.js'></script>
         <script type='text/javascript' src='/StackPointer/script/stackexchange/spStackExchange.js'></script>
+        <script type="text/javascript" src="http://platform.linkedin.com/in.js">api_key:v6xty7mvo61a</script>
     </head>
     <body>
         <center>
