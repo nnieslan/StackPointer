@@ -6,6 +6,7 @@ package stackpointer.common;
 
 import java.util.List;
 import java.util.Set;
+import stackpointer.stackexchange.Answer;
 import stackpointer.stackexchange.Question;
 
 /**
@@ -19,6 +20,7 @@ public class User {
     Location loc;
     Set<User> following;
     List<Question> asked;
+    List<Answer> answered;
 
     public User(String realName, String userName) {
         this.realName = realName;
@@ -71,6 +73,14 @@ public class User {
 
     public void setAsked(List<Question> asked) {
         this.asked = asked;
+    }
+
+    public List<Answer> getAnswered() {
+        return answered;
+    }
+
+    public void setAnswered(List<Answer> answered) {
+        this.answered = answered;
     }
     
     
