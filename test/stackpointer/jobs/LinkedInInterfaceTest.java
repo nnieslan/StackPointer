@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package stackpointer.stackexchange;
+package stackpointer.jobs;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -15,38 +15,38 @@ import static org.junit.Assert.*;
  *
  * @author Nathan
  */
-public class StackExchangeInterfaceTest {
+public class LinkedInInterfaceTest {
     
-    public StackExchangeInterfaceTest() {
+    public LinkedInInterfaceTest() {
     }
     
     @BeforeClass
     public static void setUpClass() {
-        System.out.println("* StackExchangeInterfaceTest: @BeforeClass method");
+        System.out.println("* LinkedInInterfaceTest: @BeforeClass method");
     }
     
     @AfterClass
     public static void tearDownClass() {
-        System.out.println("* StackExchangeInterfaceTest: @AfterClass method");
+        System.out.println("* LinkedInInterfaceTest: @BeforeClass method");
     }
     
     @Before
     public void setUp() {
-        System.out.println("* StackExchangeInterfaceTest: @Before method");
+        System.out.println("* LinkedInInterfaceTest: @BeforeClass method");
     }
     
     @After
     public void tearDown() {
-        System.out.println("* StackExchangeInterfaceTest: @After method");
+        System.out.println("* LinkedInSInterfaceTest: @BeforeClass method");
     }
 
     /**
-     * Test of establishConnection method, of class StackExchangeInterface.
+     * Test of establishConnection method, of class LinkedInInterface.
      */
     @Test
     public void testEstablishConnection() {
         System.out.println("establishConnection");
-        StackExchangeInterface instance = new StackExchangeInterface();
+        LinkedInInterface instance = new LinkedInInterface();
         instance.establishConnection();
         boolean expResult = true;
         boolean result = instance.isConnectionEstablished();
@@ -54,14 +54,12 @@ public class StackExchangeInterfaceTest {
     }
 
     /**
-     * Test of isConnectionEstablished method, of class StackExchangeInterface.
-     * Main difference between this test and previous is that we are evaluating the
-     * ability to correctly identify valid connections here.
+     * Test of isConnectionEstablished method, of class LinkedInInterface.
      */
     @Test
     public void testIsConnectionEstablished() {
         System.out.println("isConnectionEstablished");
-        StackExchangeInterface instance = new StackExchangeInterface();
+        LinkedInInterface instance = new LinkedInInterface();
         //TODO - send in bad connection values;
         instance.establishConnection();
         boolean expResult = false;
@@ -75,55 +73,55 @@ public class StackExchangeInterfaceTest {
     }
 
     /**
-     * Test of updateLocalDatabase method, of class StackExchangeInterface.
+     * Test of updateLocalDatabase method, of class LinkedInInterface.
      */
     @Test
     public void testUpdateLocalDatabase() {
         System.out.println("updateLocalDatabase");
-        StackExchangeInterface instance = new StackExchangeInterface();
+        LinkedInInterface instance = new LinkedInInterface();
         boolean expResult = true;
         boolean result = instance.updateLocalDatabase();
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of cleanDatabase method, of class StackExchangeInterface.
+     * Test of cleanDatabase method, of class LinkedInInterface.
      */
     @Test
     public void testCleanDatabase() {
         System.out.println("cleanDatabase");
-        StackExchangeInterface instance = new StackExchangeInterface();
+        LinkedInInterface instance = new LinkedInInterface();
         boolean expResult = true;
         boolean result = instance.cleanDatabase();
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of updateTopQuestions method, of class StackExchangeInterface.
+     * Test of updateJobPostings method, of class LinkedInInterface.
      */
     @Test
-    public void testUpdateTopQuestions() {
-        System.out.println("updateTopQuestions");
+    public void testUpdateJobPostings() {
+        System.out.println("updateJobPostings");
         //TODO - not sure how to properly validate this use case.
-        StackExchangeInterface instance = new StackExchangeInterface();
-        instance.updateTopQuestions();
+        LinkedInInterface instance = new LinkedInInterface();
+        instance.updateJobPostings();
         boolean expResult = true;
         boolean result = false; //TODO - replace with proper test
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of getTop100Questions method, of class StackExchangeInterface.
+     * Test of getJobPostings method, of class LinkedInInterface.
      */
     @Test
-    public void testGetTop100Questions() {
-        System.out.println("getTop100Questions");
-        StackExchangeInterface instance = new StackExchangeInterface();
+    public void testGetJobPostings() {
+        System.out.println("getJobPostings");
+        LinkedInInterface instance = new LinkedInInterface();
         int expResult = 0;
-        int result = instance.getTop100Questions().size();
+        int result = instance.getJobPostings().size();
         assertEquals(expResult, result);
-        instance.updateTopQuestions();
-        result = instance.getTop100Questions().size();
+        instance.updateJobPostings();
+        result = instance.getJobPostings().size();
         assertEquals(expResult, result);
     }
 }

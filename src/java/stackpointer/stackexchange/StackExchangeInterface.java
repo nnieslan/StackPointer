@@ -9,22 +9,25 @@ import stackpointer.common.User;
  * @author Phil
  */
 public class StackExchangeInterface {
+    private boolean connected;
+    private ArrayList<Question> top100Questions;
+
     StackExchangeInterface()
     {
         //TODO - Initialize values
-        m_top100Questions = new ArrayList<Question>();
+        top100Questions = new ArrayList<Question>();
     }
 
     void establishConnection()
     {
         //TODO - input connection steps and set boolean result value
-        m_connected = false;
+        connected = false;
     }
 
     //Simple getter function to ensure that connection is valid
     boolean isConnectionEstablished()
     {
-        return m_connected;
+        return connected;
     }
     
     //Function to repopulate local StackExchange user database
@@ -45,16 +48,15 @@ public class StackExchangeInterface {
     void updateTopQuestions()
     {
         //TODO - access database, grab 100 questions, push onto list
-        m_top100Questions.add(new Question(new User("asdf","asdf"),"QText",null));
-        m_top100Questions.add(new Question(new User("asdf","asdf"),"QText",null));
+        top100Questions.add(new Question(new User("asdf","asdf"),"QText",null));
+        top100Questions.add(new Question(new User("asdf","asdf"),"QText",null));
     }
 
     //Return the top 100 questions
     ArrayList<Question> getTop100Questions()
     {
-        return m_top100Questions;
+        return top100Questions;
     }
 
-    boolean m_connected;
-    ArrayList<Question> m_top100Questions;
+
 }
