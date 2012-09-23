@@ -1,6 +1,7 @@
 package stackpointer.stackexchange;
 
 import java.util.ArrayList;
+import stackpointer.common.User;
 
 /**
  * This class is to interact with the stack exchange API, including retrieval
@@ -11,7 +12,7 @@ public class StackExchangeInterface {
     StackExchangeInterface()
     {
         //TODO - Initialize values
-        m_top100Questions = new ArrayList<String>();
+        m_top100Questions = new ArrayList<Question>();
     }
 
     void establishConnection()
@@ -44,16 +45,16 @@ public class StackExchangeInterface {
     void updateTopQuestions()
     {
         //TODO - access database, grab 100 questions, push onto list
-        m_top100Questions.add("one");
-        m_top100Questions.add("two");
+        m_top100Questions.add(new Question(new User("asdf","asdf"),"QText",null));
+        m_top100Questions.add(new Question(new User("asdf","asdf"),"QText",null));
     }
 
     //Return the top 100 questions
-    ArrayList<String> getTop100Questions()
+    ArrayList<Question> getTop100Questions()
     {
         return m_top100Questions;
     }
 
     boolean m_connected;
-    ArrayList<String> m_top100Questions;
+    ArrayList<Question> m_top100Questions;
 }
