@@ -4,6 +4,7 @@
  */
 package stackpointer.stackexchange;
 
+import java.util.List;
 import stackpointer.common.User;
 
 /**
@@ -12,13 +13,13 @@ import stackpointer.common.User;
  */
 public class Question {
     User askedBy;
-    int numAnswers=0;
     String qText; //the question text
+    List <Answer> answers;
 
-    public Question(User askedBy, int numAnswers, String qText) {
+    public Question(User askedBy, String qText, List<Answer> answers) {
         this.askedBy = askedBy;
-        this.numAnswers = numAnswers;
         this.qText = qText;
+        this.answers = answers;
     }
 
     public User getAskedBy() {
@@ -30,15 +31,11 @@ public class Question {
     }
 
     public int getNumAnswers() {
-        return numAnswers;
+        return answers.size();
     }
     
     public boolean isAnswered() {
-        return numAnswers!=0;
-    }
-
-    public void setNumAnswers(int numAnswers) {
-        this.numAnswers = numAnswers;
+        return !answers.isEmpty();
     }
 
     public String getqText() {
@@ -47,6 +44,14 @@ public class Question {
 
     public void setqText(String qText) {
         this.qText = qText;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
     }
     
 }
