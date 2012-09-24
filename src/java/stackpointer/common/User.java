@@ -83,5 +83,11 @@ public class User {
         this.answered = answered;
     }
     
+    public void addQuestion(Question q) {
+        asked.add(q);
+    }
     
+    public void addAnswer(Answer a) {
+        answered.add(a);
+    }
 }
