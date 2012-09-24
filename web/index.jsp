@@ -1,6 +1,7 @@
 <%-- 
     Document   : index
     Created on : Sep 2, 2012, 3:36:10 PM
+    Modified on: Sep 24, 2012, 12:55:10AM : Joe
     Author     : Phil
 --%>
 
@@ -31,6 +32,7 @@
         <script type='text/javascript' src='https://api.stackexchange.com/js/2.0/all.js'></script>
         <script type='text/javascript' src='/StackPointer/script/jquery/jquery-1.8.1.js'></script>
         <script type='text/javascript' src='/StackPointer/script/stackexchange/spStackExchange.js'></script>
+        <script type="text/javascript" src="http://platform.linkedin.com/in.js">api_key:v6xty7mvo61a</script>
     </head>
     <body>
         <center>
@@ -54,5 +56,6 @@
                 <h2><i>Jobs</i></h2>
                 <h3>These are job listings in your area related to these questions, powered by <a href="http://linkedin.com">LinkedIn</a></h3>
             </span>
+            <script type="in/Login">Hello, <?js= firstName ?> <?js= lastName ?>.</script>
     </body>
 </html>
