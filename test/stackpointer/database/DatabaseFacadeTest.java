@@ -86,27 +86,27 @@ public class DatabaseFacadeTest {
 
         @Override
         public boolean verifyConnection() {
-            return false;
+            return true;
         }
 
         @Override
         public List<User> retrieveUsers() {
-            return null;
+            return new ArrayList<User>();
         }
         
         @Override
         public List<Question> retrieveQuestions() {
-            return null;
+            return new ArrayList<Question>();
         }
 
         @Override
         public List<Answer> retrieveAnswers(int questionId) {
-            return null;
+            return new ArrayList<Answer>();
         }
         
         @Override
         public List<JobPosting> retrieveJobPostings() {
-            return null;
+            return new ArrayList<JobPosting>();
         }
         
         @Override
