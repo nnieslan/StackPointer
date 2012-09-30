@@ -1324,7 +1324,14 @@ exists or setup the property manually. For example like this:
     <target depends="init,compile-test,-pre-test-run,-do-test-run" if="have.tests" name="-post-test-run">
         <fail if="tests.failed" unless="ignore.failing.tests">Some tests failed; see details above.</fail>
     </target>
-    <target depends="init" if="have.tests" name="test-report"/>
+    <target depends="init" if="have.tests" name="test-report">
+        <junitreport todir="${build.test.results.dir}">
+            <fileset dir="${build.test.results.dir}">
+                <include name="TEST-*.xml"/>
+            </fileset>
+            <report format="frames" todir="${build.test.results.dir}/html"/>
+        </junitreport>
+    </target>
     <target depends="init" if="netbeans.home+have.tests" name="-test-browse"/>
     <target depends="init,compile-test,-pre-test-run,-do-test-run,test-report,-post-test-run,-test-browse" description="Run unit tests." name="test"/>
     <target depends="init" if="have.tests" name="-pre-test-run-single">
