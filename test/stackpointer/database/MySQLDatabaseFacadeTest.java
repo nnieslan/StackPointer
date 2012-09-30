@@ -5,17 +5,19 @@
 package stackpointer.database;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import stackpointer.common.Location;
 import stackpointer.common.User;
+import stackpointer.jobs.JobPosting;
 import stackpointer.stackexchange.Answer;
 import stackpointer.stackexchange.Question;
 
@@ -54,11 +56,10 @@ public class MySQLDatabaseFacadeTest {
     @Test
     public void testOpenConnection() throws SQLException {
         System.out.println("openConnection");
-        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(new DatabaseConnectionInfo("url","username","password"));
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
         Connection expResult = null;
-        Connection result = instance.openConnection();
-        assertEquals(expResult, result);
-        fail("Connection not open");
+        instance.openConnection();
+        assertNotNull(instance.connection);
     }
 
     /**
@@ -67,10 +68,22 @@ public class MySQLDatabaseFacadeTest {
     @Test
     public void testVerifyConnection() {
         System.out.println("verifyConnection");
-        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(new DatabaseConnectionInfo("url","username","password"));
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
         boolean expResult = true;
         boolean result = instance.verifyConnection();
         assertEquals(expResult, result);
+    }
+    
+    /**
+     * Test of retrieveUsers method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testRetrieveUsers() {
+        System.out.println("retrieveUsers");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        List<User> result = instance.retrieveUsers();
+        assertNotNull(result);
+        assertTrue(result.size() >= 0);
     }
 
     /**
@@ -79,11 +92,10 @@ public class MySQLDatabaseFacadeTest {
     @Test
     public void testRetrieveQuestions() {
         System.out.println("retrieveQuestions");
-        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(new DatabaseConnectionInfo("url","username","password"));
-        List<Question> expResult = new ArrayList<Question>();
-        expResult.add(new Question(new User("Asdf","Asdf"),"asdf",null));
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
         List<Question> result = instance.retrieveQuestions();
-        assertEquals(expResult, result);
+        assertNotNull(result);
+        assertTrue(result.size() >= 0);
     }
 
     /**
@@ -92,10 +104,84 @@ public class MySQLDatabaseFacadeTest {
     @Test
     public void testRetrieveAnswers() {
         System.out.println("retrieveAnswers");
-        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(new DatabaseConnectionInfo("url","username","password"));
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
         List<Answer> expResult = new ArrayList<Answer>();
-        expResult.add(new Answer(new User("asdf","asdf"),"Asdf", new Question(new User("Asdf","Asdf"),"asdf",null)));
-        List<Answer> result = instance.retrieveAnswers(1L);
-        assertEquals(expResult, result);
+        List<Answer> result = instance.retrieveAnswers(1);
+        assertNotNull(result);
+        assertTrue(result.size() >= 0);
+    }
+    
+    /**
+     * Test of retrieveJobPostings method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testRetrieveJobPostings() {
+        System.out.println("retrieveJobPostings");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        List<JobPosting> result = instance.retrieveJobPostings();
+        assertNotNull(result);
+        assertTrue(result.size() >= 0);
+    }
+    
+    /**
+     * Test of addUser method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testAddUser() {
+        System.out.println("addUser");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        User user = new User("testUnitCreatedUser", "userName");
+        // Create some relatively unique fake sx user id
+        long longTime = (new Date()).getTime() % 10000000;
+        String longStr = Long.toString(longTime);
+        String sxid = "sxid" + longStr;
+        user.setSXid(sxid);
+        boolean success = instance.addUser(user);
+        assertTrue(success);
+    }
+    
+    /**
+     * Test of addQuestion method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testAddQuestion() {
+        System.out.println("addQuestion");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        User user = new User("realName", "userName");
+        user.setUid(1);
+        Question question = new Question(user, "question posted by test unit", null);
+        boolean success = instance.addQuestion(question);
+        assertTrue(success);
+    }
+    
+    /**
+     * Test of addAnswer method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testAddAnswer() {
+        System.out.println("addAnswer");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        User user = new User("realName", "userName");
+        user.setUid(2);
+        Question question = new Question(user, "question text", null);
+        question.setQid(1);
+        Answer answer = new Answer(user, "answer posted by test unit", question);
+        boolean success = instance.addAnswer(answer);
+        assertTrue(success);
+    }
+
+    /**
+     * Test of addJobPosting method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testAddJobPosting() {
+        System.out.println("addAnswer");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        Location location = new Location(1.0f, 1.0f, 0);
+        Date date = new Date();
+        JobPosting jobPosting = new JobPosting(location, date,
+                "job posting by test unit", "description", "company");
+        boolean success = instance.addJobPosting(jobPosting);
+        assertTrue(success);
     }
 }

@@ -8,10 +8,12 @@ import java.util.ArrayList;
 import java.util.List;
 import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import static org.junit.Assert.*;
+import stackpointer.common.User;
+import stackpointer.jobs.JobPosting;
 import stackpointer.stackexchange.Answer;
 import stackpointer.stackexchange.Question;
 
@@ -76,22 +78,55 @@ public class DatabaseFacadeTest {
         System.out.println("retrieveAnswers");
         DatabaseFacade instance = new DatabaseFacadeImpl();
         List<Answer> expResult = new ArrayList<Answer>();
-        List<Answer> result = instance.retrieveAnswers(1L);
+        List<Answer> result = instance.retrieveAnswers(1);
         assertEquals(expResult, result);
     }
 
     public class DatabaseFacadeImpl implements DatabaseFacade {
 
+        @Override
         public boolean verifyConnection() {
             return false;
         }
 
+        @Override
+        public List<User> retrieveUsers() {
+            return null;
+        }
+        
+        @Override
         public List<Question> retrieveQuestions() {
             return null;
         }
 
-        public List<Answer> retrieveAnswers(Long questionId) {
+        @Override
+        public List<Answer> retrieveAnswers(int questionId) {
             return null;
+        }
+        
+        @Override
+        public List<JobPosting> retrieveJobPostings() {
+            return null;
+        }
+        
+        @Override
+        public boolean addUser(User user) {
+            return true;
+        }
+
+        @Override
+        public boolean addQuestion(Question question) {
+            return true;
+        }
+
+        @Override
+        public boolean addAnswer(Answer answer) {
+            return true;
+        }
+
+        @Override
+        public boolean addJobPosting(JobPosting jobPosting) {
+            return true;
         }
     }
 }

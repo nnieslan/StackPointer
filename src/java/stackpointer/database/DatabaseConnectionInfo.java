@@ -44,4 +44,11 @@ public class DatabaseConnectionInfo {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    public static DatabaseConnectionInfo createDefault() {
+        return new DatabaseConnectionInfo(
+                "jdbc:mysql://mysql.philhurwitz.com/stackpointer",
+                "philhurwitzcom",
+                "zv4NLgN6");
+    }
 }

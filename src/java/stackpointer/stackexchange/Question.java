@@ -12,6 +12,7 @@ import stackpointer.common.User;
  * @author Phil
  */
 public class Question {
+    int qid; // our internal unique id
     User askedBy;
     String qText; //the question text
     List <Answer> answers;
@@ -20,6 +21,14 @@ public class Question {
         this.askedBy = askedBy;
         this.qText = qText;
         this.answers = answers;
+    }
+    
+    public int getQid() {
+        return qid;
+    }
+    
+    public void setQid(int qid) {
+        this.qid = qid;
     }
 
     public User getAskedBy() {

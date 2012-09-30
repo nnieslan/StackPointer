@@ -11,6 +11,7 @@ import stackpointer.common.User;
  * @author Phil
  */
 public class Answer {
+    int aid; // our internal unique id
     User answeredBy;
     String ansText;
     Question answering;
@@ -21,6 +22,14 @@ public class Answer {
         this.answering = answering;
     }
 
+    public int getAid() {
+        return aid;
+    }
+    
+    public void setAid(int aid) {
+        this.aid = aid;
+    }
+    
     public User getAnsweredBy() {
         return answeredBy;
     }

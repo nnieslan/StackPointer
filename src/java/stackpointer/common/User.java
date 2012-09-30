@@ -17,6 +17,7 @@ public class User {
     String realName;
     String userName;
     String SXid; //stack exchange id
+    int uid; // our internal unique id
     Location loc;
     Set<User> following;
     List<Question> asked;
@@ -49,6 +50,14 @@ public class User {
 
     public void setSXid(String SXid) {
         this.SXid = SXid;
+    }
+    
+    public int getUid() {
+        return uid;
+    }
+    
+    public void setUid(int uid) {
+        this.uid = uid;
     }
 
     public Location getLoc() {

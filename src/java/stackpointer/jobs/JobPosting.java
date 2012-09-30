@@ -8,6 +8,7 @@ import stackpointer.common.Location;
  * @author Phil
  */
 public class JobPosting {
+    int jpid; // // our internal unique id
     Location loc;
     Date datePosted;
     String headline;
@@ -22,6 +23,14 @@ public class JobPosting {
         this.company = company;
     }
 
+    public int getJpid() {
+        return jpid;
+    }
+    
+    public void setJpid(int jpid) {
+        this.jpid = jpid;
+    }
+    
     public Location getLoc() {
         return loc;
     }
