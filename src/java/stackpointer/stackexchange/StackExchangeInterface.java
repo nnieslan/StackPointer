@@ -5,8 +5,11 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.zip.GZIPInputStream;
 import org.json.JSONObject;
-import stackpointer.common.User;
+import stackpointer.database.DatabaseConnectionInfo;
+import stackpointer.database.MySQLDatabaseFacade;
 
 /**
  * This class is to interact with the stack exchange API, including retrieval
@@ -14,84 +17,77 @@ import stackpointer.common.User;
  * @author Phil
  */
 public class StackExchangeInterface {
-    private boolean connected = false;
-    private ArrayList<Question> top100Questions;
+    private ArrayList<Question> top100Questions = new ArrayList<Question>();
+    MySQLDatabaseFacade db = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+    final static String baseUrl = "https://api.stackexchange.com/2.1/";
+    final static String sxKey = "ubwVxucHGeVndxd5knjnMg((";
 
-    StackExchangeInterface()
+    public StackExchangeInterface()
     {
         //TODO - Initialize values
-        top100Questions = new ArrayList<Question>();
     }
     
-    private JSONObject getQuestionsFromServer()
+    public static ArrayList<Question> getQuestionsFromServer()
     {
-        JSONObject json = null;
-        if(isConnected())
-        {
-            try {
-                URL url = new URL("https://api.stackexchange.com/2.1/questions?page=1&pagesize=100&order=desc&sort=creation&site=stackoverflow");
-                URLConnection conn = url.openConnection();
-                String line;
-                StringBuilder builder = new StringBuilder();
-                BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-                while((line = reader.readLine()) != null) {
-                    builder.append(line);
-                }
-                json = new JSONObject(builder.toString());
+        ArrayList<Question> servQs = null;
+        JSONObject json = null;        
+        try {
+            URL url = new URL(baseUrl+"questions?key="+sxKey+"&page=1&pagesize=100&order=desc&sort=creation&site=stackoverflow");
+            URLConnection conn = url.openConnection();
+            String line;
+            StringBuilder builder = new StringBuilder();
+            //input is gzipped
+            BufferedReader reader = new BufferedReader(new InputStreamReader(new GZIPInputStream(conn.getInputStream())));
+            while((line = reader.readLine()) != null) {
+                builder.append(line);
             }
-            catch (Exception e)
-            {
-                System.out.println("Error retrieving top 100 questions from StackExchange:\n"+e);
-            }
+            json = new JSONObject(builder.toString());
+            //TODO - parse json into questions
+            servQs = new ArrayList<Question>();
         }
-        else
+        catch (Exception e)
         {
-            System.out.println("Not connected. Establish connection first.");
+            System.out.println("Error retrieving top 100 questions from StackExchange:\n"+e);
         }
         
-        return json;
+        return servQs;
     }
 
-    void setConnected(boolean c)
+    //Function to save current values from StackExchange in local database
+    public boolean persistTopQuestions()
     {
-        //TODO - input connection steps and set boolean result value
-        connected = c;
-    }
-
-    //Simple getter function to ensure that connection is valid
-    boolean isConnected()
-    {
-        return connected;
-    }
-    
-    //Function to repopulate local StackExchange user database
-    boolean updateLocalDatabase()
-    {
-        //TODO - access StackExchange, grab user and friends and save data
-        return false;
-    }
-
-    //Function to update current values from StackExchange in local database
-    boolean cleanDatabase()
-    {
-        //TODO - validate all current local data
-        return false;
-    }
-
-    //Update the local copies of the top 100 questions
-    void updateTopQuestions()
-    {
-        JSONObject SXjson  = getQuestionsFromServer();
-        if(SXjson!=null)
+        boolean success = false;
+        top100Questions  = getQuestionsFromServer();
+        if(top100Questions!=null)
         {
-            //TODO - access database, grab 100 questions, push onto list
-            top100Questions.add(new Question(new User("asdf","asdf"),"QText",null));
-            top100Questions.add(new Question(new User("asdf","asdf"),"QText",null));
+            if(!top100Questions.isEmpty())
+            {
+                for(Question q:top100Questions)
+                {
+                    if(db.addQuestion(q)==false)
+                    {
+                        System.out.println("Error saving question "+q);
+                    }
+                }
+                success = true;
+            }
+        }
+        return success;
+    }
+
+    //Get the local copies of the top 100 questions
+    public void retrieveTopQuestions()
+    {
+        List<Question> q = db.retrieveQuestions();
+        if(q != null && !q.isEmpty())
+        {   
+            top100Questions.clear();
+            top100Questions.addAll(q);
         }
     }
 
     //Return the top 100 questions
-    ArrayList<Question> getTop100Questions()
+    public ArrayList<Question> getTop100Questions()
     {
         return top100Questions;
     }
