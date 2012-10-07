@@ -408,12 +408,67 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
         return success;
     }
     
-    public static void main(String[] args) {
-        DatabaseFacade db = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        if (db.verifyConnection()) {
-            System.out.println("database connection good");
-        } else {
-            System.out.println("database connection BAD");
-        }
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean updateUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean updateQuestion(Question question) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean updateAnswer(Answer answer) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean updateJobPosting(JobPosting jobPosting) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean deleteUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean deleteQuestion(Question question) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean deleteAnswer(Answer answer) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean deleteJobPosting(JobPosting jobPosting) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

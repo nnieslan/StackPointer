@@ -75,7 +75,87 @@ public interface DatabaseFacade {
     /**
      * Inserts a new job posting record into the database
      * 
-     * @param jobPosting 
+     * @param jobPosting object containing all of the data for the job posting
      */
     public boolean addJobPosting(JobPosting jobPosting);
+    
+    /**
+     * Updates an existing user in the database
+     * 
+     * @param user the user data to be reflected in the database
+     * 
+     * @return true if the user existed and was successfully updated,
+     * otherwise false
+     */
+    public boolean updateUser(User user);
+    
+    /**
+     * Updates an existing user in the database
+     * 
+     * @param question the question data to be reflected in the database
+     * 
+     * @return true if the question existed and was successfully updated,
+     * otherwise false
+     */
+    public boolean updateQuestion(Question question);
+    
+    /**
+     * Updates an existing answer in the database
+     * 
+     * @param answer the answer data to be reflected in the database
+     * 
+     * @return true if the answer existed and was successfully updated,
+     * otherwise false
+     */
+    public boolean updateAnswer(Answer answer);
+    
+    /**
+     * Updates an existing job posting in the database
+     * 
+     * @param jobPosting the job posting data to be reflected in the database
+     * 
+     * @return true if the job posting existed and was successfully updated,
+     * otherwise false
+     */
+    public boolean updateJobPosting(JobPosting jobPosting);
+    
+    /**
+     * Deletes an existing user from the database
+     * 
+     * @param user the user to be deleted
+     * 
+     * @return true if the user existed and was successfully deleted,
+     * otherwise false
+     */
+    public boolean deleteUser(User user);
+    
+    /**
+     * Deletes an existing question and corresponding answers from the database
+     * 
+     * @param question the question to be deleted
+     * 
+     * @return true if the question existed and was successfully deleted,
+     * otherwise false
+     */
+    public boolean deleteQuestion(Question question);
+    
+    /**
+     * Deletes an existing answer from the database
+     * 
+     * @param answer the answer to be deleted
+     * 
+     * @return true if the answer existed and was successfully deleted,
+     * otherwise false
+     */
+    public boolean deleteAnswer(Answer answer);
+    
+    /**
+     * Deletes an existing job posting from the database
+     * 
+     * @param jobPosting the job posting to be deleted
+     * 
+     * @return true if the job posting existed and was successfully deleted,
+     * otherwise false
+     */
+    public boolean deleteJobPosting(JobPosting jobPosting);
 }
