@@ -33,6 +33,28 @@
         <script type='text/javascript' src='/StackPointer/script/jquery/jquery-1.8.1.js'></script>
         <script type='text/javascript' src='/StackPointer/script/stackexchange/spStackExchange.js'></script>
         <script type="text/javascript" src="http://platform.linkedin.com/in.js">api_key:v6xty7mvo61a</script>
+ 
+<script type="text/javascript">
+ 
+function loadData() {
+  IN.API.PeopleSearch()
+         .fields("firstName", "lastName", "distance", "publicProfileUrl","pictureUrl")
+         .params({"keywords": "python", "count": 10, "sort": "distance"})
+         .result(function(result) {
+            profHTML = "<h4>People search results for keyword 'python':</h4>";
+            for (var index in result.people.values) {
+                profile = result.people.values[index]
+                if (profile.pictureUrl) {
+                    profHTML += "<p><a href=\"" + profile.publicProfileUrl + "\">";
+                    profHTML += "<img class=img_border height=30 align=\"left\" src=\"" + profile.pictureUrl + "\"></a>";
+                    profHTML += "<p>" + profile.firstName + " " + profile.lastName + " (" + profile.distance + ")</p>"; 
+                }
+            }  
+      $("#search").html(profHTML);
+      });
+}
+ 
+</script>
     </head>
     <body>
         <center>
