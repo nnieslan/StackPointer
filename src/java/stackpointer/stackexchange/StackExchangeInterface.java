@@ -55,7 +55,7 @@ public class StackExchangeInterface {
         return servQs;
     }
     
-    private static ArrayList<Question> parseQuestionsFromJson(JSONObject json)
+    public static ArrayList<Question> parseQuestionsFromJson(JSONObject json)
     {
         ArrayList<Question> parsed = new ArrayList<Question>();
         try
@@ -80,7 +80,7 @@ public class StackExchangeInterface {
         return parsed;
     }
     
-    private static User parseUserFromJson(JSONObject json)
+    public static User parseUserFromJson(JSONObject json)
     {
         User user = new User();
         try
