@@ -118,7 +118,9 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
                     String sxid = results.getString(2);
                     String displayName = results.getString(3);
                     int lid = results.getInt(4);
-                    User user = new User(displayName, sxid);
+                    User user = new User();
+                    user.setUserName(displayName);
+                    user.setSXid(sxid);
                     userList.add(user);
                 }
             } catch (SQLException ex) {
@@ -152,7 +154,9 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
                 while (results.next()) {
                     int qid = results.getInt(1);
                     String questionText = results.getString(2);
-                    Question question = new Question(null, questionText, null);
+                    Question question = new Question();
+                    question.setQid(qid);
+                    question.setqText(questionText);
                     questionList.add(question);
                 }
             } catch (SQLException ex) {
@@ -192,7 +196,9 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
                 while (results.next()) {
                     int aid = results.getInt(1);
                     String answerText = results.getString(2);
-                    Answer answer = new Answer(null, answerText, null);
+                    Answer answer = new Answer();
+                    answer.setAid(aid);
+                    answer.setAnsText(answerText);
                     answerList.add(answer);
                 }
             } catch (SQLException ex) {

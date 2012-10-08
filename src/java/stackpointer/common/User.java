@@ -4,6 +4,8 @@
  */
 package stackpointer.common;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 import stackpointer.stackexchange.Answer;
@@ -20,12 +22,10 @@ public class User {
     int uid; // our internal unique id
     Location loc;
     Set<User> following;
-    List<Question> asked;
-    List<Answer> answered;
+    List<Question> asked = new ArrayList<Question>();
+    List<Answer> answered = new ArrayList<Answer>();
 
-    public User(String realName, String userName) {
-        this.realName = realName;
-        this.userName = userName;
+    public User() {
     }
 
     public String getRealName() {
@@ -99,4 +99,10 @@ public class User {
     public void addAnswer(Answer a) {
         answered.add(a);
     }
+
+    @Override
+    public String toString() {
+        return "User{" + "userName=" + userName + ", SXid=" + SXid + '}';
+    }
+    
 }

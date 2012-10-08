@@ -16,10 +16,7 @@ public class Answer {
     String ansText;
     Question answering;
 
-    public Answer(User answeredBy, String ansText, Question answering) {
-        this.answeredBy = answeredBy;
-        this.ansText = ansText;
-        this.answering = answering;
+    public Answer() {
     }
 
     public int getAid() {

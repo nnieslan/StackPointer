@@ -7,7 +7,10 @@ import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
+import stackpointer.common.User;
 import stackpointer.database.DatabaseConnectionInfo;
 import stackpointer.database.MySQLDatabaseFacade;
 
@@ -32,7 +35,7 @@ public class StackExchangeInterface {
         ArrayList<Question> servQs = null;
         JSONObject json = null;        
         try {
-            URL url = new URL(baseUrl+"questions?key="+sxKey+"&page=1&pagesize=100&order=desc&sort=creation&site=stackoverflow");
+            URL url = new URL(baseUrl+"questions?key="+sxKey+"&page=1&pagesize=100&order=desc&sort=creation&site=stackoverflow&filter=withbody");
             URLConnection conn = url.openConnection();
             String line;
             StringBuilder builder = new StringBuilder();
@@ -42,8 +45,7 @@ public class StackExchangeInterface {
                 builder.append(line);
             }
             json = new JSONObject(builder.toString());
-            //TODO - parse json into questions
-            servQs = new ArrayList<Question>();
+            servQs = parseQuestionsFromJson(json);
         }
         catch (Exception e)
         {
@@ -51,6 +53,45 @@ public class StackExchangeInterface {
         }
         
         return servQs;
+    }
+    
+    private static ArrayList<Question> parseQuestionsFromJson(JSONObject json)
+    {
+        ArrayList<Question> parsed = new ArrayList<Question>();
+        try
+        {
+            JSONArray questions = json.getJSONArray("items");
+            for(int q=0; q<questions.length(); q++)
+            {
+                JSONObject jQuestion = questions.getJSONObject(q);
+                User owner = parseUserFromJson(jQuestion.getJSONObject("owner"));
+                Question toAdd = new Question();
+                toAdd.setAskedBy(owner);
+                toAdd.setqTitle(jQuestion.getString("title"));
+                toAdd.setqText(jQuestion.getString("body"));
+                owner.addQuestion(toAdd);
+                parsed.add(toAdd);
+            }
+        }
+        catch (JSONException e)
+        {
+            System.out.println("Error parsing JSON question string: "+e);
+        }
+        return parsed;
+    }
+    
+    private static User parseUserFromJson(JSONObject json)
+    {
+        User user = new User();
+        try
+        {
+            user.setSXid(json.getString("display_name"));
+        }
+        catch(JSONException e)
+        {
+            System.out.println("Error parsing JSON question string: "+e);
+        }
+        return user;
     }
 
     //Function to save current values from StackExchange in local database

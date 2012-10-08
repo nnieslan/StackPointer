@@ -130,7 +130,9 @@ public class MySQLDatabaseFacadeTest {
     public void testAddUser() {
         System.out.println("addUser");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        User user = new User("testUnitCreatedUser", "userName");
+        User user = new User();
+        user.setRealName("testUnitCreatedUser");
+        user.setUserName("userName");
         // Create some relatively unique fake sx user id
         long longTime = (new Date()).getTime() % 10000000;
         String longStr = Long.toString(longTime);
@@ -147,9 +149,13 @@ public class MySQLDatabaseFacadeTest {
     public void testAddQuestion() {
         System.out.println("addQuestion");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        User user = new User("realName", "userName");
+        User user = new User();
+        user.setRealName("realName");
+        user.setUserName("userName");
         user.setUid(1);
-        Question question = new Question(user, "question posted by test unit", null);
+        Question question = new Question();
+        question.setAskedBy(user);
+        question.setqText("question posted by test unit");
         boolean success = instance.addQuestion(question);
         assertTrue(success);
     }
@@ -161,11 +167,18 @@ public class MySQLDatabaseFacadeTest {
     public void testAddAnswer() {
         System.out.println("addAnswer");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        User user = new User("realName", "userName");
+        User user = new User();
+        user.setRealName("realName");
+        user.setUserName("userName");
         user.setUid(2);
-        Question question = new Question(user, "question text", null);
+        Question question = new Question();
+        question.setAskedBy(user);
+        question.setqText("question text");
         question.setQid(1);
-        Answer answer = new Answer(user, "answer posted by test unit", question);
+        Answer answer = new Answer();
+        answer.setAnsweredBy(user);
+        answer.setAnsText("answer posted by test unit");
+        answer.setAnswering(question);
         boolean success = instance.addAnswer(answer);
         assertTrue(success);
     }

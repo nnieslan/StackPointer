@@ -5,6 +5,8 @@
     Author     : Phil
 --%>
 
+<%@page import="stackpointer.stackexchange.Question"%>
+<%@page import="stackpointer.stackexchange.StackExchangeInterface"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
@@ -35,27 +37,37 @@
         <script type="text/javascript" src="http://platform.linkedin.com/in.js">api_key:v6xty7mvo61a</script>
     </head>
     <body>
+        <span id="welcome">
+            <center>
+            <h1>Welcome to StackPointer!</h1><br>
+            <script type='text/javascript'>
+              $(function() {
+                initMap();
+                stackInit();
+              });
+            </script>
+        </span>
+        <span id="map">
+            <h2><i>Map</i></h2><br>
+            <div id="map_canvas" style="width:800px; height:600px"></div>
+            <span id="vers">api vers</span>
+            <h3>These are the last 100 questions asked on <a href="http://stackoverflow.com">StackOverflow</a>
+                shown on <a href="http://maps.google.com">Google Maps</a>.</h3><br>
+            </center>
+                <%  
+                    for(Question q : StackExchangeInterface.getQuestionsFromServer())
+                    {
+                        out.println("<br>*************<br>");
+                        out.println(q);
+                    }
+                %>
+        </span>
         <center>
-            <span id="welcome">
-                <h1>Welcome to StackPointer!</h1><br>
-                <script type='text/javascript'>
-                  $(function() {
-                    initMap();
-                    stackInit();
-                  });
-                </script>
-            </span>
-            <span id="map">
-                <h2><i>Map</i></h2><br>
-                <div id="map_canvas" style="width:800px; height:600px"></div>
-                <span id="vers">api vers</span>
-                <h3>These are the last 100 questions asked on <a href="http://stackoverflow.com">StackOverflow</a>
-                    shown on <a href="http://maps.google.com">Google Maps</a>.</h3><br>
-            </span>
             <span id="jobs">
                 <h2><i>Jobs</i></h2>
                 <h3>These are job listings in your area related to these questions, powered by <a href="http://linkedin.com">LinkedIn</a></h3>
             </span>
             <script type="in/Login">Hello, <?js= firstName ?> <?js= lastName ?>.</script>
+        </center>
     </body>
 </html>

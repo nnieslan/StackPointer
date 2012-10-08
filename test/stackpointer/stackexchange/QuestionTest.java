@@ -49,8 +49,12 @@ public class QuestionTest {
     @Test
     public void testGetAskedBy() {
         System.out.println("getAskedBy");
-        User expResult = new User("Real Name", "username");
-        Question instance = new Question(expResult, "Question Text", null);
+        User expResult = new User();
+        expResult.setRealName("Real Name");
+        expResult.setUserName("username");
+        Question instance = new Question();
+        instance.setAskedBy(expResult);
+        instance.setqText("Question Text");
         User result = instance.getAskedBy();
         assertEquals(expResult, result);
     }
@@ -61,9 +65,15 @@ public class QuestionTest {
     @Test
     public void testSetAskedBy() {
         System.out.println("setAskedBy");
-        User user = new User("RealName","username");
-        Question instance = new Question(user, "Question Text", null);
-        User askedBy = new User("Real Name", "username");
+        User user = new User();
+        user.setRealName("RealName");
+        user.setUserName("username");
+        Question instance = new Question();
+        instance.setAskedBy(user);
+        instance.setqText("Question Text");       
+        User askedBy = new User();
+        askedBy.setRealName("Real Name");
+        askedBy.setUserName("username");
         instance.setAskedBy(askedBy);
         User result = instance.getAskedBy();
         assertEquals(askedBy, result);
@@ -75,11 +85,15 @@ public class QuestionTest {
     @Test
     public void testGetNumAnswers() {
         System.out.println("getNumAnswers");
-        User user = new User("Real Name", "username");
-        Question instance = new Question(user, "Question Text", null);
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question instance = new Question();
+        instance.setAskedBy(user);
+        instance.setqText("Question Text");
         List<Answer> answers = new ArrayList<Answer>();
-        answers.add(new Answer(user, "Answer Text 1", instance));
-        answers.add(new Answer(user, "Answer Text 1", instance));
+        answers.add(new Answer());
+        answers.add(new Answer());
         instance.setAnswers(answers);
         int expResult = 2;
         int result = instance.getNumAnswers();
@@ -92,11 +106,15 @@ public class QuestionTest {
     @Test
     public void testIsAnswered() {
         System.out.println("isAnswered");
-        User user = new User("Real Name", "username");
-        Question instance = new Question(user, "Question Text", null);
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question instance = new Question();
+        instance.setAskedBy(user);
+        instance.setqText("Question Text");
         List<Answer> answers = new ArrayList<Answer>();
-        answers.add(new Answer(user, "Answer Text 1", instance));
-        answers.add(new Answer(user, "Answer Text 1", instance));
+        answers.add(new Answer());
+        answers.add(new Answer());
         instance.setAnswers(answers);
         boolean expResult = true;
         boolean result = instance.isAnswered();
@@ -109,11 +127,15 @@ public class QuestionTest {
     @Test
     public void testGetqText() {
         System.out.println("getqText");
-        User user = new User("Real Name", "username");
-        Question instance = new Question(user, "Question Text", null);
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question instance = new Question();
+        instance.setAskedBy(user);
+        instance.setqText("Question Text");
         List<Answer> answers = new ArrayList<Answer>();
-        answers.add(new Answer(user, "Answer Text 1", instance));
-        answers.add(new Answer(user, "Answer Text 1", instance));
+        answers.add(new Answer());
+        answers.add(new Answer());
         instance.setAnswers(answers);
         String expResult = "Question Text";
         String result = instance.getqText();
@@ -126,8 +148,12 @@ public class QuestionTest {
     @Test
     public void testSetqText() {
         System.out.println("setqText");
-        User user = new User("Real Name", "username");
-        Question instance = new Question(user, "Question Text", null);
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question instance = new Question();
+        instance.setAskedBy(user);
+        instance.setqText("Question Text");
         String expResult = "New Text";
         instance.setqText(expResult);
         String result = instance.getqText();
@@ -140,8 +166,12 @@ public class QuestionTest {
     @Test
     public void testGetAnswers() {
         System.out.println("getAnswers");
-        User user = new User("Real Name", "username");
-        Question instance = new Question(user, "Question Text", null);
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question instance = new Question();
+        instance.setAskedBy(user);
+        instance.setqText("Question Text");
         List expResult = null;
         List result = instance.getAnswers();
         assertEquals(expResult, result);
@@ -153,11 +183,15 @@ public class QuestionTest {
     @Test
     public void testSetAnswers() {
         System.out.println("setAnswers");
-        User user = new User("Real Name", "username");
-        Question instance = new Question(user, "Question Text", null);
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question instance = new Question();
+        instance.setAskedBy(user);
+        instance.setqText("Question Text");
         List<Answer> answers = new ArrayList<Answer>();
-        answers.add(new Answer(user, "Answer Text 1", instance));
-        answers.add(new Answer(user, "Answer Text 1", instance));
+        answers.add(new Answer());
+        answers.add(new Answer());
         instance.setAnswers(answers);
         List<Answer> result = instance.getAnswers();
         assertEquals(answers, result);

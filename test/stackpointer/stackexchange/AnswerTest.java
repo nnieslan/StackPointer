@@ -47,10 +47,17 @@ public class AnswerTest {
     @Test
     public void testGetAnsweredBy() {
         System.out.println("getAnsweredBy");
-        User user = new User("Real Name","username");
-        Question question = new Question(user, "Question Text", null);
-        Answer instance = new Answer(user, "Answer Text", question);
-        User result = instance.getAnsweredBy();
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question question = new Question();
+        question.setAskedBy(user);
+        question.setqText("Question Text");
+        Answer answer = new Answer();
+        answer.setAnsweredBy(user);
+        answer.setAnsText("Answer Text");
+        answer.setAnswering(question);
+        User result = answer.getAnsweredBy();
         assertEquals(user, result);
     }
 
@@ -60,12 +67,21 @@ public class AnswerTest {
     @Test
     public void testSetAnsweredBy() {
         System.out.println("setAnsweredBy");
-        User user = new User("Real Name","username");
-        Question question = new Question(user, "Question Text", null);
-        Answer instance = new Answer(user, "Answer Text", question);
-        User answeredBy = new User("Real Name 2","username2");
-        instance.setAnsweredBy(answeredBy);
-        User result = instance.getAnsweredBy();
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question question = new Question();
+        question.setAskedBy(user);
+        question.setqText("Question Text");
+        Answer answer = new Answer();
+        answer.setAnsweredBy(user);
+        answer.setAnsText("Answer Text");
+        answer.setAnswering(question);
+        User answeredBy = new User();
+        answeredBy.setRealName("Real Name 2");
+        answeredBy.setUserName("username2");
+        answer.setAnsweredBy(answeredBy);
+        User result = answer.getAnsweredBy();
         assertEquals(answeredBy, result);
     }
 
@@ -75,11 +91,18 @@ public class AnswerTest {
     @Test
     public void testGetAnsText() {
         System.out.println("getAnsText");
-        User user = new User("Real Name","username");
-        Question question = new Question(user, "Question Text", null);
-        Answer instance = new Answer(user, "Answer Text", question);
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question question = new Question();
+        question.setAskedBy(user);
+        question.setqText("Question Text");
+        Answer answer = new Answer();
+        answer.setAnsweredBy(user);
+        answer.setAnsText("Answer Text");
+        answer.setAnswering(question);
         String expResult = "Answer Text";
-        String result = instance.getAnsText();
+        String result = answer.getAnsText();
         assertEquals(expResult, result);
     }
 
@@ -90,11 +113,18 @@ public class AnswerTest {
     public void testSetAnsText() {
         System.out.println("setAnsText");
         String ansText = "Next Text";
-        User user = new User("Real Name","username");
-        Question question = new Question(user, "Question Text", null);
-        Answer instance = new Answer(user, "Answer Text", question);
-        instance.setAnsText(ansText);
-        String result = instance.getAnsText();
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question question = new Question();
+        question.setAskedBy(user);
+        question.setqText("Question Text");
+        Answer answer = new Answer();
+        answer.setAnsweredBy(user);
+        answer.setAnsText("Answer Text");
+        answer.setAnswering(question);
+        answer.setAnsText(ansText);
+        String result = answer.getAnsText();
         assertEquals(ansText, result);
     }
 
@@ -104,10 +134,17 @@ public class AnswerTest {
     @Test
     public void testGetAnswering() {
         System.out.println("getAnswering");
-        User user = new User("Real Name","username");
-        Question question = new Question(user, "Question Text", null);
-        Answer instance = new Answer(user, "Answer Text", question);
-        Question result = instance.getAnswering();
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question question = new Question();
+        question.setAskedBy(user);
+        question.setqText("Question Text");
+        Answer answer = new Answer();
+        answer.setAnsweredBy(user);
+        answer.setAnsText("Answer Text");
+        answer.setAnswering(question);
+        Question result = answer.getAnswering();
         assertEquals(question, result);
     }
 
@@ -117,12 +154,21 @@ public class AnswerTest {
     @Test
     public void testSetAnswering() {
         System.out.println("setAnswering");
-        User user = new User("Real Name","username");
-        Question question = new Question(user, "Question Text", null);
-        Answer instance = new Answer(user, "Answer Text", question);
-        Question answering = new Question(user, "New Text", null);
-        instance.setAnswering(answering);
-        Question result = instance.getAnswering();
+        User user = new User();
+        user.setRealName("Real Name");
+        user.setUserName("username");
+        Question question = new Question();
+        question.setAskedBy(user);
+        question.setqText("Question Text");
+        Answer answer = new Answer();
+        answer.setAnsweredBy(user);
+        answer.setAnsText("Answer Text");
+        answer.setAnswering(question);
+        Question answering = new Question();
+        answering.setAskedBy(user);
+        answering.setqText("New Text");
+        answer.setAnswering(answering);
+        Question result = answer.getAnswering();
         assertEquals(answering, result);
     }
 }

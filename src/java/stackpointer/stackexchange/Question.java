@@ -14,13 +14,11 @@ import stackpointer.common.User;
 public class Question {
     int qid; // our internal unique id
     User askedBy;
+    String qTitle; //the question title
     String qText; //the question text
     List <Answer> answers;
 
-    public Question(User askedBy, String qText, List<Answer> answers) {
-        this.askedBy = askedBy;
-        this.qText = qText;
-        this.answers = answers;
+    public Question() {
     }
     
     public int getQid() {
@@ -47,6 +45,14 @@ public class Question {
         return !answers.isEmpty();
     }
 
+    public String getqTitle() {
+        return qTitle;
+    }
+
+    public void setqTitle(String qTitle) {
+        this.qTitle = qTitle;
+    }
+
     public String getqText() {
         return qText;
     }
@@ -61,6 +67,11 @@ public class Question {
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
+    }
+
+    @Override
+    public String toString() {
+        return "Question{" + "askedBy=" + askedBy + ", qTitle=" + qTitle + ", qText=" + qText + '}';
     }
     
 }

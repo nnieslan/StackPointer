@@ -51,7 +51,9 @@ public class UserTest {
     @Test
     public void testGetRealName() {
         System.out.println("getRealName");
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         String expResult = "Real Name";
         String result = instance.getRealName();
         assertEquals(expResult, result);
@@ -64,7 +66,7 @@ public class UserTest {
     public void testSetRealName() {
         System.out.println("setRealName");
         String realName = "Test Name";
-        User instance = new User("Real Name", "username");
+        User instance = new User();
         instance.setRealName(realName);
         String result = instance.getRealName();
         assertEquals(realName, result);
@@ -76,7 +78,9 @@ public class UserTest {
     @Test
     public void testGetUserName() {
         System.out.println("getUserName");
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         String expResult = "username";
         String result = instance.getUserName();
         assertEquals(expResult, result);
@@ -89,7 +93,9 @@ public class UserTest {
     public void testSetUserName() {
         System.out.println("setUserName");
         String userName = "differentUserName";
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         instance.setUserName(userName);
         String result = instance.getUserName();
         assertEquals(userName, result);
@@ -101,7 +107,9 @@ public class UserTest {
     @Test
     public void testGetSXid() {
         System.out.println("getSXid");
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         String expResult = "Default";
         instance.setSXid(expResult);
         String result = instance.getSXid();
@@ -115,7 +123,9 @@ public class UserTest {
     public void testSetSXid() {
         System.out.println("setSXid");
         String SXid = "NewSXid";
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         instance.setSXid(SXid);
         String result = instance.getSXid();
         assertEquals(SXid, result);
@@ -127,7 +137,9 @@ public class UserTest {
     @Test
     public void testGetLoc() {
         System.out.println("getLoc");
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         Location expResult = new Location(0,0,0);
         instance.setLoc(expResult);
         Location result = instance.getLoc();
@@ -141,7 +153,9 @@ public class UserTest {
     public void testSetLoc() {
         System.out.println("setLoc");
         Location loc = new Location(0,0,0);
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         instance.setLoc(loc);
         Location result = instance.getLoc();
         assertEquals(loc, result);
@@ -153,7 +167,9 @@ public class UserTest {
     @Test
     public void testGetFollowing() {
         System.out.println("getFollowing");
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         Set<User> expResult = null;
         Set result = instance.getFollowing();
         assertEquals(expResult, result);
@@ -165,13 +181,19 @@ public class UserTest {
     @Test
     public void testSetFollowing() {
         System.out.println("setFollowing");
-        User user1 = new User("Real Name1","username1");
-        User user2 = new User("Real Name2","username2");
+        User user1 = new User();
+        user1.setRealName("Real Name1");
+        user1.setUserName("username1");
+        User user2 = new User();
+        user2.setRealName("Real Name2");
+        user2.setUserName("username2");
 
         Set<User> following = new HashSet<User>();
         following.add(user1);
         following.add(user2);
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         instance.setFollowing(following);
         Set<User> result = instance.getFollowing();
         assertEquals(following, result);
@@ -183,7 +205,9 @@ public class UserTest {
     @Test
     public void testGetAsked() {
         System.out.println("getAsked");
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         List<Question> expResult = null;
         List<Question> result = instance.getAsked();
         assertEquals(expResult, result);
@@ -196,7 +220,9 @@ public class UserTest {
     public void testSetAsked() {
         System.out.println("setAsked");
         List<Question> asked = null;
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         instance.setAsked(asked);
         List<Question> result = instance.getAsked();
         assertEquals(asked, result);
@@ -208,7 +234,9 @@ public class UserTest {
     @Test
     public void testGetAnswered() {
         System.out.println("getAnswered");
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         List<Answer> expResult = null;
         List<Answer> result = instance.getAnswered();
         assertEquals(expResult, result);
@@ -221,7 +249,9 @@ public class UserTest {
     public void testSetAnswered() {
         System.out.println("setAnswered");
         List<Answer> answered = null;
-        User instance = new User("Real Name", "username");
+        User instance = new User();
+        instance.setRealName("Real Name");
+        instance.setUserName("username");
         instance.setAnswered(answered);
         List<Answer> result = instance.getAnswered();
         assertEquals(answered, result);
