@@ -187,12 +187,18 @@ public class MySQLDatabaseFacadeTest {
     
     /**
      * Test of updateUser method, of class MySQLDatabaseFacade.
+     * Create a new user, update it, and delete it.
      */
     @Test
     public void testUpdateUser() {
         System.out.println("updateUser");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        fail(); // todo: implement test
+        User user = new User("test case user", "testCaseUser");
+        instance.addUser(user);
+        user.setRealName("otherTestCaseUser");
+        boolean success = instance.updateUser(user);
+        assertTrue(success);
+        instance.deleteUser(user);
     }
     
     /**
@@ -227,12 +233,17 @@ public class MySQLDatabaseFacadeTest {
     
     /**
      * Test of deleteUser method, of class MySQLDatabaseFacade.
+     * Create a new user and then delete it.
      */
     @Test
     public void testDeleteUser() {
         System.out.println("deleteUser");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        fail(); // todo: implement test
+        User user = new User("test case user", "testCaseUser");
+        instance.addUser(user);
+        boolean success = instance.deleteUser(user);
+        assertTrue(success);
+        assertTrue(user.getUid() == 0);
     }
     
     /**
