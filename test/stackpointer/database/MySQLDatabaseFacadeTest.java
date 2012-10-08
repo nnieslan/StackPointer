@@ -270,7 +270,7 @@ public class MySQLDatabaseFacadeTest {
      * Test of deleteJobPosting method, of class MySQLDatabaseFacade.
      */
     @Test
-    public void testJobPosting() {
+    public void testDeleteJobPosting() {
         System.out.println("deleteJobPosting");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
         fail(); // todo: implement test
