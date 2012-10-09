@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import stackpointer.common.User;
 import stackpointer.jobs.JobPosting;
 import stackpointer.stackexchange.Answer;
@@ -39,6 +41,13 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
         try {
             // Conncetion is already open; no need to open a new one
             if (connection != null && !connection.isClosed()) {
+                return;
+            }
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                System.err.println("failed to register mysql driver");
+                connection = null;
                 return;
             }
             

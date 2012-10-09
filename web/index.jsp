@@ -5,8 +5,15 @@
     Author     : Phil
 --%>
 
+<%@page import="java.util.List"%>
+<%@page import="stackpointer.stackexchange.Question"%>
+<%@page import="stackpointer.database.DatabaseConnectionInfo"%>
+<%@page import="stackpointer.database.MySQLDatabaseFacade"%>
+<%@page import="stackpointer.database.DatabaseFacade"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -73,6 +80,19 @@ function loadData() {
                 <span id="vers">api vers</span>
                 <h3>These are the last 100 questions asked on <a href="http://stackoverflow.com">StackOverflow</a>
                     shown on <a href="http://maps.google.com">Google Maps</a>.</h3><br>
+            </span>
+            <span id="questions">
+                <%
+                    DatabaseConnectionInfo connectionInfo = DatabaseConnectionInfo.createDefault();
+                    System.out.println(connectionInfo);
+                    DatabaseFacade databaseFacade = new MySQLDatabaseFacade(connectionInfo);
+                    List<Question> questionList = databaseFacade.retrieveQuestions();
+                    int idx = 1;
+                    for (Question question : questionList) {
+                        out.println(String.format("%d.  %s <br>", idx, question.getqText()));
+                        idx++;
+                    }
+                %>
             </span>
             <span id="jobs">
                 <h2><i>Jobs</i></h2>

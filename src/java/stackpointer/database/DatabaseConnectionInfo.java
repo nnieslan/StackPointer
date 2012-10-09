@@ -44,6 +44,11 @@ public class DatabaseConnectionInfo {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    @Override
+    public String toString() {
+        return "URL: " + url;
+    }
     
     public static DatabaseConnectionInfo createDefault() {
         return new DatabaseConnectionInfo(
