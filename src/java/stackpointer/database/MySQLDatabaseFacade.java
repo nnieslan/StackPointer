@@ -9,6 +9,8 @@ import java.sql.Statement;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import stackpointer.common.User;
 import stackpointer.jobs.JobPosting;
 import stackpointer.stackexchange.Answer;
@@ -39,6 +41,13 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
         try {
             // Conncetion is already open; no need to open a new one
             if (connection != null && !connection.isClosed()) {
+                return;
+            }
+            try {
+                Class.forName("com.mysql.jdbc.Driver");
+            } catch (ClassNotFoundException ex) {
+                System.err.println("failed to register mysql driver");
+                connection = null;
                 return;
             }
             
@@ -414,12 +423,67 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
         return success;
     }
     
-    public static void main(String[] args) {
-        DatabaseFacade db = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        if (db.verifyConnection()) {
-            System.out.println("database connection good");
-        } else {
-            System.out.println("database connection BAD");
-        }
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean updateUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean updateQuestion(Question question) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean updateAnswer(Answer answer) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean updateJobPosting(JobPosting jobPosting) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean deleteUser(User user) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean deleteQuestion(Question question) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean deleteAnswer(Answer answer) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+
+    /**
+     *  {@inheritDoc}
+     */
+    @Override
+    public boolean deleteJobPosting(JobPosting jobPosting) {
+        throw new UnsupportedOperationException("Not supported yet.");
     }
 }

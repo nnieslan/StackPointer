@@ -73,5 +73,4 @@ public class Question {
     public String toString() {
         return "Question{" + "askedBy=" + askedBy + ", qTitle=" + qTitle + ", qText=" + qText + '}';
     }
-    
 }
