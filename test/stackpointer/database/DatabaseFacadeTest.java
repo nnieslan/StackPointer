@@ -128,5 +128,45 @@ public class DatabaseFacadeTest {
         public boolean addJobPosting(JobPosting jobPosting) {
             return true;
         }
+
+        @Override
+        public boolean updateUser(User user) {
+            return true;
+        }
+
+        @Override
+        public boolean updateQuestion(Question question) {
+            return true;
+        }
+
+        @Override
+        public boolean updateAnswer(Answer answer) {
+            return true;
+        }
+
+        @Override
+        public boolean updateJobPosting(JobPosting jobPosting) {
+            return true;
+        }
+
+        @Override
+        public boolean deleteUser(User user) {
+            return true;
+        }
+
+        @Override
+        public boolean deleteQuestion(Question question) {
+            return true;
+        }
+
+        @Override
+        public boolean deleteAnswer(Answer answer) {
+            return true;
+        }
+
+        @Override
+        public boolean deleteJobPosting(JobPosting jobPosting) {
+            return true;
+        }
     }
 }

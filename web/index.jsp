@@ -7,8 +7,15 @@
 
 <%@page import="stackpointer.stackexchange.Question"%>
 <%@page import="stackpointer.stackexchange.StackExchangeInterface"%>
+<%@page import="java.util.List"%>
+<%@page import="stackpointer.stackexchange.Question"%>
+<%@page import="stackpointer.database.DatabaseConnectionInfo"%>
+<%@page import="stackpointer.database.MySQLDatabaseFacade"%>
+<%@page import="stackpointer.database.DatabaseFacade"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
+
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -35,6 +42,28 @@
         <script type='text/javascript' src='/StackPointer/script/jquery/jquery-1.8.1.js'></script>
         <script type='text/javascript' src='/StackPointer/script/stackexchange/spStackExchange.js'></script>
         <script type="text/javascript" src="http://platform.linkedin.com/in.js">api_key:v6xty7mvo61a</script>
+ 
+<script type="text/javascript">
+ 
+function loadData() {
+  IN.API.PeopleSearch()
+         .fields("firstName", "lastName", "distance", "publicProfileUrl","pictureUrl")
+         .params({"keywords": "python", "count": 10, "sort": "distance"})
+         .result(function(result) {
+            profHTML = "<h4>People search results for keyword 'python':</h4>";
+            for (var index in result.people.values) {
+                profile = result.people.values[index]
+                if (profile.pictureUrl) {
+                    profHTML += "<p><a href=\"" + profile.publicProfileUrl + "\">";
+                    profHTML += "<img class=img_border height=30 align=\"left\" src=\"" + profile.pictureUrl + "\"></a>";
+                    profHTML += "<p>" + profile.firstName + " " + profile.lastName + " (" + profile.distance + ")</p>"; 
+                }
+            }  
+      $("#search").html(profHTML);
+      });
+}
+ 
+</script>
     </head>
     <body>
         <span id="welcome">
@@ -63,6 +92,36 @@
                 %>
         </span>
         <center>
+
+            <span id="welcome">
+                <h1>Welcome to StackPointer!</h1><br>
+                <script type='text/javascript'>
+                  $(function() {
+                    initMap();
+                    stackInit();
+                  });
+                </script>
+            </span>
+            <span id="map">
+                <h2><i>Map</i></h2><br>
+                <div id="map_canvas" style="width:800px; height:600px"></div>
+                <span id="vers">api vers</span>
+                <h3>These are the last 100 questions asked on <a href="http://stackoverflow.com">StackOverflow</a>
+                    shown on <a href="http://maps.google.com">Google Maps</a>.</h3><br>
+            </span>
+            <span id="questions">
+                <%
+                    DatabaseConnectionInfo connectionInfo = DatabaseConnectionInfo.createDefault();
+                    System.out.println(connectionInfo);
+                    DatabaseFacade databaseFacade = new MySQLDatabaseFacade(connectionInfo);
+                    List<Question> questionList = databaseFacade.retrieveQuestions();
+                    int idx = 1;
+                    for (Question question : questionList) {
+                        out.println(String.format("%d.  %s <br>", idx, question.getqText()));
+                        idx++;
+                    }
+                %>
+            </span>
             <span id="jobs">
                 <h2><i>Jobs</i></h2>
                 <h3>These are job listings in your area related to these questions, powered by <a href="http://linkedin.com">LinkedIn</a></h3>

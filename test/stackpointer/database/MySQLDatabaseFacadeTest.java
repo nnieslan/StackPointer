@@ -188,7 +188,7 @@ public class MySQLDatabaseFacadeTest {
      */
     @Test
     public void testAddJobPosting() {
-        System.out.println("addAnswer");
+        System.out.println("addJobPosting");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
         Location location = new Location(1.0f, 1.0f, 0);
         Date date = new Date();
@@ -196,5 +196,100 @@ public class MySQLDatabaseFacadeTest {
                 "job posting by test unit", "description", "company");
         boolean success = instance.addJobPosting(jobPosting);
         assertTrue(success);
+    }
+    
+    /**
+     * Test of updateUser method, of class MySQLDatabaseFacade.
+     * Create a new user, update it, and delete it.
+     */
+    @Test
+    public void testUpdateUser() {
+        System.out.println("updateUser");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        User user = new User();
+        user.setRealName("test case user");
+        user.setUserName("testCaseUser");
+        instance.addUser(user);
+        user.setRealName("otherTestCaseUser");
+        boolean success = instance.updateUser(user);
+        assertTrue(success);
+        instance.deleteUser(user);
+    }
+    
+    /**
+     * Test of updateQuestion method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testUpdateQuestion() {
+        System.out.println("updateQuestion");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        fail(); // todo: implement test
+    }
+    
+    /**
+     * Test of updateAnswer method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testUpdateAnswer() {
+        System.out.println("updateAnswer");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        fail(); // todo: implement test
+    }
+    
+    /**
+     * Test of updateJobPosting method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testUpdateJobPosting() {
+        System.out.println("updateJobPosting");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        fail(); // todo: implement test
+    }
+    
+    /**
+     * Test of deleteUser method, of class MySQLDatabaseFacade.
+     * Create a new user and then delete it.
+     */
+    @Test
+    public void testDeleteUser() {
+        System.out.println("deleteUser");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        User user = new User();
+        user.setRealName("test case user");
+        user.setUserName("testCaseUser");        
+        instance.addUser(user);
+        boolean success = instance.deleteUser(user);
+        assertTrue(success);
+        assertTrue(user.getUid() == 0);
+    }
+    
+    /**
+     * Test of deleteQuestion method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testDeleteQuestion() {
+        System.out.println("deleteQuestion");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        fail(); // todo: implement test
+    }
+    
+    /**
+     * Test of deleteAnswer method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testDeleteAnswer() {
+        System.out.println("deleteAnswer");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        fail(); // todo: implement test
+    }
+    
+    /**
+     * Test of deleteJobPosting method, of class MySQLDatabaseFacade.
+     */
+    @Test
+    public void testDeleteJobPosting() {
+        System.out.println("deleteJobPosting");
+        MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
+        fail(); // todo: implement test
     }
 }
