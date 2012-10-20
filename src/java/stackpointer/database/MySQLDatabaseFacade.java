@@ -129,7 +129,7 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
                     int lid = results.getInt(4);
                     User user = new User();
                     user.setUserName(displayName);
-                    user.setSXid(sxid);
+                    user.setSXname(sxid);
                     userList.add(user);
                 }
             } catch (SQLException ex) {
@@ -278,7 +278,7 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
                 
                 PreparedStatement stmt = connection.prepareStatement(
                         insertText, Statement.RETURN_GENERATED_KEYS);
-                stmt.setString(1, user.getSXid());
+                stmt.setString(1, user.getSXname());
                 stmt.setString(2, user.getRealName());
                 int rowsModified = stmt.executeUpdate();
                 success = (rowsModified == 1);

@@ -137,7 +137,7 @@ public class MySQLDatabaseFacadeTest {
         long longTime = (new Date()).getTime() % 10000000;
         String longStr = Long.toString(longTime);
         String sxid = "sxid" + longStr;
-        user.setSXid(sxid);
+        user.setSXname(sxid);
         boolean success = instance.addUser(user);
         assertTrue(success);
     }

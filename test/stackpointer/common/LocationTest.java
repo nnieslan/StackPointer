@@ -47,8 +47,8 @@ public class LocationTest {
     public void testGetLatDEFAULT() {
         System.out.println("getLat");
         Location instance = new Location(0,0,0);
-        float expResult = 0.0F;
-        float result = instance.getLat();
+        double expResult = 0.0F;
+        double result = instance.getLat();
         assertEquals(expResult, result, 0.0F);
     }
     
@@ -60,8 +60,8 @@ public class LocationTest {
         System.out.println("getLat");
         Location instance = new Location(0,0,0);
         instance.setLat(10.0F);
-        float expResult = 10.0F;
-        float result = instance.getLat();
+        double expResult = 10.0F;
+        double result = instance.getLat();
         assertEquals(expResult, result, 10.0F);
     }
 
@@ -71,10 +71,10 @@ public class LocationTest {
     @Test
     public void testSetLat() {
         System.out.println("setLat");
-        float lat = 10.0F;
+        double lat = 10.0F;
         Location instance = new Location(0,0,0);
         instance.setLat(lat);
-        float result = instance.getLat();
+        double result = instance.getLat();
         assertEquals(lat, result, 10.0F);
     }
 
@@ -85,8 +85,8 @@ public class LocationTest {
     public void testGetLonDEFAULT() {
         System.out.println("getLon");
         Location instance = new Location(0,0,0);
-        float expResult = 0.0F;
-        float result = instance.getLon();
+        double expResult = 0.0F;
+        double result = instance.getLon();
         assertEquals(expResult, result, 0.0F);
     }
     
@@ -98,8 +98,8 @@ public class LocationTest {
         System.out.println("getLon");
         Location instance = new Location(0,0,0);
         instance.setLon(10.0F);
-        float expResult = 10.0F;
-        float result = instance.getLon();
+        double expResult = 10.0F;
+        double result = instance.getLon();
         assertEquals(expResult, result, 10.0F);
     }
 
@@ -109,10 +109,10 @@ public class LocationTest {
     @Test
     public void testSetLon() {
         System.out.println("setLon");
-        float lon = 10.0F;
+        double lon = 10.0F;
         Location instance = new Location(0,0,0);
         instance.setLon(lon);
-        float result = instance.getLon();
+        double result = instance.getLon();
         assertEquals(lon, result, 10.0F);
     }
 
@@ -151,7 +151,7 @@ public class LocationTest {
         int zip = 16803;
         Location instance = new Location(0,0,0);
         instance.setZip(zip);
-        float result = instance.getZip();
+        double result = instance.getZip();
         assertEquals(zip, result, 16803);
     }
 }

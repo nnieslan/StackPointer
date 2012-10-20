@@ -18,7 +18,8 @@ import stackpointer.stackexchange.Question;
 public class User {
     String realName;
     String userName;
-    String SXid; //stack exchange id
+    String SXname; //stack exchange display name
+    int SXid; //stack exchange uid
     int uid; // our internal unique id
     Location loc;
     Set<User> following;
@@ -44,11 +45,19 @@ public class User {
         this.userName = userName;
     }
 
-    public String getSXid() {
+    public String getSXname() {
+        return SXname;
+    }
+
+    public void setSXname(String SXname) {
+        this.SXname = SXname;
+    }
+        
+    public int getSXid() {
         return SXid;
     }
 
-    public void setSXid(String SXid) {
+    public void setSXid(int SXid) {
         this.SXid = SXid;
     }
     
@@ -102,7 +111,7 @@ public class User {
 
     @Override
     public String toString() {
-        return "User{" + "userName=" + userName + ", SXid=" + SXid + '}';
+        return "User{" + "userName=" + userName + ", SXname=" + SXname + ", loc=" + loc + '}';
     }
     
 }
