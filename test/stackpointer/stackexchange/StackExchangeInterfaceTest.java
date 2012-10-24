@@ -56,7 +56,7 @@ public class StackExchangeInterfaceTest {
         {
             
         }
-        Assert.assertTrue(u.getSXid().equals("Ngo Ky"));
+        Assert.assertTrue(u.getSXname().equals("Ngo Ky"));
     }
     
     @Test

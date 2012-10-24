@@ -5,9 +5,15 @@ package stackpointer.common;
  * @author Phil
  */
 public class Location {
-    float lat;
-    float lon;
+    String locStr; //the stack exchange string user provided as location
+    double lat;
+    double lon;
     int zip;
+    
+    public Location(String locStr)
+    {
+        this.locStr = locStr;
+    }
     
     /**
      * init all
@@ -15,7 +21,7 @@ public class Location {
      * @param lon
      * @param zip 
      */
-    public Location(float lat, float lon, int zip) {
+    public Location(double lat, double lon, int zip) {
         this.lat = lat;
         this.lon = lon;
         this.zip = zip;
@@ -34,24 +40,24 @@ public class Location {
      * @param lat
      * @param lon 
      */
-    public Location(float lat, float lon) {
+    public Location(double lat, double lon) {
         this.lat = lat;
         this.lon = lon;
     }
 
-    public float getLat() {
+    public double getLat() {
         return lat;
     }
 
-    public void setLat(float lat) {
+    public void setLat(double lat) {
         this.lat = lat;
     }
 
-    public float getLon() {
+    public double getLon() {
         return lon;
     }
 
-    public void setLon(float lon) {
+    public void setLon(double lon) {
         this.lon = lon;
     }
 
@@ -62,4 +68,10 @@ public class Location {
     public void setZip(int zip) {
         this.zip = zip;
     }
+
+    @Override
+    public String toString() {
+        return "Location{" + "locStr=" + locStr + ", lat=" + lat + ", lon=" + lon + ", zip=" + zip + '}';
+    }
+    
 }

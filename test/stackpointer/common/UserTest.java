@@ -102,33 +102,33 @@ public class UserTest {
     }
 
     /**
-     * Test of getSXid method, of class User.
+     * Test of getSXname method, of class User.
      */
     @Test
-    public void testGetSXid() {
-        System.out.println("getSXid");
+    public void testGetSXname() {
+        System.out.println("getSXname");
         User instance = new User();
         instance.setRealName("Real Name");
         instance.setUserName("username");
         String expResult = "Default";
-        instance.setSXid(expResult);
-        String result = instance.getSXid();
+        instance.setSXname(expResult);
+        String result = instance.getSXname();
         assertEquals(expResult, result);
     }
 
     /**
-     * Test of setSXid method, of class User.
+     * Test of setSXname method, of class User.
      */
     @Test
-    public void testSetSXid() {
-        System.out.println("setSXid");
-        String SXid = "NewSXid";
+    public void testSetSXname() {
+        System.out.println("setSXname");
+        String SXname = "NewSXname";
         User instance = new User();
         instance.setRealName("Real Name");
         instance.setUserName("username");
-        instance.setSXid(SXid);
-        String result = instance.getSXid();
-        assertEquals(SXid, result);
+        instance.setSXname(SXname);
+        String result = instance.getSXname();
+        assertEquals(SXname, result);
     }
 
     /**
