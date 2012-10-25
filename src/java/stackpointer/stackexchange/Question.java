@@ -68,6 +68,18 @@ public class Question {
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
     }
+    
+    public boolean hasLocation() {
+        boolean hasLoc = false;
+        if(this.getAskedBy()!=null)
+        {
+            if(this.getAskedBy().getLoc()!=null)
+            {
+                hasLoc = true;
+            }
+        }
+        return hasLoc;
+    }
 
     @Override
     public String toString() {
