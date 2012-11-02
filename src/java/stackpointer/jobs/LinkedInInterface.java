@@ -16,6 +16,7 @@ import org.scribe.builder.*;
 import org.scribe.builder.api.*;
 import org.scribe.model.*;
 import org.scribe.oauth.*;
+import stackpointer.common.Location;
 import stackpointer.database.DatabaseConnectionInfo;
 import stackpointer.database.MySQLDatabaseFacade;
 
@@ -71,6 +72,16 @@ public class LinkedInInterface {
     service.signRequest(accessToken, request);
     Response response = request.send();
     System.out.println(response.getBody());    
+    try
+    {
+        JSONObject linkedInJson = new JSONObject(response.getBody());
+        ArrayList<JobPosting> parsedJobs = parseJobsFromJson(linkedInJson);
+        //save parsed jobs... etc.
+    }
+    catch (JSONException e)
+    {
+        System.out.println("Error retrieving Jobs from LinkedIn:\n"+e);
+    }
  }
     
     public LinkedInInterface()
@@ -123,5 +134,30 @@ public class LinkedInInterface {
     ArrayList<JobPosting> getJobPostings()
     {
         return allJobPostings;
+    }
+    
+    public static ArrayList<JobPosting> parseJobsFromJson(JSONObject json)
+    {
+        ArrayList<JobPosting> parsed = new ArrayList<JobPosting>();
+        try
+        {
+            JSONArray jobs = json.getJSONArray("values");
+            for(int j=0; j<jobs.length(); j++)
+            {
+                JSONObject jJob = jobs.getJSONObject(j);
+                JobPosting toAdd = new JobPosting();
+                Location jobLoc = new Location(jJob.getString("locationDescription"));
+                toAdd.setLoc(jobLoc);
+                toAdd.setHeadline(jJob.getJSONObject("position").getString("title"));
+                toAdd.setLinkedInId(jJob.getInt("id"));
+                
+                parsed.add(toAdd);
+            }
+        }
+        catch (JSONException e)
+        {
+            System.out.println("Error parsing JSON question string: "+e);
+        }
+        return parsed;
     }
 }

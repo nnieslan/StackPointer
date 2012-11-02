@@ -9,12 +9,17 @@ import stackpointer.common.Location;
  */
 public class JobPosting {
     int jpid; // // our internal unique id
+    int linkedInId;
     Location loc;
     Date datePosted;
     String headline;
     String description;
     String company;
 
+    public JobPosting() {
+    }
+
+    
     public JobPosting(Location loc, Date datePosted, String headline, String description, String company) {
         this.loc = loc;
         this.datePosted = datePosted;
@@ -69,6 +74,14 @@ public class JobPosting {
 
     public void setCompany(String company) {
         this.company = company;
+    }
+
+    public int getLinkedInId() {
+        return linkedInId;
+    }
+
+    public void setLinkedInId(int linkedInId) {
+        this.linkedInId = linkedInId;
     }
     
 }
