@@ -19,6 +19,8 @@ import org.scribe.oauth.*;
 import stackpointer.common.Location;
 import stackpointer.database.DatabaseConnectionInfo;
 import stackpointer.database.MySQLDatabaseFacade;
+import java.util.Date;
+import stackpointer.common.Location;
 
 /**
  * This class is to interact with the Linked In API, including retrieval
@@ -29,14 +31,15 @@ public class LinkedInInterface {
     private boolean connected;
     private ArrayList<JobPosting> allJobPostings;
     MySQLDatabaseFacade db = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs,facets)?facet=location,us:100";
-    
+    //   private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs,facets)?facet=location,us:100";
+    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description))";
     public static void main(String[] args)
    {
      OAuthService service = new ServiceBuilder()
                                 .provider(LinkedInApi.class)
                                 .apiKey("v6xty7mvo61a")
                                 .apiSecret("N6Ggy9kfyJc3fVO0")
+                             // .callback ("http://localhost:8080/StackPointer/")
                                 .build();
     Scanner in = new Scanner(System.in);
     
@@ -77,6 +80,7 @@ public class LinkedInInterface {
         JSONObject linkedInJson = new JSONObject(response.getBody());
         ArrayList<JobPosting> parsedJobs = parseJobsFromJson(linkedInJson);
         //save parsed jobs... etc.
+        //System.out.println(parsedJobs);
     }
     catch (JSONException e)
     {
@@ -84,6 +88,35 @@ public class LinkedInInterface {
     }
  }
     
+     public static ArrayList<JobPosting> parseJobsFromJson(JSONObject json)
+    {
+        ArrayList<JobPosting> parsed = new ArrayList<JobPosting>();
+        try
+        {
+            JSONArray jobs = json.getJSONArray("values");
+            for(int j=0; j<jobs.length(); j++)
+            {
+                JSONObject jJob = jobs.getJSONObject(j);
+                JobPosting toAdd = new JobPosting();
+                Location jobLoc = new Location(jJob.getString("locationDescription"));
+                toAdd.setLoc(jobLoc);
+                toAdd.setHeadline(jJob.getJSONObject("position").getString("title"));
+                toAdd.setLinkedInId(jJob.getInt("id"));
+                toAdd.setCompany(jJob.getJSONObject("company").getString("name"));
+                toAdd.setDescription(jJob.getJSONObject("description").getString("description"));
+                Date jobDate = new Date(jJob.getInt("postingDate"));       
+                toAdd.setDatePosted(jobDate);
+                
+                parsed.add(toAdd);
+            }
+        }
+        catch (JSONException e)
+        {
+            System.out.println("Error parsing JSON Jobs string: "+e);
+        }
+        return parsed;
+    }
+     
     public LinkedInInterface()
     {
     //TODO - Initialize values
@@ -92,12 +125,7 @@ public class LinkedInInterface {
 
     void establishConnection()
     {
-        OAuthService service = new ServiceBuilder()
-                                .provider(LinkedInApi.class)
-                                .apiKey("v6xty7mvo61a")
-                                .apiSecret("N6Ggy9kfyJc3fVO0")
-                                .callback ("http://localhost:8080/StackPointer/")
-                                .build();
+       
         //TODO - input connection steps and set boolean result value
         connected = true;
     }
@@ -125,39 +153,15 @@ public class LinkedInInterface {
     //Update the local copies of the top 100 questions
     void updateJobPostings()
     {
-        //TODO - access database, grab 100 questions, push onto list
-  //      allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
-   //     allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+         //TODO - access database, grab 100 questions, push onto list
+        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
     }
 
     //Return the top 100 questions
     ArrayList<JobPosting> getJobPostings()
     {
         return allJobPostings;
-    }
-    
-    public static ArrayList<JobPosting> parseJobsFromJson(JSONObject json)
-    {
-        ArrayList<JobPosting> parsed = new ArrayList<JobPosting>();
-        try
-        {
-            JSONArray jobs = json.getJSONArray("values");
-            for(int j=0; j<jobs.length(); j++)
-            {
-                JSONObject jJob = jobs.getJSONObject(j);
-                JobPosting toAdd = new JobPosting();
-                Location jobLoc = new Location(jJob.getString("locationDescription"));
-                toAdd.setLoc(jobLoc);
-                toAdd.setHeadline(jJob.getJSONObject("position").getString("title"));
-                toAdd.setLinkedInId(jJob.getInt("id"));
-                
-                parsed.add(toAdd);
-            }
-        }
-        catch (JSONException e)
-        {
-            System.out.println("Error parsing JSON question string: "+e);
-        }
-        return parsed;
     }
 }
