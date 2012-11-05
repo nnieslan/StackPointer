@@ -4,12 +4,18 @@
  */
 package stackpointer.jobs;
 
+import java.util.ArrayList;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.junit.After;
 import org.junit.AfterClass;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import stackpointer.jobs.JobPosting;
+import stackpointer.jobs.LinkedInInterface;
 
 /**
  *
@@ -123,5 +129,21 @@ public class LinkedInInterfaceTest {
         instance.updateJobPostings();
         result = instance.getJobPostings().size();
         assertEquals(expResult, result);
+    }
+    
+     @Test
+    public void testParseJobsFromJson() {
+        String jJson = "{\"values\":[{\"question_id\":12775016,\"creation_date\":1349667808,\"last_activity_date\":1349667808,\"score\":0,\"answer_count\":0,\"body\":\"<p>My code:</p>\\n\\n<pre><code>from PyQt4.QtGui import *\\n\\ndoc = QTextDocument()\\ncur = QTextCursor(doc)\\n\\ntable_fmt = QTextTableFormat()\\ntable_fmt.setBackground(QColor(\'#e0e0e0\'))\\ntable_fmt.setColumnWidthConstraints([\\n    QTextLength(QTextLength.PercentageLength, 30),\\n    QTextLength(QTextLength.PercentageLength, 70)\\n    ])\\n\\ntable = cur.insertTable(5,2, table_fmt)\\n\\ncur.insertText(\'sample text 1\')\\ncur.movePosition(cur.NextCell)\\ncur.insertText(\'sample text 2\')\\n\\nwriter = QTextDocumentWriter()\\nwriter.setFormat(writer.supportedDocumentFormats()[1])\\nwriter.setFileName(\'CV\')\\nwriter.write(doc)\\n</code></pre>\\n\\n<p>The output is both columns have enough width (50%), rather than 30%-70%.</p>\\n\\n<p>OS: Ubuntu 12.04\\nPyQt4: PyQt 4.9.5</p>\\n\",\"title\":\"Qt4/PyQt4: setColumnWidthConstraints has no effect\",\"tags\":[\"c++\",\"python\",\"qt4\",\"pyqt4\"],\"view_count\":1,\"owner\":{\"user_id\":1653521,\"display_name\":\"Hieu\",\"reputation\":51,\"user_type\":\"registered\",\"profile_image\":\"http://www.gravatar.com/avatar/1d94bb3590bae53c2c7264b1838b5b9d?d=identicon&r=PG\",\"link\":\"http://stackoverflow.com/users/1653521/hieu\"},\"link\":\"http://stackoverflow.com/questions/12775016/qt4-pyqt4-setcolumnwidthconstraints-has-no-effect\",\"is_answered\":false}],\"quota_remaining\":9956,\"quota_max\":10000,\"has_more\":true}";
+        ArrayList<JobPosting> jobs = null;
+        try
+        {
+            jobs = LinkedInInterface.parseJobsFromJson(new JSONObject(jJson));
+        }
+        catch(JSONException e)
+        {
+            
+        }
+        Assert.assertNotNull(jobs);
+        Assert.assertEquals(jobs.size(), 1);
     }
 }
