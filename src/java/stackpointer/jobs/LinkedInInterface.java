@@ -76,7 +76,7 @@ public class LinkedInInterface {
     System.out.println(response.getBody());    
     try
     {
-        JSONObject linkedInJson = new JSONObject(response.getBody());
+        JSONObject linkedInJson = new JSONObject(response.getBody()).getJSONObject("jobs");
         ArrayList<JobPosting> parsedJobs = parseJobsFromJson(linkedInJson);
         //save parsed jobs... etc.
         //System.out.println(parsedJobs);
@@ -102,8 +102,10 @@ public class LinkedInInterface {
                 toAdd.setHeadline(jJob.getJSONObject("position").getString("title"));
                 toAdd.setLinkedInId(jJob.getInt("id"));
                 toAdd.setCompany(jJob.getJSONObject("company").getString("name"));
-                toAdd.setDescription(jJob.getJSONObject("description").getString("description"));
-                Date jobDate = new Date(jJob.getInt("postingDate"));       
+                toAdd.setDescription(jJob.getString("description"));
+                Date jobDate = new Date(jJob.getJSONObject("postingDate").getInt("year"), 
+                        jJob.getJSONObject("postingDate").getInt("month"), 
+                        jJob.getJSONObject("postingDate").getInt("day"));       
                 toAdd.setDatePosted(jobDate);
                 
                 parsed.add(toAdd);
