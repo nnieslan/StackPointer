@@ -98,13 +98,10 @@ public class LinkedInInterface {
                 JSONObject jJob = jobs.getJSONObject(j);
                 JobPosting toAdd = new JobPosting();
                 toAdd.setCompany(jJob.getJSONObject("company").getString("name"));
-                toAdd.setDescription(jJob.getJSONObject("description").getString("description"));
-                toAdd.setLinkedInId(jJob.getInt("id"));
                 Location jobLoc = new Location(jJob.getString("locationDescription"));
                 toAdd.setLoc(jobLoc);
                 toAdd.setHeadline(jJob.getJSONObject("position").getString("title"));
                 toAdd.setLinkedInId(jJob.getInt("id"));
-                toAdd.setCompany(jJob.getJSONObject("company").getString("name"));
                 toAdd.setDescription(jJob.getString("description"));
                 Date jobDate = new Date(jJob.getJSONObject("postingDate").getInt("year"), 
                         jJob.getJSONObject("postingDate").getInt("month"), 

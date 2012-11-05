@@ -10,13 +10,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import stackpointer.jobs.JobPosting;
-import stackpointer.jobs.LinkedInInterface;
 
 /**
  *
@@ -139,7 +136,7 @@ public class LinkedInInterfaceTest {
         {
             JSONObject parseMe = new JSONObject(json).getJSONObject("jobs");
             ArrayList<JobPosting> parsed = LinkedInInterface.parseJobsFromJson(parseMe);
-            Assert.assertEquals(parsed.size(), 3);
+            Assert.assertEquals(3, parsed.size()); //expect 3 jobs from sample input
         }
         catch (JSONException e)
         {
