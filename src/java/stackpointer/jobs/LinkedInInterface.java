@@ -3,6 +3,8 @@ package stackpointer.jobs;
 import java.io.BufferedReader;
 import java.util.Scanner;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
@@ -19,7 +21,10 @@ import stackpointer.common.Location;
 import stackpointer.database.DatabaseConnectionInfo;
 import stackpointer.database.MySQLDatabaseFacade;
 import java.util.Date;
+import java.util.HashMap;
 import stackpointer.common.Location;
+import stackpointer.common.User;
+import stackpointer.googlemaps.GoogleMapsInterface;
 
 /**
  * This class is to interact with the Linked In API, including retrieval
@@ -78,6 +83,7 @@ public class LinkedInInterface {
     {
         JSONObject linkedInJson = new JSONObject(response.getBody()).getJSONObject("jobs");
         ArrayList<JobPosting> parsedJobs = parseJobsFromJson(linkedInJson);
+        googleMaps(linkedInJson);
         //save parsed jobs... etc.
         System.out.println(parsedJobs);
     }
@@ -116,6 +122,29 @@ public class LinkedInInterface {
             System.out.println("Error parsing JSON Jobs string: "+e);
         }
         return parsed;
+    }
+     
+     
+     public static ArrayList<JobPosting> googleMaps(JSONObject json)
+    {
+        ArrayList<JobPosting> google = new ArrayList<JobPosting>();
+        try {
+            JSONArray jobs = json.getJSONArray("values");
+            for(int j=0; j<jobs.length(); j++)
+            {
+                JSONObject jJobs = jobs.getJSONObject(j);
+                if(jJobs.has("locationDescription"))
+                {
+                    jobs.get(jJobs.getInt("id")).setLoc(GoogleMapsInterface.geocode(jJobs.getString("locationDescription")));
+                }
+            }
+        }
+        catch (Exception e)
+        {
+            System.out.println("Error populating Job locations from LinkedIn:\n"+e);
+        }
+        
+        return google;
     }
      
     public LinkedInInterface()
