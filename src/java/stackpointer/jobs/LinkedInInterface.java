@@ -5,6 +5,7 @@ import java.util.Scanner;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
@@ -83,9 +84,10 @@ public class LinkedInInterface {
     {
         JSONObject linkedInJson = new JSONObject(response.getBody()).getJSONObject("jobs");
         ArrayList<JobPosting> parsedJobs = parseJobsFromJson(linkedInJson);
-        googleMaps(linkedInJson);
         //save parsed jobs... etc.
         System.out.println(parsedJobs);
+        geocode1(linkedInJson);
+  
     }
     catch (JSONException e)
     {
@@ -124,27 +126,45 @@ public class LinkedInInterface {
         return parsed;
     }
      
-     
-     public static ArrayList<JobPosting> googleMaps(JSONObject json)
+     public static Location geocode1(JSONObject json)
     {
-        ArrayList<JobPosting> google = new ArrayList<JobPosting>();
+        final  String gMapsUrlBase = "https://maps.googleapis.com/maps/api/";
+        final  String gMapsKey = "AIzaSyA2DwdJgZeUssqn561w5tgt7b56oGcYf_o";
+        final  String gUseSensor = "false";
+        Location toReturn = null;
+        String locString = "";
         try {
-            JSONArray jobs = json.getJSONArray("values");
-            for(int j=0; j<jobs.length(); j++)
+            URL url = new URL(gMapsUrlBase+"geocode/json?sensor="+gUseSensor+"&address="+URLEncoder.encode(locString, "UTF-8"));
+            URLConnection conn = url.openConnection();
+            String line;
+            StringBuilder builder = new StringBuilder();
+            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            while((line = reader.readLine()) != null) {
+                builder.append(line);
+            }
+            try
             {
-                JSONObject jJobs = jobs.getJSONObject(j);
-                if(jJobs.has("locationDescription"))
+                //JSONObject json = new JSONObject(builder.toString());
+                JSONArray results = json.getJSONArray("results");
+                if(!results.isNull(0))
                 {
-                    jobs.get(jJobs.getInt("id")).setLoc(GoogleMapsInterface.geocode(jJobs.getString("locationDescription")));
+                    JSONObject jLoc = results.getJSONObject(0).
+                            getJSONObject("geometry").getJSONObject("locationDescription");
+                    toReturn = new Location(locString);
+                    toReturn.setLat(jLoc.getDouble("lat"));
+                    toReturn.setLon(jLoc.getDouble("lng"));
                 }
+            }
+            catch(JSONException e)
+            {
+                System.out.println("Error parsing JSON geocoding string: "+e);
             }
         }
         catch (Exception e)
         {
-            System.out.println("Error populating Job locations from LinkedIn:\n"+e);
+            System.out.println("Error geocoding "+locString+":\n"+e);
         }
-        
-        return google;
+        return toReturn;
     }
      
     public LinkedInInterface()
