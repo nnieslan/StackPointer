@@ -86,7 +86,7 @@ public class LinkedInInterface {
         ArrayList<JobPosting> parsedJobs = parseJobsFromJson(linkedInJson);
         //save parsed jobs... etc.
         System.out.println(parsedJobs);
-        geocode1(linkedInJson);
+        //getJobPostings();
   
     }
     catch (JSONException e)
@@ -94,6 +94,64 @@ public class LinkedInInterface {
         System.out.println("Error retrieving Jobs from LinkedIn:\n"+e);
     }
  }
+    
+    //Return Closest 10 Jobs to the User
+    public static ArrayList<JobPosting> getJobPostings()
+    {
+        ArrayList<JobPosting> parsedJobs = null;
+        JSONObject json = null;   
+        OAuthService service = new ServiceBuilder()
+                                .provider(LinkedInApi.class)
+                                .apiKey("v6xty7mvo61a")
+                                .apiSecret("N6Ggy9kfyJc3fVO0")
+                             // .callback ("http://localhost:8080/StackPointer/")
+                                .build();
+    Scanner in = new Scanner(System.in);
+    
+    System.out.println("=== LinkedIn's OAuth Workflow ===");
+    System.out.println();
+
+    // Obtain the Request Token
+    System.out.println("Fetching the Request Token...");
+    Token requestToken = service.getRequestToken();
+    System.out.println("Retrieved Request Token!");
+    System.out.println();
+
+    System.out.println("Authorize Scribe:");
+    System.out.println(service.getAuthorizationUrl(requestToken));
+    System.out.println("Paste Verifier");
+    System.out.print(">>");
+    Verifier verifier = new Verifier(in.nextLine());
+    System.out.println();
+
+    // Trade the Request Token and Verfier for the Access Token
+    System.out.println("Trading the Request Token for an Access Token...");
+    Token accessToken = service.getAccessToken(requestToken, verifier);
+    System.out.println("Got the Access Token!");
+    System.out.println("(Access Token: " + accessToken + " )");
+    System.out.println();
+
+    // Access Linked In URL!
+    System.out.println("Contact API URL");
+    OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
+    
+    // Pull results in JSON format
+    request.addHeader("x-li-format", "json");
+    service.signRequest(accessToken, request);
+    Response response = request.send();
+    System.out.println(response.getBody());    
+    try
+    {
+        JSONObject linkedInJson = new JSONObject(response.getBody()).getJSONObject("jobs");
+        parsedJobs = parseJobsFromJson(linkedInJson);
+    }
+    catch (JSONException e)
+    {
+        System.out.println("Error retrieving Jobs from LinkedIn:\n"+e);
+    }
+        return parsedJobs;
+    }
+    
     
      public static ArrayList<JobPosting> parseJobsFromJson(JSONObject json)
     {
@@ -126,47 +184,6 @@ public class LinkedInInterface {
         return parsed;
     }
      
-     public static Location geocode1(JSONObject json)
-    {
-        final  String gMapsUrlBase = "https://maps.googleapis.com/maps/api/";
-        final  String gMapsKey = "AIzaSyA2DwdJgZeUssqn561w5tgt7b56oGcYf_o";
-        final  String gUseSensor = "false";
-        Location toReturn = null;
-        String locString = "";
-        try {
-            URL url = new URL(gMapsUrlBase+"geocode/json?sensor="+gUseSensor+"&address="+URLEncoder.encode(locString, "UTF-8"));
-            URLConnection conn = url.openConnection();
-            String line;
-            StringBuilder builder = new StringBuilder();
-            BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            while((line = reader.readLine()) != null) {
-                builder.append(line);
-            }
-            try
-            {
-                //JSONObject json = new JSONObject(builder.toString());
-                JSONArray results = json.getJSONArray("results");
-                if(!results.isNull(0))
-                {
-                    JSONObject jLoc = results.getJSONObject(0).
-                            getJSONObject("geometry").getJSONObject("locationDescription");
-                    toReturn = new Location(locString);
-                    toReturn.setLat(jLoc.getDouble("lat"));
-                    toReturn.setLon(jLoc.getDouble("lng"));
-                }
-            }
-            catch(JSONException e)
-            {
-                System.out.println("Error parsing JSON geocoding string: "+e);
-            }
-        }
-        catch (Exception e)
-        {
-            System.out.println("Error geocoding "+locString+":\n"+e);
-        }
-        return toReturn;
-    }
-     
     public LinkedInInterface()
     {
     //TODO - Initialize values
@@ -186,32 +203,70 @@ public class LinkedInInterface {
         return connected;
     }
     
-    //Function to repopulate local LinkedIn user database
-    boolean updateLocalDatabase()
+    //Function to update local linkedIn database
+    public boolean updateLocalDatabase()
     {
-        //TODO - access LinkedIn, grab user and friends and save data
-        return false;
+        boolean success = false;
+        allJobPostings  = getJobPostings();
+        if(allJobPostings!=null)
+        {
+            if(!allJobPostings.isEmpty())
+            {
+                for(JobPosting j:allJobPostings)
+                {
+                    if(db.addJobPosting(j)==false)
+                    {
+                        System.out.println("Error saving jobs "+j);
+                    }
+                }
+                success = true;
+            }
+        }
+        return success;
     }
-
-    //Function to update current values from LinkedIn in local database
-    boolean cleanDatabase()
+    
+    //Get the local copies of the top JobPostings
+    public void retrieveJobPostings()
     {
-        //TODO - validate all current local data
-        return false;
+        List<JobPosting> j = db.retrieveJobPostings();
+        if(j != null && !j.isEmpty())
+        {   
+            allJobPostings.clear();
+            allJobPostings.addAll(j);
+        }
     }
+    
+    //Return the top JobPostings
+    public ArrayList<JobPosting> getallJobPostings()
+    {
+        return allJobPostings;
+    }
+    
 
     //Update the local copies of the top 100 questions
     void updateJobPostings()
     {
-         //TODO - access database, grab 100 questions, push onto list
+        List<JobPosting> j = db.retrieveJobPostings();
+        if(j != null && !j.isEmpty())
+        {
         allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
         allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
         allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+        }
     }
-
-    //Return the top 100 questions
-    ArrayList<JobPosting> getJobPostings()
-    {
-        return allJobPostings;
-    }
+    
+    
+    
+   // boolean updateLocalDatabase()
+   // {
+   //TODO - access LinkedIn, grab user and friends and save data
+   //    return false;
+   //}
+    
+   //Function to update current values from LinkedIn in local database
+   //boolean cleanDatabase()
+   //{
+   //TODO - validate all current local data
+   //  return false;
+   //}
 }
