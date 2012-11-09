@@ -117,11 +117,6 @@ function loadData() {
                     }
                 %>
             </span>
-            <span id="jobs">
-                <h2><i>Jobs</i></h2>
-                <h3>These are job listings in your area related to these questions, powered by <a href="http://linkedin.com">LinkedIn</a></h3>
-            </span>
-            <script type="in/Login">Hello, <?js= firstName ?> <?js= lastName ?>.</script>
         </center>
     </body>
 </html>

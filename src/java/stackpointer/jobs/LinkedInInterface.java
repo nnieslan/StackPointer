@@ -3,6 +3,9 @@ package stackpointer.jobs;
 import java.io.BufferedReader;
 import java.util.Scanner;
 import java.io.InputStreamReader;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
@@ -19,7 +22,10 @@ import stackpointer.common.Location;
 import stackpointer.database.DatabaseConnectionInfo;
 import stackpointer.database.MySQLDatabaseFacade;
 import java.util.Date;
+import java.util.HashMap;
 import stackpointer.common.Location;
+import stackpointer.common.User;
+import stackpointer.googlemaps.GoogleMapsInterface;
 
 /**
  * This class is to interact with the Linked In API, including retrieval
@@ -32,9 +38,14 @@ public class LinkedInInterface {
     MySQLDatabaseFacade db = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
     //   private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs,facets)?facet=location,us:100";
     private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description))";
-    public static void main(String[] args)
-   {
-     OAuthService service = new ServiceBuilder()
+
+    
+    //Return Closest 10 Jobs to the User
+    public static ArrayList<JobPosting> getJobPostings()
+    {
+        ArrayList<JobPosting> parsedJobs = null;
+        JSONObject json = null;   
+        OAuthService service = new ServiceBuilder()
                                 .provider(LinkedInApi.class)
                                 .apiKey("v6xty7mvo61a")
                                 .apiSecret("N6Ggy9kfyJc3fVO0")
@@ -77,15 +88,15 @@ public class LinkedInInterface {
     try
     {
         JSONObject linkedInJson = new JSONObject(response.getBody()).getJSONObject("jobs");
-        ArrayList<JobPosting> parsedJobs = parseJobsFromJson(linkedInJson);
-        //save parsed jobs... etc.
-        System.out.println(parsedJobs);
+        parsedJobs = parseJobsFromJson(linkedInJson);
     }
     catch (JSONException e)
     {
         System.out.println("Error retrieving Jobs from LinkedIn:\n"+e);
     }
- }
+        return parsedJobs;
+    }
+    
     
      public static ArrayList<JobPosting> parseJobsFromJson(JSONObject json)
     {
@@ -137,32 +148,70 @@ public class LinkedInInterface {
         return connected;
     }
     
-    //Function to repopulate local LinkedIn user database
-    boolean updateLocalDatabase()
+    //Function to update local linkedIn database
+    public boolean updateLocalDatabase()
     {
-        //TODO - access LinkedIn, grab user and friends and save data
-        return false;
+        boolean success = false;
+        allJobPostings  = getJobPostings();
+        if(allJobPostings!=null)
+        {
+            if(!allJobPostings.isEmpty())
+            {
+                for(JobPosting j:allJobPostings)
+                {
+                    if(db.addJobPosting(j)==false)
+                    {
+                        System.out.println("Error saving jobs "+j);
+                    }
+                }
+                success = true;
+            }
+        }
+        return success;
     }
-
-    //Function to update current values from LinkedIn in local database
-    boolean cleanDatabase()
+    
+    //Get the local copies of the top JobPostings
+    public void retrieveJobPostings()
     {
-        //TODO - validate all current local data
-        return false;
+        List<JobPosting> j = db.retrieveJobPostings();
+        if(j != null && !j.isEmpty())
+        {   
+            allJobPostings.clear();
+            allJobPostings.addAll(j);
+        }
     }
+    
+    //Return the top JobPostings
+    public ArrayList<JobPosting> getallJobPostings()
+    {
+        return allJobPostings;
+    }
+    
 
     //Update the local copies of the top 100 questions
     void updateJobPostings()
     {
-         //TODO - access database, grab 100 questions, push onto list
+        List<JobPosting> j = db.retrieveJobPostings();
+        if(j != null && !j.isEmpty())
+        {
         allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
         allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
         allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+        }
     }
-
-    //Return the top 100 questions
-    ArrayList<JobPosting> getJobPostings()
-    {
-        return allJobPostings;
-    }
+    
+    
+    
+   // boolean updateLocalDatabase()
+   // {
+   //TODO - access LinkedIn, grab user and friends and save data
+   //    return false;
+   //}
+    
+   //Function to update current values from LinkedIn in local database
+   //boolean cleanDatabase()
+   //{
+   //TODO - validate all current local data
+   //  return false;
+   //}
 }

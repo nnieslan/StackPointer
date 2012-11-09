@@ -56,18 +56,9 @@ function loadData() {
       <link href="styles/menu.css" type="text/css" rel="stylesheet" />
     </head>
     <body>
-        <% //set up data here!
-        ArrayList<Question> questions = StackExchangeInterface.getQuestionsFromServer();
-        %>
         <span id="welcome">
             <center>
             <img src ="images/banner.jpg" width="800" />
-            <script type='text/javascript'>
-              $(function() {
-                <%=GoogleMapsInterface.setupMap("map_canvas")%>
-                <%=GoogleMapsInterface.generateMarkers(questions)%>
-              });
-            </script>
             </center>
         </span>
         <div class="menu_content">
@@ -87,37 +78,9 @@ function loadData() {
                 <a href="userinfo.jsp">User Information</a>
             </div>
         </div>          
-        <span id="map">
-            <br />
-            <center>
-            <h2><i>Geographic representation of the last 100 StackOverflow Questions</i></h2>
-            <div id="map_canvas" style="width:800px; height:600px"></div>
-            <h3>These are the last 100 questions asked on <a href="http://stackoverflow.com">StackOverflow</a>
-                shown on <a href="http://maps.google.com">Google Maps</a>.</h3><br>
-            </center>
-                <%  
-                    //for(Question q : questions)
-                    //{
-                    //    out.println("<br>*************<br>");
-                    //    out.println(q);
-                    //}
-                %>
-        </span>
         <center>
-            <span id="questions">
-                <%
-                    DatabaseConnectionInfo connectionInfo = DatabaseConnectionInfo.createDefault();
-                    System.out.println(connectionInfo);
-                    DatabaseFacade databaseFacade = new MySQLDatabaseFacade(connectionInfo);
-                    List<Question> questionList = databaseFacade.retrieveQuestions();
-                    int idx = 1;
-                    for (Question question : questionList) {
-                        out.println(String.format("%d.  %s <br>", idx, question.getqText()));
-                        idx++;
-                    }
-                %>
-            </span>
             <span id="jobs">
+                <br />
                 <h2><i>Jobs</i></h2>
                 <h3>These are job listings in your area related to these questions, powered by <a href="http://linkedin.com">LinkedIn</a></h3>
             </span>
