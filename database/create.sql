@@ -12,32 +12,22 @@ drop table if exists jobpostings;
 drop table if exists answers;
 drop table if exists questions;
 drop table if exists sxusers;
-drop table if exists locations;
-
--- Locations
-create table locations (
-	lid int not null auto_increment,
-	lat float,
-	lon float,
-	zip int,
-	primary key (lid)
-);
 
 -- SXUsers
 create table sxusers (
 	uid int not null auto_increment,
 	sxid varchar(15) not null unique,
 	display_name varchar(20),
-	location_lid int,
-	constraint fk_sxuser_lid foreign key (location_lid)
-	references locations(lid),
+	location varchar(50),
 	primary key (uid)
 );
 
 -- Questions
 create table questions (
 	qid int not null auto_increment,
-	question_text text not null,
+	postedTimestamp datetime not null,
+	title varchar(100) not null,
+	question_text text,
 	postedby_uid int not null,
 	constraint fk_question_postedby foreign key (postedby_uid)
 	references sxusers(uid),
@@ -47,6 +37,7 @@ create table questions (
 -- Answers
 create table answers (
 	aid int not null auto_increment,
+	postedTimestamp datetime not null,
 	answer_text text not null,
 	qid int not null,
 	postedby_uid int not null,
@@ -64,9 +55,6 @@ create table jobpostings (
 	headline varchar(100),
 	description text,
 	company varchar(30),
-	location_lid int,
-	constraint fk_jobposting_lid foreign key (location_lid)
-	references locations(lid),
+	location varchar(50),
 	primary key (jpid)
 );
-

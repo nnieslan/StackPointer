@@ -52,11 +52,8 @@ public class DatabaseConnectionInfo {
     
     public static DatabaseConnectionInfo createDefault() {
         return new DatabaseConnectionInfo(
-                "jdbc:mysql://localhost/stackpointer",
-                "andrew",
-                "pass");
-                //"jdbc:mysql://mysql.philhurwitz.com/stackpointer",
-                //"philhurwitzcom",
-                //"zv4NLgN6");
+                "jdbc:mysql://mysql.philhurwitz.com/stackpointer",
+                "philhurwitzcom",
+                "zv4NLgN6");
     }
 }

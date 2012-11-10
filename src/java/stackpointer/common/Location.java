@@ -68,10 +68,29 @@ public class Location {
     public void setZip(int zip) {
         this.zip = zip;
     }
+    
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (o == null) {
+            return false;
+        }
+        if (!(o instanceof Location)) {
+            return false;
+        }
+        
+        Location otherLocation = (Location)o;
+        return this.locStr.equals(otherLocation.locStr);
+    }
+    
+    public String toDebugString() {
+        return "Location{" + "locStr=" + locStr + ", lat=" + lat + ", lon=" + lon + ", zip=" + zip + '}';
+    }
 
     @Override
     public String toString() {
-        return "Location{" + "locStr=" + locStr + ", lat=" + lat + ", lon=" + lon + ", zip=" + zip + '}';
+        return locStr;
     }
-    
 }
