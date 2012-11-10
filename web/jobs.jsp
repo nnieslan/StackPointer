@@ -35,6 +35,7 @@
       <link href="styles/menu.css" type="text/css" rel="stylesheet" />
     </head>
     <body>
+        <% System.setProperty("java.awt.headless", "false");%>
         <% //set up data here!
         ArrayList<JobPosting> jobs = LinkedInInterface.getJobPostings();
         %>
@@ -71,7 +72,7 @@
             <center>
             <h2><i>Geographic representation of the latest Job Postings</i></h2>
             <div id="map_canvas" style="width:800px; height:600px"></div>
-            <h3>These are the last 100 questions asked on <a href="http://linkedin.com">StackOverflow</a>
+            <h3>These are recent jobs posted on <a href="http://linkedin.com">LinkedIn</a>
                 shown on <a href="http://maps.google.com">Google Maps</a>.</h3><br>
             </center>
                 <%  
