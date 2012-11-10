@@ -23,6 +23,7 @@ import stackpointer.database.DatabaseConnectionInfo;
 import stackpointer.database.MySQLDatabaseFacade;
 import java.util.Date;
 import java.util.HashMap;
+import javax.swing.JOptionPane;
 import stackpointer.common.Location;
 import stackpointer.common.User;
 import stackpointer.googlemaps.GoogleMapsInterface;
@@ -64,10 +65,11 @@ public class LinkedInInterface {
 
     System.out.println("Authorize Scribe:");
     System.out.println(service.getAuthorizationUrl(requestToken));
-    System.out.println("Paste Verifier");
-    System.out.print(">>");
-    Verifier verifier = new Verifier(in.nextLine());
-    System.out.println();
+    //System.out.println("Paste Verifier");
+    //System.out.print(">>");
+    //Verifier verifier = new Verifier(in.nextLine());
+    //System.out.println();
+      Verifier verifier = new Verifier(JOptionPane.showInputDialog("Verifier"));
 
     // Trade the Request Token and Verfier for the Access Token
     System.out.println("Trading the Request Token for an Access Token...");
@@ -171,7 +173,7 @@ public class LinkedInInterface {
     }
     
     //Get the local copies of the top JobPostings
-    public void retrieveJobPostings()
+    public boolean retrieveJobPostings()
     {
         List<JobPosting> j = db.retrieveJobPostings();
         if(j != null && !j.isEmpty())
@@ -179,6 +181,7 @@ public class LinkedInInterface {
             allJobPostings.clear();
             allJobPostings.addAll(j);
         }
+        return true;
     }
     
     //Return the top JobPostings
