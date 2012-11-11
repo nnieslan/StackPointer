@@ -41,11 +41,13 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
 
-            // Grab the id and store it on the question
+            // Grab the id and store it on the user
             ResultSet rs = stmt.getGeneratedKeys();
             if (rs.next()) {
                 int uid = rs.getInt(1);
                 userEntity.setUid(uid);
+            } else {
+                userEntity.setUid(0);
             }
         }
         
