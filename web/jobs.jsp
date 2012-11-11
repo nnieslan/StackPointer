@@ -1,16 +1,16 @@
 <%-- 
-    Document   : index
-    Created on : Sep 2, 2012, 3:36:10 PM
-    Modified on: Sep 24, 2012, 12:55:10AM : Joe
-    Author     : Phil
+    Document   : Jobs
+    Created on : Nov 9, 2012, 11:16:10 PM
+    Author     : Joe
 --%>
 
 <%@page import="java.util.ArrayList"%>
 <%@page import="stackpointer.googlemaps.GoogleMapsInterface"%>
+<%@page import="stackpointer.jobs.JobPosting"%>
+<%@page import="stackpointer.jobs.LinkedInInterface"%>
 <%@page import="stackpointer.stackexchange.Question"%>
-<%@page import="stackpointer.stackexchange.StackExchangeInterface"%>
 <%@page import="java.util.List"%>
-<%@page import="stackpointer.stackexchange.Question"%>
+<%@page import="stackpointer.jobs.JobPosting"%>
 <%@page import="stackpointer.database.DatabaseConnectionInfo"%>
 <%@page import="stackpointer.database.MySQLDatabaseFacade"%>
 <%@page import="stackpointer.database.DatabaseFacade"%>
@@ -32,33 +32,22 @@
         <script type='text/javascript' src='/StackPointer/script/jquery/jquery-1.8.1.js'></script>
         <script type="text/javascript" src="http://platform.linkedin.com/in.js">api_key:v6xty7mvo61a</script>
  
-<script type="text/javascript">
- 
-function loadData() {
-  IN.API.PeopleSearch()
-         .fields("firstName", "lastName", "distance", "publicProfileUrl","pictureUrl")
-         .params({"keywords": "python", "count": 10, "sort": "distance"})
-         .result(function(result) {
-            profHTML = "<h4>People search results for keyword 'python':</h4>";
-            for (var index in result.people.values) {
-                profile = result.people.values[index]
-                if (profile.pictureUrl) {
-                    profHTML += "<p><a href=\"" + profile.publicProfileUrl + "\">";
-                    profHTML += "<img class=img_border height=30 align=\"left\" src=\"" + profile.pictureUrl + "\"></a>";
-                    profHTML += "<p>" + profile.firstName + " " + profile.lastName + " (" + profile.distance + ")</p>"; 
-                }
-            }  
-      $("#search").html(profHTML);
-      });
-}
- 
-</script>
       <link href="styles/menu.css" type="text/css" rel="stylesheet" />
     </head>
     <body>
+        <% System.setProperty("java.awt.headless", "false");%>
+        <% //set up data here!
+        ArrayList<JobPosting> jobs = LinkedInInterface.getJobPostings();
+        %>
         <span id="welcome">
             <center>
             <img src ="images/banner.jpg" width="800" />
+            <script type='text/javascript'>
+              $(function() {
+                <%=GoogleMapsInterface.setupMap("map_canvas")%>
+                /*%=GoogleMapsInterface.generateMarkers(jobs)%>*/
+              });
+            </script>
             </center>
         </span>
         <div class="menu_content">
@@ -78,13 +67,36 @@ function loadData() {
                 <a href="userinfo.jsp">User Information</a>
             </div>
         </div>          
+        <span id="map">
+            <br />
+            <center>
+            <h2><i>Geographic representation of the latest Job Postings</i></h2>
+            <div id="map_canvas" style="width:800px; height:600px"></div>
+            <h3>These are recent jobs posted on <a href="http://linkedin.com">LinkedIn</a>
+                shown on <a href="http://maps.google.com">Google Maps</a>.</h3><br>
+            </center>
+                <%  
+                    for(JobPosting j : jobs)
+                    {
+                        out.println("<br>*************<br>");
+                        out.println(j);
+                    }
+                %>
+        </span>
         <center>
             <span id="jobs">
-                <br />
-                <h2><i>Jobs</i></h2>
-                <h3>These are job listings in your area related to these questions, powered by <a href="http://linkedin.com">LinkedIn</a></h3>
+                <%
+                    DatabaseConnectionInfo connectionInfo = DatabaseConnectionInfo.createDefault();
+                    System.out.println(connectionInfo);
+                    DatabaseFacade databaseFacade = new MySQLDatabaseFacade(connectionInfo);
+                    List<JobPosting> jobsList = databaseFacade.retrieveJobPostings();
+                    int idx = 1;
+                    for (JobPosting job : jobsList) {
+                        out.println(String.format("%d.  %s <br>", idx, job.getjobText()));
+                        idx++;
+                    }
+                %>
             </span>
-            <script type="in/Login">Hello, <?js= firstName ?> <?js= lastName ?>.</script>
         </center>
     </body>
 </html>

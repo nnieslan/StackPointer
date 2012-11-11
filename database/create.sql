@@ -12,32 +12,29 @@ drop table if exists jobpostings;
 drop table if exists answers;
 drop table if exists questions;
 drop table if exists sxusers;
-drop table if exists locations;
+drop table if exists splog;
 
--- Locations
-create table locations (
-	lid int not null auto_increment,
-	lat float,
-	lon float,
-	zip int,
-	primary key (lid)
-);
+-- StackPointer Log
+create table splog (
+	ts timestamp default current_timestamp,
+	message varchar(200) not null
+)
 
 -- SXUsers
 create table sxusers (
 	uid int not null auto_increment,
 	sxid varchar(15) not null unique,
 	display_name varchar(20),
-	location_lid int,
-	constraint fk_sxuser_lid foreign key (location_lid)
-	references locations(lid),
+	location varchar(50),
 	primary key (uid)
 );
 
 -- Questions
 create table questions (
 	qid int not null auto_increment,
-	question_text text not null,
+	postedTimestamp timestamp not null,
+	title varchar(100) not null,
+	question_text text,
 	postedby_uid int not null,
 	constraint fk_question_postedby foreign key (postedby_uid)
 	references sxusers(uid),
@@ -47,6 +44,7 @@ create table questions (
 -- Answers
 create table answers (
 	aid int not null auto_increment,
+	postedTimestamp timestamp not null,
 	answer_text text not null,
 	qid int not null,
 	postedby_uid int not null,
@@ -60,13 +58,11 @@ create table answers (
 -- JobPostings
 create table jobpostings (
 	jpid int not null auto_increment,
+	linkedinid int not null,
 	date_posted date,
 	headline varchar(100),
 	description text,
 	company varchar(30),
-	location_lid int,
-	constraint fk_jobposting_lid foreign key (location_lid)
-	references locations(lid),
+	location varchar(50),
 	primary key (jpid)
 );
-

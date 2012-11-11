@@ -15,6 +15,7 @@ public class JobPosting {
     String headline;
     String description;
     String company;
+    String jobText;
 
     public JobPosting() {
     }
@@ -82,6 +83,14 @@ public class JobPosting {
 
     public void setLinkedInId(int linkedInId) {
         this.linkedInId = linkedInId;
+    }
+    
+    public String getjobText() {
+        return jobText;
+    }
+
+    public void setjobText(String jobText) {
+        this.jobText = jobText;
     }
     
 }
