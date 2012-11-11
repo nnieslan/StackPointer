@@ -9,7 +9,6 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import stackpointer.common.Location;
 
 /**
  *
@@ -19,10 +18,10 @@ public class UserRepoTest {
     
     private final String AddTestSXID = "DBTestSXID";
     private final String AddTestUsername = "DB Test Username";
-    private final Location AddTestLocation = new Location("New York, NY");
+    private final String AddTestLocation = "New York, NY";
     private final String UpdateTestSXID = "DBTestSXID2";
     private final String UpdateTestUsername = "DB Test Username 2";
-    private final Location UpdateTestLocation = new Location("Los Angeles, CA");
+    private final String UpdateTestLocation = "Los Angeles, CA";
     
     public UserRepoTest() {
     }

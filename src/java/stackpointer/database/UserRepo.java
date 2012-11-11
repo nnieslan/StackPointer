@@ -8,7 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-import stackpointer.common.Location;
 
 /**
  * @author Andrew
@@ -70,7 +69,7 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
             PreparedStatement stmt = connection.prepareStatement(updateText);
             stmt.setString(1, userEntity.getSxid());
             stmt.setString(2, userEntity.getUsername());
-            stmt.setString(3, userEntity.getLocation().toString());
+            stmt.setString(3, userEntity.getLocation());
             stmt.setInt(4, userEntity.getUid());
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
@@ -106,13 +105,9 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
             return null;
         }
         
-        StringBuilder builder = new StringBuilder();
-        builder.append(userIds.toString());
-        builder.deleteCharAt(0);
-        builder.deleteCharAt(builder.length()-1);
-        String listString = builder.toString();
+        String listString = DBUtils.collectionToCSVString(userIds);
         
-        builder = new StringBuilder();
+        StringBuilder builder = new StringBuilder();
         builder.append("uid IN (");
         builder.append(listString);
         builder.append(")");
@@ -149,7 +144,7 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
                 userEntity.setUid(uid);
                 userEntity.setSxid(sxid);
                 userEntity.setUsername(displayName);
-                userEntity.setLocation(new Location(location));
+                userEntity.setLocation(location);
                 userList.add(userEntity);
             }
         }

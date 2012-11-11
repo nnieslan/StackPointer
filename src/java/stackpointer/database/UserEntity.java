@@ -1,7 +1,5 @@
 package stackpointer.database;
 
-import stackpointer.common.Location;
-
 /**
  * @author Andrew
  */
@@ -10,7 +8,7 @@ public class UserEntity {
     int uid;
     String sxid;
     String username;
-    Location location;
+    String location;
 
     public int getUid() {
         return uid;
@@ -36,11 +34,11 @@ public class UserEntity {
         this.username = username;
     }
 
-    public Location getLocation() {
+    public String getLocation() {
         return location;
     }
 
-    public void setLocation(Location location) {
+    public void setLocation(String location) {
         this.location = location;
     }
     
