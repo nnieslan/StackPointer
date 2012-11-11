@@ -192,7 +192,7 @@ public class LinkedInInterface {
     
 
     //Update the local copies of the top 100 questions
-    void updateJobPostings()
+    public boolean updateJobPostings()
     {
         List<JobPosting> j = db.retrieveJobPostings();
         if(j != null && !j.isEmpty())
@@ -201,15 +201,8 @@ public class LinkedInInterface {
         allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
         allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
         }
+        return true;
     }
-    
-    
-    
-   // boolean updateLocalDatabase()
-   // {
-   //TODO - access LinkedIn, grab user and friends and save data
-   //    return false;
-   //}
     
    //Function to update current values from LinkedIn in local database
    //boolean cleanDatabase()
