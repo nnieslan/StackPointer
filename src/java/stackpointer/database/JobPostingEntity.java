@@ -4,15 +4,18 @@ import java.util.Date;
 
 /**
  * @author Andrew
+ * 
+ * This class models a row from the jobpostings table in the database.
  */
 public class JobPostingEntity {
     
     int jpid;
-    Date postedTimestamp;
+    int linkedinId;
+    Date datePosted;
     String headline;
     String description;
     String company;
-    int locationId;
+    String location;
 
     public int getJpid() {
         return jpid;
@@ -21,13 +24,21 @@ public class JobPostingEntity {
     public void setJpid(int jpid) {
         this.jpid = jpid;
     }
-
-    public Date getPostedTimestamp() {
-        return postedTimestamp;
+    
+    public int getLinkedinId() {
+        return linkedinId;
     }
 
-    public void setPostedTimestamp(Date postedTimestamp) {
-        this.postedTimestamp = postedTimestamp;
+    public void setLinkedinId(int linkedinId) {
+        this.linkedinId = linkedinId;
+    }
+
+    public Date getDatePosted() {
+        return datePosted;
+    }
+
+    public void setDatePosted(Date datePosted) {
+        this.datePosted = datePosted;
     }
 
     public String getHeadline() {
@@ -54,12 +65,12 @@ public class JobPostingEntity {
         this.company = company;
     }
 
-    public int getLocationId() {
-        return locationId;
+    public String getLocation() {
+        return location;
     }
 
-    public void setLocationId(int locationId) {
-        this.locationId = locationId;
+    public void setLocation(String location) {
+        this.location = location;
     }
     
 }

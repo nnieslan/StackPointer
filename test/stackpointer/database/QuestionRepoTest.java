@@ -79,7 +79,7 @@ public class QuestionRepoTest {
         boolean rowDeleted = repo.delete(q);
         
         assertTrue("delete - no record deleted", rowDeleted);
-        assertTrue("delete - aid was not reset", q.getQid() == 0);
+        assertTrue("delete - qid was not reset", q.getQid() == 0);
     }
 
     /**

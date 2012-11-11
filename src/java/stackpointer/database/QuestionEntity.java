@@ -4,6 +4,8 @@ import java.util.Date;
 
 /**
  * @author Andrew
+ * 
+ * This class models a row from the questions table in the database.
  */
 public class QuestionEntity {
 

@@ -33,9 +33,9 @@ public class QuestionRepo extends DatabaseRepository<QuestionEntity> {
 
             PreparedStatement stmt = connection.prepareStatement(
                     insertText, Statement.RETURN_GENERATED_KEYS);
-            java.sql.Date postedTimestamp = DBUtils.utilDateToSqlDate(
+            java.sql.Timestamp postedTimestamp = DBUtils.utilDateToSqlTimestamp(
                     questionEntity.getPostedTimestamp());
-            stmt.setDate(1, postedTimestamp);
+            stmt.setTimestamp(1, postedTimestamp);
             stmt.setString(2, questionEntity.getTitle());
             stmt.setString(3, questionEntity.getText());
             stmt.setInt(4, questionEntity.getPostedByUserId());
@@ -71,9 +71,9 @@ public class QuestionRepo extends DatabaseRepository<QuestionEntity> {
                     "WHERE qid = ?";
 
             PreparedStatement stmt = connection.prepareStatement(updateText);
-            java.sql.Date postedTimestamp = DBUtils.utilDateToSqlDate(
+            java.sql.Timestamp postedTimestamp = DBUtils.utilDateToSqlTimestamp(
                     questionEntity.getPostedTimestamp());
-            stmt.setDate(1, postedTimestamp);
+            stmt.setTimestamp(1, postedTimestamp);
             stmt.setString(2, questionEntity.getTitle());
             stmt.setString(3, questionEntity.getText());
             stmt.setInt(4, questionEntity.getPostedByUserId());

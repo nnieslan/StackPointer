@@ -36,7 +36,7 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
                     insertText, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, userEntity.getSxid());
             stmt.setString(2, userEntity.getUsername());
-            stmt.setString(3, userEntity.getLocation().toString());
+            stmt.setString(3, userEntity.getLocation());
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
 
@@ -123,7 +123,7 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
         
         // If no where clause is specified, we no query will be made.
         if (whereClause == null || whereClause.isEmpty()) {
-            return userList;
+            return null;
         }
         
         String queryText =

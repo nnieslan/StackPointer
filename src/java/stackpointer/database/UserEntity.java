@@ -2,6 +2,8 @@ package stackpointer.database;
 
 /**
  * @author Andrew
+ * 
+ * This class models a row from the sxusers table in the database.
  */
 public class UserEntity {
 

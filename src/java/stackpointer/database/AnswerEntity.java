@@ -1,7 +1,11 @@
 package stackpointer.database;
 
+import java.util.Date;
+
 /**
  * @author Andrew
+ * 
+ * This class models a row from the answers table in the database.
  */
 public class AnswerEntity {
 
@@ -9,6 +13,7 @@ public class AnswerEntity {
     String text;
     int associatedQid;
     int postedByUserId;
+    Date postedTimestamp;
 
     public int getAid() {
         return aid;
@@ -42,4 +47,11 @@ public class AnswerEntity {
         this.postedByUserId = postedByUserId;
     }
     
+    public Date getPostedTimestamp() {
+        return postedTimestamp;
+    }
+
+    public void setPostedTimestamp(Date postedTimestamp) {
+        this.postedTimestamp = postedTimestamp;
+    }
 }
