@@ -52,50 +52,50 @@ public class LinkedInInterface {
                                 .apiSecret("N6Ggy9kfyJc3fVO0")
                              // .callback ("http://localhost:8080/StackPointer/")
                                 .build();
-    Scanner in = new Scanner(System.in);
-    
-    System.out.println("=== LinkedIn's OAuth Workflow ===");
-    System.out.println();
+        Scanner in = new Scanner(System.in);
 
-    // Obtain the Request Token
-    System.out.println("Fetching the Request Token...");
-    Token requestToken = service.getRequestToken();
-    System.out.println("Retrieved Request Token!");
-    System.out.println();
+        System.out.println("=== LinkedIn's OAuth Workflow ===");
+        System.out.println();
 
-    System.out.println("Authorize Scribe:");
-    System.out.println(service.getAuthorizationUrl(requestToken));
-    //System.out.println("Paste Verifier");
-    //System.out.print(">>");
-    //Verifier verifier = new Verifier(in.nextLine());
-    //System.out.println();
-      Verifier verifier = new Verifier(JOptionPane.showInputDialog("Verifier"));
+        // Obtain the Request Token
+        System.out.println("Fetching the Request Token...");
+        Token requestToken = service.getRequestToken();
+        System.out.println("Retrieved Request Token!");
+        System.out.println();
 
-    // Trade the Request Token and Verfier for the Access Token
-    System.out.println("Trading the Request Token for an Access Token...");
-    Token accessToken = service.getAccessToken(requestToken, verifier);
-    System.out.println("Got the Access Token!");
-    System.out.println("(Access Token: " + accessToken + " )");
-    System.out.println();
+        System.out.println("Authorize Scribe:");
+        System.out.println(service.getAuthorizationUrl(requestToken));
+        //System.out.println("Paste Verifier");
+        //System.out.print(">>");
+        //Verifier verifier = new Verifier(in.nextLine());
+        //System.out.println();
+          Verifier verifier = new Verifier(JOptionPane.showInputDialog("Verifier"));
 
-    // Access Linked In URL!
-    System.out.println("Contact API URL");
-    OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
-    
-    // Pull results in JSON format
-    request.addHeader("x-li-format", "json");
-    service.signRequest(accessToken, request);
-    Response response = request.send();
-    System.out.println(response.getBody());    
-    try
-    {
-        JSONObject linkedInJson = new JSONObject(response.getBody()).getJSONObject("jobs");
-        parsedJobs = parseJobsFromJson(linkedInJson);
-    }
-    catch (JSONException e)
-    {
-        System.out.println("Error retrieving Jobs from LinkedIn:\n"+e);
-    }
+        // Trade the Request Token and Verfier for the Access Token
+        System.out.println("Trading the Request Token for an Access Token...");
+        Token accessToken = service.getAccessToken(requestToken, verifier);
+        System.out.println("Got the Access Token!");
+        System.out.println("(Access Token: " + accessToken + " )");
+        System.out.println();
+
+        // Access Linked In URL!
+        System.out.println("Contact API URL");
+        OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
+
+        // Pull results in JSON format
+        request.addHeader("x-li-format", "json");
+        service.signRequest(accessToken, request);
+        Response response = request.send();
+        System.out.println(response.getBody());    
+        try
+        {
+            JSONObject linkedInJson = new JSONObject(response.getBody()).getJSONObject("jobs");
+            parsedJobs = parseJobsFromJson(linkedInJson);
+        }
+        catch (JSONException e)
+        {
+            System.out.println("Error retrieving Jobs from LinkedIn:\n"+e);
+        }
         return parsedJobs;
     }
     
