@@ -1,9 +1,9 @@
 -- SXUsers
-insert into sxusers (sxid, display_name, location) values ('sxid1', 'John', 'New York, NY');
-insert into sxusers (sxid, display_name, location) values ('sxid2', 'Pete', 'Denver, CO');
-insert into sxusers (sxid, display_name, location) values ('sxid3', 'Andy', 'Detroit, MI');
-insert into sxusers (sxid, display_name, location) values ('sxid4', 'Suzy', 'Philadelphia, PA');
-insert into sxusers (sxid, display_name, location) values ('sxid5', 'Nicole', 'Grand Rapids, MI');
+insert into sxusers (sxid, display_name, location_text) values ('sxid1', 'John', 'New York, NY');
+insert into sxusers (sxid, display_name, location_text) values ('sxid2', 'Pete', 'Denver, CO');
+insert into sxusers (sxid, display_name, location_text) values ('sxid3', 'Andy', 'Detroit, MI');
+insert into sxusers (sxid, display_name, location_text) values ('sxid4', 'Suzy', 'Philadelphia, PA');
+insert into sxusers (sxid, display_name, location_text) values ('sxid5', 'Nicole', 'Grand Rapids, MI');
 
 -- Questions
 insert into questions (postedTimestamp, title, question_text, postedby_uid)
@@ -31,5 +31,5 @@ insert into questions (postedTimestamp, title, question_text, postedby_uid)
 insert into answers (postedTimestamp, answer_text, qid, postedby_uid) values ('2012-02-03 00:00:00', 'I''m With You', 1, 2);
 
 -- JobPostings
-insert into jobpostings (date_posted, headline, description, company, location)
-	values(makedate(2011, 32), '.NET Web Developer', 'We have a cool job posting.', 'Supersoft LLC', 'Nashville, TN');
+insert into jobpostings (date_posted, linkedinid, headline, description, company, location_text)
+	values(makedate(2011, 32), 123, '.NET Web Developer', 'We have a cool job posting.', 'Supersoft LLC', 'Nashville, TN');
