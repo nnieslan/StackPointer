@@ -27,6 +27,8 @@ import javax.swing.JOptionPane;
 import stackpointer.common.Location;
 import stackpointer.common.User;
 import stackpointer.googlemaps.GoogleMapsInterface;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.*;
 
 /**
  * This class is to interact with the Linked In API, including retrieval
@@ -42,7 +44,7 @@ public class LinkedInInterface {
 
     
     //Return Closest 10 Jobs to the User
-    public static ArrayList<JobPosting> getJobPostings()
+    public static ArrayList<JobPosting> getJobPostings() throws Exception
     {
         ArrayList<JobPosting> parsedJobs = null;
         JSONObject json = null;   
@@ -69,7 +71,10 @@ public class LinkedInInterface {
         //System.out.print(">>");
         //Verifier verifier = new Verifier(in.nextLine());
         //System.out.println();
-          Verifier verifier = new Verifier(JOptionPane.showInputDialog("Verifier"));
+        String authUrl = service.getAuthorizationUrl(requestToken);
+      
+        Verifier verifier = new Verifier(getVerifier(authUrl));
+        //Verifier verifier = new Verifier(JOptionPane.showInputDialog("Verifier"));
 
         // Trade the Request Token and Verfier for the Access Token
         System.out.println("Trading the Request Token for an Access Token...");
@@ -151,7 +156,7 @@ public class LinkedInInterface {
     }
     
     //Function to update local linkedIn database
-    public boolean updateLocalDatabase()
+    public boolean updateLocalDatabase() throws Exception
     {
         boolean success = false;
         allJobPostings  = getJobPostings();
@@ -203,6 +208,42 @@ public class LinkedInInterface {
         }
         return true;
     }
+    
+    static String getVerifier(String url) throws Exception {
+    
+          String LINKEDIN_USERNAME = JOptionPane.showInputDialog("Login with LinkedIn Username");
+          String LINKEDIN_PASSWORD = JOptionPane.showInputDialog("Enter LinkedIn Password");
+   
+	  final WebClient webClient = new WebClient();
+          webClient.setJavaScriptEnabled(false);
+
+          // Get the first page
+          final HtmlPage page1 = webClient.getPage(url);        
+
+          // Get the form that we are dealing with and within that form,
+          // find the submit button and the field that we want to change.
+          final HtmlForm form = page1.getFormByName("oauthAuthorizeForm");
+
+          final HtmlSubmitInput button = form.getInputByName("authorize");
+          final HtmlTextInput textField = form.getInputByName("session_key");
+          final HtmlPasswordInput textField2 = form.getInputByName("session_password");
+          
+          // Change the value of the text field
+          textField.setValueAttribute(LINKEDIN_USERNAME);
+          textField2.setValueAttribute(LINKEDIN_PASSWORD);
+
+          // Now submit the form by clicking the button and get back the second page.
+          final HtmlPage page2 = button.click();
+
+          // Obtain the 5-digit access code from the returned page
+          String text = page2.asText();
+          int i = 0;
+          while (text.charAt(i)>'9' || text.charAt(i)<'0') i++;
+          String verifier = text.substring(i, i+5);               
+          webClient.closeAllWindows(); 
+ 
+          return verifier;
+      }
     
    //Function to update current values from LinkedIn in local database
    //boolean cleanDatabase()
