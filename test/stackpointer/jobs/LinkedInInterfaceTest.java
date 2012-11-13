@@ -80,7 +80,7 @@ public class LinkedInInterfaceTest {
      * Test of updateLocalDatabase method, of class LinkedInInterface.
      */
     @Test
-    public void testUpdateLocalDatabase() {
+    public void testUpdateLocalDatabase() throws Exception {
         System.out.println("updateLocalDatabase");
         LinkedInInterface instance = new LinkedInInterface();
         boolean expResult = true;
@@ -118,7 +118,7 @@ public class LinkedInInterfaceTest {
      * Test of getJobPostings method, of class LinkedInInterface.
      */
     @Test
-    public void testGetJobPostings() {
+    public void testGetJobPostings() throws Exception {
         System.out.println("getJobPostings");
         LinkedInInterface instance = new LinkedInInterface();
         int expResult = 0;
