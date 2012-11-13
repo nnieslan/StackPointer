@@ -4,7 +4,7 @@
  */
 package stackpointer.stackexchange;
 
-import stackpointer.common.User;
+import stackpointer.common.SXUser;
 
 /**
  *
@@ -12,7 +12,7 @@ import stackpointer.common.User;
  */
 public class Answer {
     int aid; // our internal unique id
-    User answeredBy;
+    SXUser answeredBy;
     String ansText;
     Question answering;
 
@@ -27,11 +27,11 @@ public class Answer {
         this.aid = aid;
     }
     
-    public User getAnsweredBy() {
+    public SXUser getAnsweredBy() {
         return answeredBy;
     }
 
-    public void setAnsweredBy(User answeredBy) {
+    public void setAnsweredBy(SXUser answeredBy) {
         this.answeredBy = answeredBy;
     }
 

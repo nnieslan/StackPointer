@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import stackpointer.common.User;
+import stackpointer.common.SXUser;
 import stackpointer.jobs.JobPosting;
 import stackpointer.stackexchange.Answer;
 import stackpointer.stackexchange.Question;
@@ -90,8 +90,8 @@ public class DatabaseFacadeTest {
         }
 
         @Override
-        public List<User> retrieveUsers() {
-            return new ArrayList<User>();
+        public List<SXUser> retrieveUsers() {
+            return new ArrayList<SXUser>();
         }
         
         @Override
@@ -110,7 +110,7 @@ public class DatabaseFacadeTest {
         }
         
         @Override
-        public boolean addUser(User user) {
+        public boolean addUser(SXUser user) {
             return true;
         }
 
@@ -130,7 +130,7 @@ public class DatabaseFacadeTest {
         }
 
         @Override
-        public boolean updateUser(User user) {
+        public boolean updateUser(SXUser user) {
             return true;
         }
 
@@ -150,7 +150,7 @@ public class DatabaseFacadeTest {
         }
 
         @Override
-        public boolean deleteUser(User user) {
+        public boolean deleteUser(SXUser user) {
             return true;
         }
 

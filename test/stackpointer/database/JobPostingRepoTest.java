@@ -17,11 +17,15 @@ public class JobPostingRepoTest {
     
     private final String AddTestCompany = "DB Test Company";
     private final String AddTestHeadline = "DB Test Headline";
-    private final String AddTestLocation = "DB Test Location";
+    private final String AddTestLocationText = "DB Test Location";
+    private final double AddTestLocationLat = 42.489061;
+    private final double AddTestLocationLon = -83.711014;
     private final String AddTestDescription = "DB Test Description";
     private final String UpdateTestCompany = "DB Test Company 2";
     private final String UpdateTestHeadline = "DB Test Headline 2";
-    private final String UpdateTestLocation = "DB Test Location 2";
+    private final String UpdateTestLocationText = "DB Test Location 2";
+    private final double UpdateTestLocationLat = 12.489061;
+    private final double UpdateTestLocationLon = -43.711014;
     private final String UpdateTestDescription = "DB Test Description 2";
     
     public JobPostingRepoTest() {
@@ -62,7 +66,7 @@ public class JobPostingRepoTest {
         j.setCompany(AddTestCompany);
         j.setDescription(AddTestDescription);
         j.setHeadline(AddTestHeadline);
-        j.setLocation(AddTestLocation);
+        j.setLocationText(AddTestLocationText);
         boolean rowAdded = repo.add(j);
         
         assertTrue("add - record was not added", rowAdded);
@@ -77,7 +81,9 @@ public class JobPostingRepoTest {
         j.setCompany(UpdateTestCompany);
         j.setDescription(UpdateTestDescription);
         j.setHeadline(UpdateTestHeadline);
-        j.setLocation(UpdateTestLocation);
+        j.setLocationText(UpdateTestLocationText);
+        j.setLocationLat(AddTestLocationLat);
+        j.setLocationLon(AddTestLocationLon);
         boolean rowUpdated = repo.update(j);
         
         assertTrue("update - record was not updated", rowUpdated);
@@ -108,8 +114,12 @@ public class JobPostingRepoTest {
                 j.getDescription(), foundJob.getDescription());
         assertEquals("retrieve - headline did not equal",
                 j.getHeadline(), foundJob.getHeadline());
-        assertEquals("retrieve - location did not equal",
-                j.getLocation(), foundJob.getLocation());
+        assertEquals("retrieve - location text did not equal",
+                j.getLocationText(), foundJob.getLocationText());
+        assertEquals("retrieve - location lat did not equal",
+                j.getLocationLat(), foundJob.getLocationLat(), 0.00001);
+        assertEquals("retrieve - location lon did not equal",
+                j.getLocationLon(), foundJob.getLocationLon(), 0.00001);
         
         /******************/
         /***** delete *****/

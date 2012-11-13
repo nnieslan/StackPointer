@@ -15,7 +15,9 @@ public class JobPostingEntity {
     String headline;
     String description;
     String company;
-    String location;
+    String locationText;
+    double locationLat;
+    double locationLon;
 
     public int getJpid() {
         return jpid;
@@ -65,12 +67,28 @@ public class JobPostingEntity {
         this.company = company;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLocationText() {
+        return locationText;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLocationText(String locationText) {
+        this.locationText = locationText;
     }
-    
+
+    public double getLocationLat() {
+        return locationLat;
+    }
+
+    public void setLocationLat(double locationLat) {
+        this.locationLat = locationLat;
+    }
+
+    public double getLocationLon() {
+        return locationLon;
+    }
+
+    public void setLocationLon(double locationLon) {
+        this.locationLon = locationLon;
+    }
+
 }

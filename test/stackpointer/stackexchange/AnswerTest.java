@@ -10,7 +10,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import stackpointer.common.User;
+import stackpointer.common.SXUser;
 
 /**
  *
@@ -47,7 +47,7 @@ public class AnswerTest {
     @Test
     public void testGetAnsweredBy() {
         System.out.println("getAnsweredBy");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question question = new Question();
@@ -57,7 +57,7 @@ public class AnswerTest {
         answer.setAnsweredBy(user);
         answer.setAnsText("Answer Text");
         answer.setAnswering(question);
-        User result = answer.getAnsweredBy();
+        SXUser result = answer.getAnsweredBy();
         assertEquals(user, result);
     }
 
@@ -67,7 +67,7 @@ public class AnswerTest {
     @Test
     public void testSetAnsweredBy() {
         System.out.println("setAnsweredBy");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question question = new Question();
@@ -77,11 +77,11 @@ public class AnswerTest {
         answer.setAnsweredBy(user);
         answer.setAnsText("Answer Text");
         answer.setAnswering(question);
-        User answeredBy = new User();
+        SXUser answeredBy = new SXUser();
         answeredBy.setRealName("Real Name 2");
         answeredBy.setUserName("username2");
         answer.setAnsweredBy(answeredBy);
-        User result = answer.getAnsweredBy();
+        SXUser result = answer.getAnsweredBy();
         assertEquals(answeredBy, result);
     }
 
@@ -91,7 +91,7 @@ public class AnswerTest {
     @Test
     public void testGetAnsText() {
         System.out.println("getAnsText");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question question = new Question();
@@ -113,7 +113,7 @@ public class AnswerTest {
     public void testSetAnsText() {
         System.out.println("setAnsText");
         String ansText = "Next Text";
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question question = new Question();
@@ -134,7 +134,7 @@ public class AnswerTest {
     @Test
     public void testGetAnswering() {
         System.out.println("getAnswering");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question question = new Question();
@@ -154,7 +154,7 @@ public class AnswerTest {
     @Test
     public void testSetAnswering() {
         System.out.println("setAnswering");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question question = new Question();

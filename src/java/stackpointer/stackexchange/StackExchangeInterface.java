@@ -12,7 +12,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import stackpointer.common.Location;
-import stackpointer.common.User;
+import stackpointer.common.SXUser;
 import stackpointer.database.DatabaseConnectionInfo;
 import stackpointer.database.MySQLDatabaseFacade;
 import stackpointer.googlemaps.GoogleMapsInterface;
@@ -63,14 +63,14 @@ public class StackExchangeInterface {
     public static ArrayList<Question> parseQuestionsFromJson(JSONObject json)
     {
         ArrayList<Question> parsed = new ArrayList<Question>();
-        HashMap<Integer, User> owners = new HashMap<Integer, User>();
+        HashMap<Integer, SXUser> owners = new HashMap<Integer, SXUser>();
         try
         {
             JSONArray questions = json.getJSONArray("items");
             for(int q=0; q<questions.length(); q++)
             {
                 JSONObject jQuestion = questions.getJSONObject(q);
-                User owner = parseUserFromJson(jQuestion.getJSONObject("owner"));
+                SXUser owner = parseUserFromJson(jQuestion.getJSONObject("owner"));
                 Question toAdd = new Question();
                 toAdd.setAskedBy(owner);
                 toAdd.setqTitle(jQuestion.getString("title"));
@@ -88,9 +88,9 @@ public class StackExchangeInterface {
         return parsed;
     }
     
-    public static User parseUserFromJson(JSONObject json)
+    public static SXUser parseUserFromJson(JSONObject json)
     {
-        User user = new User();
+        SXUser user = new SXUser();
         try
         {
             user.setSXname(json.getString("display_name"));
@@ -103,10 +103,10 @@ public class StackExchangeInterface {
         return user;
     }
     
-    public static void populateLocations(HashMap<Integer, User> owners)
+    public static void populateLocations(HashMap<Integer, SXUser> owners)
     {
         StringBuilder ownerIds = new StringBuilder();
-        for (User o : owners.values())
+        for (SXUser o : owners.values())
         {
             ownerIds.append(o.getSXid()).append(';'); //semicolon separated list of ids
         }

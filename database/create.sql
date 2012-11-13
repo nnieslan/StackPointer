@@ -18,14 +18,16 @@ drop table if exists splog;
 create table splog (
 	ts timestamp default current_timestamp,
 	message varchar(200) not null
-)
+);
 
 -- SXUsers
 create table sxusers (
 	uid int not null auto_increment,
 	sxid varchar(15) not null unique,
 	display_name varchar(20),
-	location varchar(50),
+	location_text varchar(50),
+	location_lat double,
+	location_lon double,
 	primary key (uid)
 );
 
@@ -58,11 +60,13 @@ create table answers (
 -- JobPostings
 create table jobpostings (
 	jpid int not null auto_increment,
-	linkedinid int not null,
+	linkedinid int not null unique,
 	date_posted date,
 	headline varchar(100),
 	description text,
 	company varchar(30),
-	location varchar(50),
+	location_text varchar(50),
+	location_lat double,
+	location_lon double,
 	primary key (jpid)
 );

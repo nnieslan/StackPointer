@@ -16,7 +16,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import stackpointer.common.Location;
-import stackpointer.common.User;
+import stackpointer.common.SXUser;
 import stackpointer.jobs.JobPosting;
 import stackpointer.stackexchange.Answer;
 import stackpointer.stackexchange.Question;
@@ -81,7 +81,7 @@ public class MySQLDatabaseFacadeTest {
     public void testRetrieveUsers() {
         System.out.println("retrieveUsers");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        List<User> result = instance.retrieveUsers();
+        List<SXUser> result = instance.retrieveUsers();
         assertNotNull(result);
         assertTrue(result.size() >= 0);
     }
@@ -130,7 +130,7 @@ public class MySQLDatabaseFacadeTest {
     public void testAddUser() {
         System.out.println("addUser");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("testUnitCreatedUser");
         user.setUserName("userName");
         // Create some relatively unique fake sx user id
@@ -149,7 +149,7 @@ public class MySQLDatabaseFacadeTest {
     public void testAddQuestion() {
         System.out.println("addQuestion");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("realName");
         user.setUserName("userName");
         user.setUid(1);
@@ -167,7 +167,7 @@ public class MySQLDatabaseFacadeTest {
     public void testAddAnswer() {
         System.out.println("addAnswer");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("realName");
         user.setUserName("userName");
         user.setUid(2);
@@ -206,7 +206,7 @@ public class MySQLDatabaseFacadeTest {
     public void testUpdateUser() {
         System.out.println("updateUser");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("test case user");
         user.setUserName("testCaseUser");
         instance.addUser(user);
@@ -254,7 +254,7 @@ public class MySQLDatabaseFacadeTest {
     public void testDeleteUser() {
         System.out.println("deleteUser");
         MySQLDatabaseFacade instance = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("test case user");
         user.setUserName("testCaseUser");        
         instance.addUser(user);

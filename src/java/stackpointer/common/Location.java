@@ -44,6 +44,14 @@ public class Location {
         this.lat = lat;
         this.lon = lon;
     }
+    
+    public String getLocStr() {
+        return locStr;
+    }
+
+    public void setLocStr(String locStr) {
+        this.locStr = locStr;
+    }
 
     public double getLat() {
         return lat;

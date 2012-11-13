@@ -9,7 +9,7 @@ import java.sql.Statement;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
-import stackpointer.common.User;
+import stackpointer.common.SXUser;
 import stackpointer.jobs.JobPosting;
 import stackpointer.stackexchange.Answer;
 import stackpointer.stackexchange.Question;
@@ -107,8 +107,8 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
      * {@inheritDoc}
      */
     @Override
-    public List<User> retrieveUsers() {
-        List<User> userList = new LinkedList<User>();
+    public List<SXUser> retrieveUsers() {
+        List<SXUser> userList = new LinkedList<SXUser>();
         openConnection();
         
         String queryText =
@@ -125,7 +125,7 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
                     String sxid = results.getString(2);
                     String displayName = results.getString(3);
                     int lid = results.getInt(4);
-                    User user = new User();
+                    SXUser user = new SXUser();
                     user.setUserName(displayName);
                     user.setSXname(sxid);
                     userList.add(user);
@@ -262,7 +262,7 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
      *  {@inheritDoc}
      */
     @Override
-    public boolean addUser(User user) {
+    public boolean addUser(SXUser user) {
         boolean success = false;
         openConnection();
 
@@ -425,7 +425,7 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
      *  {@inheritDoc}
      */
     @Override
-    public boolean updateUser(User user) {
+    public boolean updateUser(SXUser user) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 
@@ -457,7 +457,7 @@ public class MySQLDatabaseFacade implements DatabaseFacade {
      *  {@inheritDoc}
      */
     @Override
-    public boolean deleteUser(User user) {
+    public boolean deleteUser(SXUser user) {
         throw new UnsupportedOperationException("Not supported yet.");
     }
 

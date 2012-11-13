@@ -13,7 +13,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
-import stackpointer.common.User;
+import stackpointer.common.SXUser;
 
 /**
  *
@@ -47,7 +47,7 @@ public class StackExchangeInterfaceTest {
     @Test
     public void testParseUserFromJson() {
         String userJson = "{\"user_id\":1653488,\"display_name\":\"Ngo Ky\",\"reputation\":44,\"user_type\":\"registered\",\"profile_image\":\"http://www.gravatar.com/avatar/78c301f58b30490ff7339dd7f8157d0e?d=identicon&r=PG\",\"link\":\"http://stackoverflow.com/users/1653488/ngo-ky\",\"accept_rate\":83}";
-        User u = null;
+        SXUser u = null;
         try
         {
             u = StackExchangeInterface.parseUserFromJson(new JSONObject(userJson));

@@ -10,7 +10,9 @@ public class UserEntity {
     int uid;
     String sxid;
     String username;
-    String location;
+    String locationText;
+    double locationLat;
+    double locationLon; 
 
     public int getUid() {
         return uid;
@@ -36,12 +38,28 @@ public class UserEntity {
         this.username = username;
     }
 
-    public String getLocation() {
-        return location;
+    public String getLocationText() {
+        return locationText;
     }
 
-    public void setLocation(String location) {
-        this.location = location;
+    public void setLocationText(String locationText) {
+        this.locationText = locationText;
+    }
+
+    public double getLocationLat() {
+        return locationLat;
+    }
+
+    public void setLocationLat(double locationLat) {
+        this.locationLat = locationLat;
+    }
+
+    public double getLocationLon() {
+        return locationLon;
+    }
+
+    public void setLocationLon(double locationLon) {
+        this.locationLon = locationLon;
     }
     
 }

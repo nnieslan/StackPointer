@@ -12,7 +12,7 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import stackpointer.common.User;
+import stackpointer.common.SXUser;
 
 /**
  *
@@ -49,13 +49,13 @@ public class QuestionTest {
     @Test
     public void testGetAskedBy() {
         System.out.println("getAskedBy");
-        User expResult = new User();
+        SXUser expResult = new SXUser();
         expResult.setRealName("Real Name");
         expResult.setUserName("username");
         Question instance = new Question();
         instance.setAskedBy(expResult);
         instance.setqText("Question Text");
-        User result = instance.getAskedBy();
+        SXUser result = instance.getAskedBy();
         assertEquals(expResult, result);
     }
 
@@ -65,17 +65,17 @@ public class QuestionTest {
     @Test
     public void testSetAskedBy() {
         System.out.println("setAskedBy");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("RealName");
         user.setUserName("username");
         Question instance = new Question();
         instance.setAskedBy(user);
         instance.setqText("Question Text");       
-        User askedBy = new User();
+        SXUser askedBy = new SXUser();
         askedBy.setRealName("Real Name");
         askedBy.setUserName("username");
         instance.setAskedBy(askedBy);
-        User result = instance.getAskedBy();
+        SXUser result = instance.getAskedBy();
         assertEquals(askedBy, result);
     }
 
@@ -85,7 +85,7 @@ public class QuestionTest {
     @Test
     public void testGetNumAnswers() {
         System.out.println("getNumAnswers");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question instance = new Question();
@@ -106,7 +106,7 @@ public class QuestionTest {
     @Test
     public void testIsAnswered() {
         System.out.println("isAnswered");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question instance = new Question();
@@ -127,7 +127,7 @@ public class QuestionTest {
     @Test
     public void testGetqText() {
         System.out.println("getqText");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question instance = new Question();
@@ -148,7 +148,7 @@ public class QuestionTest {
     @Test
     public void testSetqText() {
         System.out.println("setqText");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question instance = new Question();
@@ -166,7 +166,7 @@ public class QuestionTest {
     @Test
     public void testGetAnswers() {
         System.out.println("getAnswers");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question instance = new Question();
@@ -183,7 +183,7 @@ public class QuestionTest {
     @Test
     public void testSetAnswers() {
         System.out.println("setAnswers");
-        User user = new User();
+        SXUser user = new SXUser();
         user.setRealName("Real Name");
         user.setUserName("username");
         Question instance = new Question();

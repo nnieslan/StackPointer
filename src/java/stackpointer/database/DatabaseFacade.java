@@ -1,7 +1,7 @@
 package stackpointer.database;
 
 import java.util.List;
-import stackpointer.common.User;
+import stackpointer.common.SXUser;
 import stackpointer.jobs.JobPosting;
 import stackpointer.stackexchange.Answer;
 import stackpointer.stackexchange.Question;
@@ -26,7 +26,7 @@ public interface DatabaseFacade {
      * 
      * @return list of users
      */
-    public List<User> retrieveUsers();
+    public List<SXUser> retrieveUsers();
     
     /**
      * Retrieves a list of questions that have been cached in the database.
@@ -56,7 +56,7 @@ public interface DatabaseFacade {
      * @param user object containing all of the data for the user
      * @return 
      */
-    public boolean addUser(User user);
+    public boolean addUser(SXUser user);
     
     /**
      * Inserts a new question record into the database.
@@ -87,7 +87,7 @@ public interface DatabaseFacade {
      * @return true if the user existed and was successfully updated,
      * otherwise false
      */
-    public boolean updateUser(User user);
+    public boolean updateUser(SXUser user);
     
     /**
      * Updates an existing user in the database
@@ -127,7 +127,7 @@ public interface DatabaseFacade {
      * @return true if the user existed and was successfully deleted,
      * otherwise false
      */
-    public boolean deleteUser(User user);
+    public boolean deleteUser(SXUser user);
     
     /**
      * Deletes an existing question and corresponding answers from the database

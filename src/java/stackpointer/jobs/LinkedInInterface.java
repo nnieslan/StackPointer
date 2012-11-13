@@ -25,7 +25,7 @@ import java.util.Date;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
 import stackpointer.common.Location;
-import stackpointer.common.User;
+import stackpointer.common.SXUser;
 import stackpointer.googlemaps.GoogleMapsInterface;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
@@ -43,7 +43,7 @@ public class LinkedInInterface {
     private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description))";
 
     
-    //Return Closest 10 Jobs to the User
+    //Return Closest 10 Jobs to the SXUser
     public static ArrayList<JobPosting> getJobPostings() throws Exception
     {
         ArrayList<JobPosting> parsedJobs = null;

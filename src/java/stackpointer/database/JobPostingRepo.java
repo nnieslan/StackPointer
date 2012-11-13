@@ -8,8 +8,6 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  * @author Andrew
@@ -65,8 +63,9 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
         if (connection != null) {
             String insertText =
                     "INSERT INTO jobpostings "
-                    + "(date_posted, headline, description, company, location) "
-                    + "VALUES(?, ?, ?, ?, ?)";
+                    + "(date_posted, linkedinid, headline, description, "
+                    + "company, location_text, location_lat, location_lon) "
+                    + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
             PreparedStatement stmt = connection.prepareStatement(
                     insertText, Statement.RETURN_GENERATED_KEYS);
@@ -74,10 +73,13 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
             java.sql.Date postedDate = DBUtils.utilDateToSqlDate(
                     jobPostingEntity.getDatePosted());
             stmt.setDate(1, postedDate);
-            stmt.setString(2, jobPostingEntity.getHeadline());
-            stmt.setString(3, jobPostingEntity.getDescription());
-            stmt.setString(4, jobPostingEntity.getCompany());
-            stmt.setString(5, jobPostingEntity.getLocation());
+            stmt.setInt(2, jobPostingEntity.getLinkedinId());
+            stmt.setString(3, jobPostingEntity.getHeadline());
+            stmt.setString(4, jobPostingEntity.getDescription());
+            stmt.setString(5, jobPostingEntity.getCompany());
+            stmt.setString(6, jobPostingEntity.getLocationText());
+            stmt.setDouble(7, jobPostingEntity.getLocationLat());
+            stmt.setDouble(8, jobPostingEntity.getLocationLon());
             
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
@@ -104,10 +106,13 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
                     "UPDATE jobpostings " +
                     "SET " +
                     "date_posted = ?, " +
+                    "linkedinid = ?, " +
                     "headline = ?, " +
                     "description = ?, " +
                     "company = ?, " +
-                    "location = ? " +
+                    "location_text = ?, " +
+                    "location_lat = ?, " +
+                    "location_lon = ? " +
                     "WHERE jpid = ?";
 
             PreparedStatement stmt = connection.prepareStatement(updateText);
@@ -115,11 +120,14 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
                     jobPostingEntity.getDatePosted());
             
             stmt.setDate(1, postedDate);
-            stmt.setString(2, jobPostingEntity.getHeadline());
-            stmt.setString(3, jobPostingEntity.getDescription());
-            stmt.setString(4, jobPostingEntity.getCompany());
-            stmt.setString(5, jobPostingEntity.getLocation());
-            stmt.setInt(6, jobPostingEntity.getJpid());
+            stmt.setInt(2, jobPostingEntity.getLinkedinId());
+            stmt.setString(3, jobPostingEntity.getHeadline());
+            stmt.setString(4, jobPostingEntity.getDescription());
+            stmt.setString(5, jobPostingEntity.getCompany());
+            stmt.setString(6, jobPostingEntity.getLocationText());
+            stmt.setDouble(7, jobPostingEntity.getLocationLat());
+            stmt.setDouble(8, jobPostingEntity.getLocationLon());
+            stmt.setInt(9, jobPostingEntity.getJpid());
             
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
@@ -165,7 +173,7 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
         
         String queryText =
                 "SELECT jpid, date_posted, headline, description, " +
-                "company, location " +
+                "company, location_text, location_lat, location_lon " +
                 "FROM jobpostings " +
                 "WHERE " + whereClause;
         
@@ -179,14 +187,18 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
                 String headline = results.getString("headline");
                 String description = results.getString("description");
                 String company = results.getString("company");
-                String location = results.getString("location");
+                String locationText = results.getString("location_text");
+                double locationLat = results.getDouble("location_lat");
+                double locationLon = results.getDouble("location_lon");
                 JobPostingEntity jobEntity = new JobPostingEntity();
                 jobEntity.setJpid(jpid);
                 jobEntity.setDatePosted(datePosted);
                 jobEntity.setHeadline(headline);
                 jobEntity.setDescription(description);
                 jobEntity.setCompany(company);
-                jobEntity.setLocation(location);
+                jobEntity.setLocationText(locationText);
+                jobEntity.setLocationLat(locationLat);
+                jobEntity.setLocationLon(locationLon);
                 jobList.add(jobEntity);
             }
         }

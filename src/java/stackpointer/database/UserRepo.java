@@ -29,14 +29,17 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
         if (connection != null) {
             String insertText =
                     "INSERT INTO sxusers "
-                    + "(sxid, display_name, location) "
-                    + "VALUES(?, ?, ?)";
+                    + "(sxid, display_name, location_text, "
+                    + "location_lat, location_lon) "
+                    + "VALUES(?, ?, ?, ?, ?)";
 
             PreparedStatement stmt = connection.prepareStatement(
                     insertText, Statement.RETURN_GENERATED_KEYS);
             stmt.setString(1, userEntity.getSxid());
             stmt.setString(2, userEntity.getUsername());
-            stmt.setString(3, userEntity.getLocation());
+            stmt.setString(3, userEntity.getLocationText());
+            stmt.setDouble(4, userEntity.getLocationLat());
+            stmt.setDouble(5, userEntity.getLocationLon());
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
 
@@ -63,14 +66,18 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
                     "SET " +
                     "sxid = ?, " +
                     "display_name = ?, " +
-                    "location = ? " +
+                    "location_text = ?, " +
+                    "location_lat = ?, " +
+                    "location_lon = ? " +
                     "WHERE uid = ?";
 
             PreparedStatement stmt = connection.prepareStatement(updateText);
             stmt.setString(1, userEntity.getSxid());
             stmt.setString(2, userEntity.getUsername());
-            stmt.setString(3, userEntity.getLocation());
-            stmt.setInt(4, userEntity.getUid());
+            stmt.setString(3, userEntity.getLocationText());
+            stmt.setDouble(4, userEntity.getLocationLat());
+            stmt.setDouble(5, userEntity.getLocationLon());
+            stmt.setInt(6, userEntity.getUid());
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
         }
@@ -127,7 +134,8 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
         }
         
         String queryText =
-                "SELECT uid, sxid, display_name, location " +
+                "SELECT uid, sxid, display_name, location_text, " +
+                "location_lat, location_lon " +
                 "FROM sxusers " +
                 "WHERE " + whereClause;
         
@@ -139,12 +147,16 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
                 int uid = results.getInt("uid");
                 String sxid = results.getString("sxid");
                 String displayName = results.getString("display_name");
-                String location = results.getString("location");
+                String locationText = results.getString("location_text");
+                double locationLat = results.getDouble("location_lat");
+                double locationLon = results.getDouble("location_lon");
                 UserEntity userEntity = new UserEntity();
                 userEntity.setUid(uid);
                 userEntity.setSxid(sxid);
                 userEntity.setUsername(displayName);
-                userEntity.setLocation(location);
+                userEntity.setLocationText(locationText);
+                userEntity.setLocationLat(locationLat);
+                userEntity.setLocationLon(locationLon);
                 userList.add(userEntity);
             }
         }

@@ -5,7 +5,7 @@
 package stackpointer.stackexchange;
 
 import java.util.List;
-import stackpointer.common.User;
+import stackpointer.common.SXUser;
 
 /**
  *
@@ -13,7 +13,7 @@ import stackpointer.common.User;
  */
 public class Question {
     int qid; // our internal unique id
-    User askedBy;
+    SXUser askedBy;
     String qTitle; //the question title
     String qText; //the question text
     List <Answer> answers;
@@ -29,11 +29,11 @@ public class Question {
         this.qid = qid;
     }
 
-    public User getAskedBy() {
+    public SXUser getAskedBy() {
         return askedBy;
     }
 
-    public void setAskedBy(User askedBy) {
+    public void setAskedBy(SXUser askedBy) {
         this.askedBy = askedBy;
     }
 

@@ -18,10 +18,14 @@ public class UserRepoTest {
     
     private final String AddTestSXID = "DBTestSXID";
     private final String AddTestUsername = "DB Test Username";
-    private final String AddTestLocation = "New York, NY";
+    private final String AddTestLocationText = "New York, NY";
+    private final double AddTestLocationLat = 40.73269;
+    private final double AddTestLocationLon = -73.990173; 
     private final String UpdateTestSXID = "DBTestSXID2";
     private final String UpdateTestUsername = "DB Test Username 2";
-    private final String UpdateTestLocation = "Los Angeles, CA";
+    private final String UpdateTestLocationText = "Los Angeles, CA";
+    private final double UpdateTestLocationLat = 34.040143;
+    private final double UpdateTestLocationLon = -118.258209;
     
     public UserRepoTest() {
     }
@@ -58,7 +62,9 @@ public class UserRepoTest {
         
         u.setSxid(AddTestSXID);
         u.setUsername(AddTestUsername);
-        u.setLocation(AddTestLocation);
+        u.setLocationText(AddTestLocationText);
+        u.setLocationLat(AddTestLocationLat);
+        u.setLocationLon(AddTestLocationLon);
         boolean rowAdded = repo.add(u);
         uid = u.getUid();
         
@@ -72,7 +78,9 @@ public class UserRepoTest {
         
         u.setSxid(UpdateTestSXID);
         u.setUsername(UpdateTestUsername);
-        u.setLocation(UpdateTestLocation);
+        u.setLocationText(UpdateTestLocationText);
+        u.setLocationLat(UpdateTestLocationLat);
+        u.setLocationLon(UpdateTestLocationLon);
         boolean rowUpdated = repo.update(u);
         
         assertTrue("update - record was not updated", rowUpdated);
@@ -96,8 +104,12 @@ public class UserRepoTest {
                 expected.getSxid(), UpdateTestSXID);
         assertEquals("retrieve - username not equal",
                 expected.getUsername(), UpdateTestUsername);
-        assertEquals("retrieve - location not equal",
-                expected.getLocation(), UpdateTestLocation);
+        assertEquals("retrieve - location text not equal",
+                expected.getLocationText(), UpdateTestLocationText);
+        assertEquals("retrieve - location lat not equal",
+                expected.getLocationLat(), UpdateTestLocationLat, 0.00001);
+        assertEquals("retrieve - location lon not equal",
+                expected.getLocationLon(), UpdateTestLocationLon, 0.00001);
         
         /******************/
         /***** delete *****/
