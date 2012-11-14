@@ -29,6 +29,15 @@ import stackpointer.common.SXUser;
 import stackpointer.googlemaps.GoogleMapsInterface;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
+import java.awt.GridLayout;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
+
 
 /**
  * This class is to interact with the Linked In API, including retrieval
@@ -211,9 +220,10 @@ public class LinkedInInterface {
     
     static String getVerifier(String url) throws Exception {
     
+      
           String LINKEDIN_USERNAME = JOptionPane.showInputDialog("Login with LinkedIn Username");
           String LINKEDIN_PASSWORD = JOptionPane.showInputDialog("Enter LinkedIn Password");
-   
+
 	  final WebClient webClient = new WebClient();
           webClient.setJavaScriptEnabled(false);
 
