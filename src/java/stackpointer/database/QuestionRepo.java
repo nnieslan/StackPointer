@@ -21,6 +21,40 @@ public class QuestionRepo extends DatabaseRepository<QuestionEntity> {
         super(connection);
     }
     
+    public boolean exists(int sxid) {
+        boolean exists = false;
+        
+        if (sxid <= 0) {
+            return false;
+        }
+        
+        if (connection != null) {
+            String queryText =
+                    "SELECT COUNT(*) " +
+                    "FROM sxusers " +
+                    "WHERE sxid = ? " +
+                    "LIMIT 1";
+            
+            try {
+                PreparedStatement stmt = connection.prepareStatement(queryText);
+                stmt.setInt(1, sxid);
+                
+                ResultSet results = stmt.executeQuery();
+                if (results.next()) {
+                    int numRows = results.getInt(1);
+                    exists = (numRows > 0);
+                } else {
+                    exists = false;
+                }
+            } catch (SQLException ex) {
+                System.err.println(ex);
+                return false;
+            }
+        }
+        
+        return exists;
+    }
+    
     @Override
     public boolean add(QuestionEntity questionEntity) throws SQLException {
         boolean success = false;

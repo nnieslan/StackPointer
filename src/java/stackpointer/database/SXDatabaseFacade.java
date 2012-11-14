@@ -6,7 +6,6 @@ import java.util.List;
 import stackpointer.common.Location;
 import stackpointer.common.SXUser;
 import stackpointer.stackexchange.Question;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * @author Andrew
@@ -38,14 +37,20 @@ public class SXDatabaseFacade {
             return -1;
         }
         
-        QuestionRepo qestionRepo = new QuestionRepo(connection);
+        QuestionRepo questionRepo = new QuestionRepo(connection);
         
         try {
             for (Question question : questionList) {
-                // Skip adding or updating questions that we already have
-                
+                // TODO: add a stackexchagne unique identifer
+                // so that we can determine whether or not the question
+                // already exists
+                QuestionEntity questionEntity = translateToEntity(question);
+                boolean success = questionRepo.add(questionEntity);
+                if (success) {
+                    numAdded++;
+                }
             }
-        } catch (/*SQL*/Exception ex) {
+        } catch (SQLException ex) {
             System.err.println(ex);
             return -1;
         }
@@ -60,7 +65,25 @@ public class SXDatabaseFacade {
      * @return List of questions, limited to 100
      */
     public List<Question> retrieveTop100Questions() {
-        throw new NotImplementedException();
+        QuestionRepo questionRepo = null;
+        List<Question> questionList = null;
+        
+        try {
+            questionRepo = new QuestionRepo(DatabaseConnectionInfo.createDefault());
+            
+            List<QuestionEntity> questionEntities = questionRepo.retrieveLast100();
+            
+            for (QuestionEntity qe : questionEntities) {
+                
+            }
+            
+        } catch (Exception ex) {
+            System.err.println("Failed to retreive top 100 questions.");
+            System.err.println(ex);
+            questionList = null;
+        }
+        
+        return questionList;
     }
     
     /**
@@ -85,6 +108,17 @@ public class SXDatabaseFacade {
         }
         
         return entity;
+    }
+    
+    /**
+     * Translate from a database object to a domain model object.
+     * 
+     * @param questionEntity
+     * @return 
+     */
+    public Question translateToQuestion(QuestionEntity questionEntity) {
+        Question question = new Question();
+        return question;
     }
     
     /**
