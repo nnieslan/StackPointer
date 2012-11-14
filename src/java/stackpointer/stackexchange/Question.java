@@ -4,6 +4,7 @@
  */
 package stackpointer.stackexchange;
 
+import java.util.Date;
 import java.util.List;
 import stackpointer.common.SXUser;
 
@@ -14,6 +15,7 @@ import stackpointer.common.SXUser;
 public class Question {
     int qid; // our internal unique id
     SXUser askedBy;
+    Date postedTimestamp;
     String qTitle; //the question title
     String qText; //the question text
     List <Answer> answers;
@@ -31,6 +33,14 @@ public class Question {
 
     public SXUser getAskedBy() {
         return askedBy;
+    }
+    
+    public Date getPostedTimestamp() {
+        return postedTimestamp;
+    }
+    
+    public void setPostedTimestamp(Date postedTimestamp) {
+        this.postedTimestamp = postedTimestamp;
     }
 
     public void setAskedBy(SXUser askedBy) {

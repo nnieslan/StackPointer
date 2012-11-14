@@ -97,4 +97,22 @@ public class DBUtils {
         }
     }
     
+    public static Connection openConnection(DatabaseConnectionInfo connectionInfo) {
+        Connection connection = null;
+        
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection(
+                    connectionInfo.getUrl(),
+                    connectionInfo.getUsername(),
+                    connectionInfo.getPassword());
+        } catch (ClassNotFoundException ex) {
+            System.err.println("failed to register mysql driver");
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        
+        return connection;
+    }
+    
 }

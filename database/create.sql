@@ -23,7 +23,7 @@ create table splog (
 -- SXUsers
 create table sxusers (
 	uid int not null auto_increment,
-	sxid varchar(15) not null unique,
+	sxid int not null unique,
 	display_name varchar(20),
 	location_text varchar(50),
 	location_lat double,

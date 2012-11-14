@@ -12,18 +12,52 @@ import java.util.Set;
 /**
  * @author Andrew
  */
-public class UserRepo extends DatabaseRepository<UserEntity> {
+public class SXUserRepo extends DatabaseRepository<SXUserEntity> {
 
-    public UserRepo(DatabaseConnectionInfo connectionInfo) throws SQLException {
+    public SXUserRepo(DatabaseConnectionInfo connectionInfo) throws SQLException {
         super(connectionInfo);
     }
 
-    public UserRepo(Connection connection) {
+    public SXUserRepo(Connection connection) {
         super(connection);
+    }
+    
+    public boolean exists(int sxid) {
+        boolean exists = false;
+        
+        if (sxid <= 0) {
+            return false;
+        }
+        
+        if (connection != null) {
+            String queryText =
+                    "SELECT COUNT(*) " +
+                    "FROM sxusers " +
+                    "WHERE sxid = ? " +
+                    "LIMIT 1";
+            
+            try {
+                PreparedStatement stmt = connection.prepareStatement(queryText);
+                stmt.setInt(1, sxid);
+                
+                ResultSet results = stmt.executeQuery();
+                if (results.next()) {
+                    int numRows = results.getInt(1);
+                    exists = (numRows > 0);
+                } else {
+                    exists = false;
+                }
+            } catch (SQLException ex) {
+                System.err.println(ex);
+                return false;
+            }
+        }
+        
+        return exists;
     }
 
     @Override
-    public boolean add(UserEntity userEntity) throws SQLException {
+    public boolean add(SXUserEntity userEntity) throws SQLException {
         boolean success = false;
 
         if (connection != null) {
@@ -35,7 +69,7 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
 
             PreparedStatement stmt = connection.prepareStatement(
                     insertText, Statement.RETURN_GENERATED_KEYS);
-            stmt.setString(1, userEntity.getSxid());
+            stmt.setInt(1, userEntity.getSxid());
             stmt.setString(2, userEntity.getUsername());
             stmt.setString(3, userEntity.getLocationText());
             stmt.setDouble(4, userEntity.getLocationLat());
@@ -57,7 +91,7 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
     }
 
     @Override
-    public boolean update(UserEntity userEntity) throws SQLException {
+    public boolean update(SXUserEntity userEntity) throws SQLException {
         boolean success = false;
 
         if (connection != null) {
@@ -72,7 +106,7 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
                     "WHERE uid = ?";
 
             PreparedStatement stmt = connection.prepareStatement(updateText);
-            stmt.setString(1, userEntity.getSxid());
+            stmt.setInt(1, userEntity.getSxid());
             stmt.setString(2, userEntity.getUsername());
             stmt.setString(3, userEntity.getLocationText());
             stmt.setDouble(4, userEntity.getLocationLat());
@@ -86,7 +120,7 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
     }
 
     @Override
-    public boolean delete(UserEntity userEntity) throws SQLException {
+    public boolean delete(SXUserEntity userEntity) throws SQLException {
         boolean success = false;
 
         if (connection != null) {
@@ -106,7 +140,7 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
         return success;
     }
 
-    public List<UserEntity> retrieve(Set<Integer> userIds) throws SQLException {
+    public List<SXUserEntity> retrieve(Set<Integer> userIds) throws SQLException {
         
         if (userIds == null || userIds.isEmpty()) {
             return null;
@@ -120,13 +154,13 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
         builder.append(")");
         String whereClause = builder.toString();
         
-        List<UserEntity> userList = select(whereClause);
+        List<SXUserEntity> userList = select(whereClause);
         
         return userList;
     }
     
-    private List<UserEntity> select(String whereClause) throws SQLException {
-        List<UserEntity> userList = new ArrayList<UserEntity>();
+    private List<SXUserEntity> select(String whereClause) throws SQLException {
+        List<SXUserEntity> userList = new ArrayList<SXUserEntity>();
         
         // If no where clause is specified, we no query will be made.
         if (whereClause == null || whereClause.isEmpty()) {
@@ -145,12 +179,12 @@ public class UserRepo extends DatabaseRepository<UserEntity> {
 
             while (results.next()) {
                 int uid = results.getInt("uid");
-                String sxid = results.getString("sxid");
+                int sxid = results.getInt("sxid");
                 String displayName = results.getString("display_name");
                 String locationText = results.getString("location_text");
                 double locationLat = results.getDouble("location_lat");
                 double locationLon = results.getDouble("location_lon");
-                UserEntity userEntity = new UserEntity();
+                SXUserEntity userEntity = new SXUserEntity();
                 userEntity.setUid(uid);
                 userEntity.setSxid(sxid);
                 userEntity.setUsername(displayName);

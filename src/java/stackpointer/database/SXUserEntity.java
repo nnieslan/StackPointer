@@ -5,10 +5,10 @@ package stackpointer.database;
  * 
  * This class models a row from the sxusers table in the database.
  */
-public class UserEntity {
+public class SXUserEntity {
 
     int uid;
-    String sxid;
+    int sxid;
     String username;
     String locationText;
     double locationLat;
@@ -22,11 +22,11 @@ public class UserEntity {
         this.uid = uid;
     }
 
-    public String getSxid() {
+    public int getSxid() {
         return sxid;
     }
 
-    public void setSxid(String sxid) {
+    public void setSxid(int sxid) {
         this.sxid = sxid;
     }
 

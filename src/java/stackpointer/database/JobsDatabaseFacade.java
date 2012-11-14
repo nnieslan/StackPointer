@@ -22,24 +22,31 @@ public class JobsDatabaseFacade {
      * New jobs postings are added and existing or duplicates are ignored.
      * 
      * @param jobsList List of job postings, likely retrieved from the API
-     * @return  true of the sync was fully successful, otherwise false
+     * @return the number of new jobs added to the database
      */
-    public boolean syncJobPostings(List<JobPosting> jobsList) {        
+    public int syncJobPostings(List<JobPosting> jobsList) {        
+        int numAdded = 0;
+        
+        if (jobsList == null) {
+            return 0;
+        }
+        
         try {
             for (JobPosting jobPosting : jobsList) {
                 // Skip adding or updating jobs that we already have
                 if (!repo.exists(jobPosting.getLinkedInId())) {
                     JobPostingEntity entity = translateToEntity(jobPosting);
                     repo.add(entity);
+                    numAdded++;
                 }
             }
             
         } catch (SQLException ex) {
             System.err.println(ex);
-            return false;
+            return -1;
         }
 
-        return true;
+        return numAdded;
     }
     
     /**

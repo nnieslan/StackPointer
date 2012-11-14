@@ -1,9 +1,9 @@
 -- SXUsers
-insert into sxusers (sxid, display_name, location_text) values ('sxid1', 'John', 'New York, NY');
-insert into sxusers (sxid, display_name, location_text) values ('sxid2', 'Pete', 'Denver, CO');
-insert into sxusers (sxid, display_name, location_text) values ('sxid3', 'Andy', 'Detroit, MI');
-insert into sxusers (sxid, display_name, location_text) values ('sxid4', 'Suzy', 'Philadelphia, PA');
-insert into sxusers (sxid, display_name, location_text) values ('sxid5', 'Nicole', 'Grand Rapids, MI');
+insert into sxusers (sxid, display_name, location_text) values (1, 'John', 'New York, NY');
+insert into sxusers (sxid, display_name, location_text) values (2, 'Pete', 'Denver, CO');
+insert into sxusers (sxid, display_name, location_text) values (3, 'Andy', 'Detroit, MI');
+insert into sxusers (sxid, display_name, location_text) values (4, 'Suzy', 'Philadelphia, PA');
+insert into sxusers (sxid, display_name, location_text) values (5, 'Nicole', 'Grand Rapids, MI');
 
 -- Questions
 insert into questions (postedTimestamp, title, question_text, postedby_uid)
