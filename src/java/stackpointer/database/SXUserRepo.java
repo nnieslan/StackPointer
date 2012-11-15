@@ -22,10 +22,10 @@ public class SXUserRepo extends DatabaseRepository<SXUserEntity> {
         super(connection);
     }
     
-    public boolean exists(int sxid) {
+    public boolean exists(int uid) {
         boolean exists = false;
         
-        if (sxid <= 0) {
+        if (uid <= 0) {
             return false;
         }
         
@@ -33,12 +33,12 @@ public class SXUserRepo extends DatabaseRepository<SXUserEntity> {
             String queryText =
                     "SELECT COUNT(*) " +
                     "FROM sxusers " +
-                    "WHERE sxid = ? " +
+                    "WHERE uid = ? " +
                     "LIMIT 1";
             
             try {
                 PreparedStatement stmt = connection.prepareStatement(queryText);
-                stmt.setInt(1, sxid);
+                stmt.setInt(1, uid);
                 
                 ResultSet results = stmt.executeQuery();
                 if (results.next()) {
@@ -60,31 +60,33 @@ public class SXUserRepo extends DatabaseRepository<SXUserEntity> {
     public boolean add(SXUserEntity userEntity) throws SQLException {
         boolean success = false;
 
+        if (userEntity == null || userEntity.getUid() <= 0) {
+            return false;
+        }
+        
         if (connection != null) {
             String insertText =
                     "INSERT INTO sxusers "
-                    + "(sxid, display_name, location_text, "
+                    + "(uid, display_name, location_text, "
                     + "location_lat, location_lon) "
                     + "VALUES(?, ?, ?, ?, ?)";
 
-            PreparedStatement stmt = connection.prepareStatement(
-                    insertText, Statement.RETURN_GENERATED_KEYS);
-            stmt.setInt(1, userEntity.getSxid());
+            PreparedStatement stmt = connection.prepareStatement(insertText);
+            
+            stmt.setInt(1, userEntity.getUid());
             stmt.setString(2, userEntity.getUsername());
-            stmt.setString(3, userEntity.getLocationText());
+            
+            if (userEntity.getLocationText() == null || userEntity.getLocationText().isEmpty()) {
+              stmt.setNull(3, java.sql.Types.INTEGER);
+            } else {
+                stmt.setString(3, userEntity.getLocationText());
+            }
+            
             stmt.setDouble(4, userEntity.getLocationLat());
             stmt.setDouble(5, userEntity.getLocationLon());
+            
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
-
-            // Grab the id and store it on the user
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                int uid = rs.getInt(1);
-                userEntity.setUid(uid);
-            } else {
-                userEntity.setUid(0);
-            }
         }
         
         return success;
@@ -98,7 +100,6 @@ public class SXUserRepo extends DatabaseRepository<SXUserEntity> {
             String updateText =
                     "UPDATE sxusers " +
                     "SET " +
-                    "sxid = ?, " +
                     "display_name = ?, " +
                     "location_text = ?, " +
                     "location_lat = ?, " +
@@ -106,12 +107,11 @@ public class SXUserRepo extends DatabaseRepository<SXUserEntity> {
                     "WHERE uid = ?";
 
             PreparedStatement stmt = connection.prepareStatement(updateText);
-            stmt.setInt(1, userEntity.getSxid());
-            stmt.setString(2, userEntity.getUsername());
-            stmt.setString(3, userEntity.getLocationText());
-            stmt.setDouble(4, userEntity.getLocationLat());
-            stmt.setDouble(5, userEntity.getLocationLon());
-            stmt.setInt(6, userEntity.getUid());
+            stmt.setString(1, userEntity.getUsername());
+            stmt.setString(2, userEntity.getLocationText());
+            stmt.setDouble(3, userEntity.getLocationLat());
+            stmt.setDouble(4, userEntity.getLocationLon());
+            stmt.setInt(5, userEntity.getUid());
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
         }
@@ -168,7 +168,7 @@ public class SXUserRepo extends DatabaseRepository<SXUserEntity> {
         }
         
         String queryText =
-                "SELECT uid, sxid, display_name, location_text, " +
+                "SELECT uid, display_name, location_text, " +
                 "location_lat, location_lon " +
                 "FROM sxusers " +
                 "WHERE " + whereClause;
@@ -179,14 +179,12 @@ public class SXUserRepo extends DatabaseRepository<SXUserEntity> {
 
             while (results.next()) {
                 int uid = results.getInt("uid");
-                int sxid = results.getInt("sxid");
                 String displayName = results.getString("display_name");
                 String locationText = results.getString("location_text");
                 double locationLat = results.getDouble("location_lat");
                 double locationLon = results.getDouble("location_lon");
                 SXUserEntity userEntity = new SXUserEntity();
                 userEntity.setUid(uid);
-                userEntity.setSxid(sxid);
                 userEntity.setUsername(displayName);
                 userEntity.setLocationText(locationText);
                 userEntity.setLocationLat(locationLat);

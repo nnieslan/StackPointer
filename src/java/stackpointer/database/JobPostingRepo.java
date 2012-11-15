@@ -22,10 +22,10 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
         super(connection);
     }
     
-    public boolean exists(int linkedInId) {
+    public boolean exists(int jpid) {
         boolean exists = false;
         
-        if (linkedInId <= 0) {
+        if (jpid <= 0) {
             return false;
         }
         
@@ -33,12 +33,12 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
             String queryText =
                     "SELECT COUNT(*) " +
                     "FROM jobpostings " +
-                    "WHERE linkedinid = ? " +
+                    "WHERE jpid = ? " +
                     "LIMIT 1";
             
             try {
                 PreparedStatement stmt = connection.prepareStatement(queryText);
-                stmt.setInt(1, linkedInId);
+                stmt.setInt(1, jpid);
                 
                 ResultSet results = stmt.executeQuery();
                 if (results.next()) {
@@ -63,17 +63,16 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
         if (connection != null) {
             String insertText =
                     "INSERT INTO jobpostings "
-                    + "(date_posted, linkedinid, headline, description, "
+                    + "(jpid, date_posted, headline, description, "
                     + "company, location_text, location_lat, location_lon) "
                     + "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
 
-            PreparedStatement stmt = connection.prepareStatement(
-                    insertText, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement stmt = connection.prepareStatement(insertText);
             
             java.sql.Date postedDate = DBUtils.utilDateToSqlDate(
                     jobPostingEntity.getDatePosted());
-            stmt.setDate(1, postedDate);
-            stmt.setInt(2, jobPostingEntity.getLinkedinId());
+            stmt.setInt(1, jobPostingEntity.getJpid());
+            stmt.setDate(2, postedDate);
             stmt.setString(3, jobPostingEntity.getHeadline());
             stmt.setString(4, jobPostingEntity.getDescription());
             stmt.setString(5, jobPostingEntity.getCompany());
@@ -83,15 +82,6 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
             
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
-
-            // Grab the id and store it on the job posting
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                int uid = rs.getInt(1);
-                jobPostingEntity.setJpid(uid);
-            } else {
-                jobPostingEntity.setJpid(0);
-            }
         }
         
         return success;
@@ -106,7 +96,6 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
                     "UPDATE jobpostings " +
                     "SET " +
                     "date_posted = ?, " +
-                    "linkedinid = ?, " +
                     "headline = ?, " +
                     "description = ?, " +
                     "company = ?, " +
@@ -120,14 +109,13 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
                     jobPostingEntity.getDatePosted());
             
             stmt.setDate(1, postedDate);
-            stmt.setInt(2, jobPostingEntity.getLinkedinId());
-            stmt.setString(3, jobPostingEntity.getHeadline());
-            stmt.setString(4, jobPostingEntity.getDescription());
-            stmt.setString(5, jobPostingEntity.getCompany());
-            stmt.setString(6, jobPostingEntity.getLocationText());
-            stmt.setDouble(7, jobPostingEntity.getLocationLat());
-            stmt.setDouble(8, jobPostingEntity.getLocationLon());
-            stmt.setInt(9, jobPostingEntity.getJpid());
+            stmt.setString(2, jobPostingEntity.getHeadline());
+            stmt.setString(3, jobPostingEntity.getDescription());
+            stmt.setString(4, jobPostingEntity.getCompany());
+            stmt.setString(5, jobPostingEntity.getLocationText());
+            stmt.setDouble(6, jobPostingEntity.getLocationLat());
+            stmt.setDouble(7, jobPostingEntity.getLocationLon());
+            stmt.setInt(8, jobPostingEntity.getJpid());
             
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
@@ -135,7 +123,13 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
         
         return success;
     }
-
+    
+    public boolean delete(int jpid) throws SQLException {
+        JobPostingEntity jobPostingEntity = new JobPostingEntity();
+        jobPostingEntity.setJpid(jpid);
+        return delete(jobPostingEntity);
+    }
+    
     @Override
     public boolean delete(JobPostingEntity jobPostingEntity) throws SQLException {
         boolean success = false;

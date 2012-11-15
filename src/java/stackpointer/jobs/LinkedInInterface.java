@@ -20,7 +20,6 @@ import org.scribe.model.*;
 import org.scribe.oauth.*;
 import stackpointer.common.Location;
 import stackpointer.database.DatabaseConnectionInfo;
-import stackpointer.database.MySQLDatabaseFacade;
 import java.util.Date;
 import java.util.HashMap;
 import javax.swing.JOptionPane;
@@ -30,6 +29,7 @@ import stackpointer.googlemaps.GoogleMapsInterface;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import java.awt.GridLayout;
+import java.sql.SQLException;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -37,6 +37,9 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import stackpointer.database.DBUtils;
+import stackpointer.database.JobsDatabaseFacade;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
 /**
@@ -47,7 +50,6 @@ import javax.swing.SwingConstants;
 public class LinkedInInterface {
     private boolean connected;
     private ArrayList<JobPosting> allJobPostings;
-    MySQLDatabaseFacade db = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
     //   private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs,facets)?facet=location,us:100";
     private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description))";
 
@@ -168,18 +170,14 @@ public class LinkedInInterface {
     public boolean updateLocalDatabase() throws Exception
     {
         boolean success = false;
+        JobsDatabaseFacade db = new JobsDatabaseFacade();
         allJobPostings  = getJobPostings();
+        
         if(allJobPostings!=null)
         {
             if(!allJobPostings.isEmpty())
             {
-                for(JobPosting j:allJobPostings)
-                {
-                    if(db.addJobPosting(j)==false)
-                    {
-                        System.out.println("Error saving jobs "+j);
-                    }
-                }
+                int numAdded = db.syncJobPostings(allJobPostings);
                 success = true;
             }
         }
@@ -189,12 +187,22 @@ public class LinkedInInterface {
     //Get the local copies of the top JobPostings
     public boolean retrieveJobPostings()
     {
-        List<JobPosting> j = db.retrieveJobPostings();
+        List<JobPosting> j = null;
+        
+        try {
+            JobsDatabaseFacade db = new JobsDatabaseFacade();
+            j = db.retrieveAllJobPostings();
+        } catch (SQLException ex) {
+            System.err.println(ex);
+            return false;
+        }
+        
         if(j != null && !j.isEmpty())
         {   
             allJobPostings.clear();
             allJobPostings.addAll(j);
         }
+        
         return true;
     }
     
@@ -208,14 +216,15 @@ public class LinkedInInterface {
     //Update the local copies of the top 100 questions
     public boolean updateJobPostings()
     {
-        List<JobPosting> j = db.retrieveJobPostings();
-        if(j != null && !j.isEmpty())
-        {
-        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
-        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
-        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
-        }
-        return true;
+//        List<JobPosting> j = db.retrieveJobPostings();
+//        if(j != null && !j.isEmpty())
+//        {
+//        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+//        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+//        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+//        }
+//        return true;
+        throw new NotImplementedException();
     }
     
     static String getVerifier(String url) throws Exception {

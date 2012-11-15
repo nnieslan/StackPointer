@@ -17,6 +17,7 @@ import org.junit.Test;
  */
 public class AnswerRepoTest {
     
+    private final int TestAid = 123;
     private final int TestQid = 1;
     private final int TestUserId = 1;
     private final String AddTestText = "DB Test answer text";
@@ -56,6 +57,7 @@ public class AnswerRepoTest {
         System.out.println("add");
         
         // we'll assume the database is not empty for associated data
+        a.setAid(TestAid);
         a.setAssociatedQid(TestQid);
         a.setPostedByUserId(TestUserId);
         a.setText(AddTestText);
@@ -63,7 +65,6 @@ public class AnswerRepoTest {
         boolean rowAdded = repo.add(a);
         
         assertTrue("add - record was not added", rowAdded);
-        assertTrue("add - aid was not retrieved", a.getAid() > 0);
         
         /******************/
         /***** update *****/

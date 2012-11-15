@@ -8,7 +8,6 @@ import stackpointer.common.Location;
  * @author Phil
  */
 public class JobPosting {
-    int jpid; // // our internal unique id
     int linkedInId;
     Location loc;
     Date datePosted;
@@ -27,14 +26,6 @@ public class JobPosting {
         this.headline = headline;
         this.description = description;
         this.company = company;
-    }
-
-    public int getJpid() {
-        return jpid;
-    }
-    
-    public void setJpid(int jpid) {
-        this.jpid = jpid;
     }
     
     public Location getLoc() {

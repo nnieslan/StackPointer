@@ -16,12 +16,11 @@ import org.junit.Test;
  */
 public class SXUserRepoTest {
     
-    private final int AddTestSXID = 123;
+    private final int AddTestUid = 123;
     private final String AddTestUsername = "DB Test Username";
     private final String AddTestLocationText = "New York, NY";
     private final double AddTestLocationLat = 40.73269;
     private final double AddTestLocationLon = -73.990173; 
-    private final int UpdateTestSXID = 456;
     private final String UpdateTestUsername = "DB Test Username 2";
     private final String UpdateTestLocationText = "Los Angeles, CA";
     private final double UpdateTestLocationLat = 34.040143;
@@ -51,7 +50,6 @@ public class SXUserRepoTest {
      */
     @Test    
     public void testAddUpdateRetrieveDelete() throws Exception {
-        int uid = 0;
         SXUserEntity u = new SXUserEntity();                
         SXUserRepo repo = new SXUserRepo(DatabaseConnectionInfo.createDefault());
         
@@ -60,13 +58,12 @@ public class SXUserRepoTest {
         /******************/
         System.out.println("add");
         
-        u.setSxid(AddTestSXID);
+        u.setUid(AddTestUid);
         u.setUsername(AddTestUsername);
         u.setLocationText(AddTestLocationText);
         u.setLocationLat(AddTestLocationLat);
         u.setLocationLon(AddTestLocationLon);
         boolean rowAdded = repo.add(u);
-        uid = u.getUid();
         
         assertTrue("add - record was not added", rowAdded);
         assertTrue("add - uid was not retrieved", u.getUid() > 0);
@@ -76,7 +73,6 @@ public class SXUserRepoTest {
         /******************/
         System.out.println("update");
         
-        u.setSxid(UpdateTestSXID);
         u.setUsername(UpdateTestUsername);
         u.setLocationText(UpdateTestLocationText);
         u.setLocationLat(UpdateTestLocationLat);
@@ -91,7 +87,7 @@ public class SXUserRepoTest {
         System.out.println("retreive");
         
         Set<Integer> userIds = new HashSet<Integer>();
-        userIds.add(uid);
+        userIds.add(u.getUid());
         List<SXUserEntity> userList = repo.retrieve(userIds);
         
         assertNotNull("retrieve - userList is null", userList);
@@ -99,9 +95,7 @@ public class SXUserRepoTest {
         
         SXUserEntity expected = userList.get(0);
         assertEquals("retrieve - uid not equal",
-                expected.getUid(), uid);
-        assertEquals("retrieve - sxid not equal",
-                expected.getSxid(), UpdateTestSXID);
+                expected.getUid(), u.getUid());
         assertEquals("retrieve - username not equal",
                 expected.getUsername(), UpdateTestUsername);
         assertEquals("retrieve - location text not equal",

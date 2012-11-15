@@ -30,29 +30,22 @@ public class AnswerRepo extends DatabaseRepository<AnswerEntity> {
         if (connection != null) {
             String insertText =
                     "INSERT INTO answers "
-                    + "(postedTimestamp, answer_text, qid, postedby_uid) "
-                    + "VALUES(?, ?, ?, ?)";
+                    + "(aid, postedTimestamp, answer_text, qid, postedby_uid) "
+                    + "VALUES(?, ?, ?, ?, ?)";
 
-            PreparedStatement stmt = connection.prepareStatement(
-                    insertText, Statement.RETURN_GENERATED_KEYS);
+            PreparedStatement stmt = connection.prepareStatement(insertText);
+            
             java.sql.Timestamp postedTimestamp = DBUtils.utilDateToSqlTimestamp(
                     answerEntity.getPostedTimestamp());
-            stmt.setTimestamp(1, postedTimestamp);
-            stmt.setString(2, answerEntity.getText());
-            stmt.setInt(3, answerEntity.getAssociatedQid());
-            stmt.setInt(4, answerEntity.getPostedByUserId());
+            
+            stmt.setInt(1, answerEntity.getAid());
+            stmt.setTimestamp(2, postedTimestamp);
+            stmt.setString(3, answerEntity.getText());
+            stmt.setInt(4, answerEntity.getAssociatedQid());
+            stmt.setInt(5, answerEntity.getPostedByUserId());
             
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
-
-            // Grab the id and store it on the answer
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                int qid = rs.getInt(1);
-                answerEntity.setAid(qid);
-            } else {
-                answerEntity.setAid(0);
-            }
         }
         
         return success;

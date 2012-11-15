@@ -5,6 +5,7 @@
     Author     : Phil
 --%>
 
+<%@page import="stackpointer.database.SXDatabaseFacade"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="stackpointer.googlemaps.GoogleMapsInterface"%>
 <%@page import="stackpointer.stackexchange.Question"%>
@@ -12,8 +13,6 @@
 <%@page import="java.util.List"%>
 <%@page import="stackpointer.stackexchange.Question"%>
 <%@page import="stackpointer.database.DatabaseConnectionInfo"%>
-<%@page import="stackpointer.database.MySQLDatabaseFacade"%>
-<%@page import="stackpointer.database.DatabaseFacade"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -106,10 +105,8 @@ function loadData() {
         <center>
             <span id="questions">
                 <%
-                    DatabaseConnectionInfo connectionInfo = DatabaseConnectionInfo.createDefault();
-                    System.out.println(connectionInfo);
-                    DatabaseFacade databaseFacade = new MySQLDatabaseFacade(connectionInfo);
-                    List<Question> questionList = databaseFacade.retrieveQuestions();
+                    SXDatabaseFacade databaseFacade = new SXDatabaseFacade();
+                    List<Question> questionList = databaseFacade.retrieveTop100Questions();
                     int idx = 1;
                     for (Question question : questionList) {
                         out.println(String.format("%d.  %s <br>", idx, question.getqText()));

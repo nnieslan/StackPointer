@@ -4,6 +4,8 @@
     Author     : Joe
 --%>
 
+<%@page import="stackpointer.database.JobsDatabaseFacade"%>
+<%@page import="org.apache.bcel.generic.AALOAD"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="stackpointer.googlemaps.GoogleMapsInterface"%>
 <%@page import="stackpointer.jobs.JobPosting"%>
@@ -12,8 +14,6 @@
 <%@page import="java.util.List"%>
 <%@page import="stackpointer.jobs.JobPosting"%>
 <%@page import="stackpointer.database.DatabaseConnectionInfo"%>
-<%@page import="stackpointer.database.MySQLDatabaseFacade"%>
-<%@page import="stackpointer.database.DatabaseFacade"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -86,10 +86,8 @@
         <center>
             <span id="jobs">
                 <%
-                    DatabaseConnectionInfo connectionInfo = DatabaseConnectionInfo.createDefault();
-                    System.out.println(connectionInfo);
-                    DatabaseFacade databaseFacade = new MySQLDatabaseFacade(connectionInfo);
-                    List<JobPosting> jobsList = databaseFacade.retrieveJobPostings();
+                    JobsDatabaseFacade databaseFacade = new JobsDatabaseFacade();
+                    List<JobPosting> jobsList = databaseFacade.retrieveAllJobPostings();
                     int idx = 1;
                     for (JobPosting job : jobsList) {
                         out.println(String.format("%d.  %s <br>", idx, job.getjobText()));

@@ -19,7 +19,6 @@ public class SXUser {
     String userName;
     String SXname; //stack exchange display name
     int SXid; //stack exchange uid
-    int uid; // our internal unique id
     Location loc;
     Set<SXUser> following;
     List<Question> asked = new ArrayList<Question>();
@@ -58,14 +57,6 @@ public class SXUser {
 
     public void setSXid(int SXid) {
         this.SXid = SXid;
-    }
-    
-    public int getUid() {
-        return uid;
-    }
-    
-    public void setUid(int uid) {
-        this.uid = uid;
     }
 
     public Location getLoc() {

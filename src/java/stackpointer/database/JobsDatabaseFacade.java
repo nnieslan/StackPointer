@@ -13,6 +13,10 @@ public class JobsDatabaseFacade {
 
     private JobPostingRepo repo = null;
     
+    public JobsDatabaseFacade(DatabaseConnectionInfo connectionInfo) throws SQLException {
+        repo = new JobPostingRepo(connectionInfo);
+    }
+    
     public JobsDatabaseFacade() throws SQLException {
         repo = new JobPostingRepo(DatabaseConnectionInfo.createDefault());
     }
@@ -45,6 +49,9 @@ public class JobsDatabaseFacade {
             System.err.println(ex);
             return -1;
         }
+        
+        String message = String.format("%d jobs added to the database", numAdded);
+        DBUtils.logMessageToDatabase(message);
 
         return numAdded;
     }
@@ -83,8 +90,7 @@ public class JobsDatabaseFacade {
     private JobPostingEntity translateToEntity(JobPosting jobPosting) {
         JobPostingEntity entity = new JobPostingEntity();
         
-        entity.setJpid(jobPosting.getJpid());
-        entity.setLinkedinId(jobPosting.getLinkedInId());
+        entity.setJpid(jobPosting.getLinkedInId());
         entity.setDatePosted(jobPosting.getDatePosted());
         entity.setHeadline(jobPosting.getLoc().toString());
         entity.setCompany(jobPosting.getCompany());
@@ -112,8 +118,7 @@ public class JobsDatabaseFacade {
      */
     private JobPosting translateToJobPosting(JobPostingEntity entity) {
         JobPosting jobPosting = new JobPosting();
-        jobPosting.setJpid(entity.getJpid());
-        jobPosting.setLinkedInId(entity.getLinkedinId());
+        jobPosting.setLinkedInId(entity.getJpid());
         jobPosting.setDatePosted(entity.getDatePosted());
         jobPosting.setHeadline(entity.getHeadline());
         jobPosting.setCompany(entity.getCompany());

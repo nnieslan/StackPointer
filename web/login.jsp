@@ -12,8 +12,6 @@
 <%@page import="java.util.List"%>
 <%@page import="stackpointer.stackexchange.Question"%>
 <%@page import="stackpointer.database.DatabaseConnectionInfo"%>
-<%@page import="stackpointer.database.MySQLDatabaseFacade"%>
-<%@page import="stackpointer.database.DatabaseFacade"%>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>

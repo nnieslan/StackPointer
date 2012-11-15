@@ -8,7 +8,6 @@ package stackpointer.database;
 public class SXUserEntity {
 
     int uid;
-    int sxid;
     String username;
     String locationText;
     double locationLat;
@@ -20,14 +19,6 @@ public class SXUserEntity {
 
     public void setUid(int uid) {
         this.uid = uid;
-    }
-
-    public int getSxid() {
-        return sxid;
-    }
-
-    public void setSxid(int sxid) {
-        this.sxid = sxid;
     }
 
     public String getUsername() {

@@ -21,23 +21,23 @@ public class QuestionRepo extends DatabaseRepository<QuestionEntity> {
         super(connection);
     }
     
-    public boolean exists(int sxid) {
+    public boolean exists(int qid) {
         boolean exists = false;
         
-        if (sxid <= 0) {
+        if (qid <= 0) {
             return false;
         }
         
         if (connection != null) {
             String queryText =
                     "SELECT COUNT(*) " +
-                    "FROM sxusers " +
-                    "WHERE sxid = ? " +
+                    "FROM questions " +
+                    "WHERE qid = ? " +
                     "LIMIT 1";
             
             try {
                 PreparedStatement stmt = connection.prepareStatement(queryText);
-                stmt.setInt(1, sxid);
+                stmt.setInt(1, qid);
                 
                 ResultSet results = stmt.executeQuery();
                 if (results.next()) {
@@ -62,29 +62,37 @@ public class QuestionRepo extends DatabaseRepository<QuestionEntity> {
         if (connection != null) {
             String insertText =
                     "INSERT INTO questions "
-                    + "(postedTimestamp, title, question_text, postedby_uid) "
-                    + "VALUES(?, ?, ?, ?)";
+                    + "(qid, postedTimestamp, title, question_text, postedby_uid) "
+                    + "VALUES(?, ?, ?, ?, ?)";
 
-            PreparedStatement stmt = connection.prepareStatement(
-                    insertText, Statement.RETURN_GENERATED_KEYS);
-            java.sql.Timestamp postedTimestamp = DBUtils.utilDateToSqlTimestamp(
+            PreparedStatement stmt = connection.prepareStatement(insertText);
+            
+            stmt.setInt(1, questionEntity.getQid());
+            
+            if (questionEntity.getPostedTimestamp() == null) {
+                stmt.setNull(2, java.sql.Types.TIMESTAMP);
+            } else {
+                java.sql.Timestamp postedTimestamp = DBUtils.utilDateToSqlTimestamp(
                     questionEntity.getPostedTimestamp());
-            stmt.setTimestamp(1, postedTimestamp);
-            stmt.setString(2, questionEntity.getTitle());
-            stmt.setString(3, questionEntity.getText());
-            stmt.setInt(4, questionEntity.getPostedByUserId());
+                stmt.setTimestamp(2, postedTimestamp);
+            }
+            
+            if (questionEntity.getTitle() == null) {
+                stmt.setNull(3, java.sql.Types.VARCHAR);
+            } else {
+                stmt.setString(3, questionEntity.getTitle());
+            }
+            
+            if (questionEntity.getText() == null) {
+                stmt.setNull(4, java.sql.Types.VARCHAR);
+            } else {
+                stmt.setString(4, questionEntity.getText());
+            }
+            
+            stmt.setInt(5, questionEntity.getPostedByUserId());
             
             int rowsModified = stmt.executeUpdate();
             success = (rowsModified == 1);
-
-            // Grab the id and store it on the question
-            ResultSet rs = stmt.getGeneratedKeys();
-            if (rs.next()) {
-                int qid = rs.getInt(1);
-                questionEntity.setQid(qid);
-            } else {
-                questionEntity.setQid(0);
-            }
         }
         
         return success;
@@ -120,6 +128,12 @@ public class QuestionRepo extends DatabaseRepository<QuestionEntity> {
         return success;
     }
 
+    public boolean delete(int qid) throws SQLException {
+        QuestionEntity questionEntity = new QuestionEntity();
+        questionEntity.setQid(qid);
+        return delete(questionEntity);
+    }
+    
     @Override
     public boolean delete(QuestionEntity questionEntity) throws SQLException {
         boolean success = false;

@@ -39,7 +39,6 @@ public class QuestionRepoTest {
      */
     @Test
     public void testAddUpdateDelete() throws Exception {
-        int qid = 0;
         QuestionEntity q = new QuestionEntity();                
         QuestionRepo repo = new QuestionRepo(
                 DatabaseConnectionInfo.createDefault());
@@ -49,6 +48,7 @@ public class QuestionRepoTest {
         /******************/
         System.out.println("add");
         
+        q.setQid(123);
         q.setPostedByUserId(1);
         q.setPostedTimestamp(new Date());
         q.setTitle("DB Test Question Title");
@@ -56,7 +56,6 @@ public class QuestionRepoTest {
         boolean rowAdded = repo.add(q);
         
         assertTrue("add - record was not added", rowAdded);
-        assertTrue("add - qid was not retrieved", q.getQid() > 0);
         
         /******************/
         /***** update *****/
@@ -91,6 +90,7 @@ public class QuestionRepoTest {
         QuestionRepo repo = new QuestionRepo(
                 DatabaseConnectionInfo.createDefault());
         List<QuestionEntity> questionList = repo.retrieveLast100();
+        
         assertNotNull(questionList);
         assertTrue(questionList.size() >= 0);
         assertTrue(questionList.size() <= 100);

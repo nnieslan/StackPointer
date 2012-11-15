@@ -15,6 +15,7 @@ import org.junit.Test;
  */
 public class JobPostingRepoTest {
     
+    private final int AddTestJpid = 123;
     private final String AddTestCompany = "DB Test Company";
     private final String AddTestHeadline = "DB Test Headline";
     private final String AddTestLocationText = "DB Test Location";
@@ -62,6 +63,7 @@ public class JobPostingRepoTest {
         /******************/
         System.out.println("add");
         
+        j.setJpid(AddTestJpid);
         j.setDatePosted(new Date());
         j.setCompany(AddTestCompany);
         j.setDescription(AddTestDescription);
@@ -70,7 +72,6 @@ public class JobPostingRepoTest {
         boolean rowAdded = repo.add(j);
         
         assertTrue("add - record was not added", rowAdded);
-        assertTrue("add - uid was not retrieved", j.getJpid() > 0);
         
         /******************/
         /***** update *****/

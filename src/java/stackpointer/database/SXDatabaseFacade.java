@@ -2,6 +2,7 @@ package stackpointer.database;
 
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import stackpointer.common.Location;
 import stackpointer.common.SXUser;
@@ -41,9 +42,15 @@ public class SXDatabaseFacade {
         
         try {
             for (Question question : questionList) {
-                // TODO: add a stackexchagne unique identifer
-                // so that we can determine whether or not the question
-                // already exists
+                
+                if (question == null || question.getQid() <= 0) {
+                    // skip invalid questions
+                    continue;
+                } else if (questionRepo.exists(question.getQid())) {
+                    // skip existing questions
+                    continue;
+                }
+                
                 QuestionEntity questionEntity = translateToEntity(question);
                 boolean success = questionRepo.add(questionEntity);
                 if (success) {
@@ -51,9 +58,14 @@ public class SXDatabaseFacade {
                 }
             }
         } catch (SQLException ex) {
+            String message = String.format("%d questions added to the database before failing", numAdded);
+            DBUtils.logMessageToDatabase(message);
             System.err.println(ex);
             return -1;
         }
+        
+        String message = String.format("%d questions added to the database", numAdded);
+        DBUtils.logMessageToDatabase(message);
         
         return numAdded;
     }
@@ -66,7 +78,7 @@ public class SXDatabaseFacade {
      */
     public List<Question> retrieveTop100Questions() {
         QuestionRepo questionRepo = null;
-        List<Question> questionList = null;
+        List<Question> questionList = new ArrayList<Question>();
         
         try {
             questionRepo = new QuestionRepo(DatabaseConnectionInfo.createDefault());
@@ -74,7 +86,8 @@ public class SXDatabaseFacade {
             List<QuestionEntity> questionEntities = questionRepo.retrieveLast100();
             
             for (QuestionEntity qe : questionEntities) {
-                
+                Question q = translateToQuestion(qe);
+                questionList.add(q);
             }
             
         } catch (Exception ex) {
@@ -102,7 +115,7 @@ public class SXDatabaseFacade {
         
         SXUser poster = question.getAskedBy();
         if (poster != null) {
-            entity.setPostedByUserId(poster.getUid());
+            entity.setPostedByUserId(poster.getSXid());
         } else {
             entity.setPostedByUserId(0);
         }
@@ -116,8 +129,24 @@ public class SXDatabaseFacade {
      * @param questionEntity
      * @return 
      */
-    public Question translateToQuestion(QuestionEntity questionEntity) {
+    private Question translateToQuestion(QuestionEntity questionEntity) {
         Question question = new Question();
+        
+        question.setQid(questionEntity.getQid());
+        question.setPostedTimestamp(questionEntity.getPostedTimestamp());
+        question.setqText(questionEntity.getText());
+        question.setqTitle(questionEntity.getTitle());
+        
+        if (questionEntity.getPostedByUserId() > 0) {
+            SXUser user = new SXUser();
+            user.setSXid(questionEntity.getPostedByUserId());
+            question.setAskedBy(user);
+        } else {
+            question.setAskedBy(null);
+        }
+        
+        question.setAnswers(null);
+        
         return question;
     }
     
@@ -130,8 +159,7 @@ public class SXDatabaseFacade {
     private SXUserEntity translateToEntity(SXUser user) {
         SXUserEntity entity = new SXUserEntity();
         
-        entity.setUid(user.getUid());
-        entity.setSxid(user.getSXid());
+        entity.setUid(user.getSXid());
         entity.setUsername(user.getUserName());
         
         Location location = user.getLoc();

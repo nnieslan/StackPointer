@@ -10,7 +10,6 @@ import java.util.Date;
 public class JobPostingEntity {
     
     int jpid;
-    int linkedinId;
     Date datePosted;
     String headline;
     String description;
@@ -25,14 +24,6 @@ public class JobPostingEntity {
 
     public void setJpid(int jpid) {
         this.jpid = jpid;
-    }
-    
-    public int getLinkedinId() {
-        return linkedinId;
-    }
-
-    public void setLinkedinId(int linkedinId) {
-        this.linkedinId = linkedinId;
     }
 
     public Date getDatePosted() {

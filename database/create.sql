@@ -22,8 +22,7 @@ create table splog (
 
 -- SXUsers
 create table sxusers (
-	uid int not null auto_increment,
-	sxid int not null unique,
+	uid int not null unique,
 	display_name varchar(20),
 	location_text varchar(50),
 	location_lat double,
@@ -33,15 +32,32 @@ create table sxusers (
 
 -- Questions
 create table questions (
-	qid int not null auto_increment,
+	qid int not null unique,
 	postedTimestamp timestamp not null,
 	title varchar(100) not null,
 	question_text text,
 	postedby_uid int not null,
-	constraint fk_question_postedby foreign key (postedby_uid)
-	references sxusers(uid),
+	--constraint fk_question_postedby foreign key (postedby_uid)
+	--references sxusers(uid),
 	primary key(qid)
 );
+
+create table questions (
+	qid int not null unique,
+	postedTimestamp timestamp not null,
+	title varchar(100) not null,
+	question_text text,
+	postedby_uid int not null,
+	primary key(qid)
+);
+
+create table answers (
+	aid int not null auto_increment,
+	postedTimestamp timestamp not null,
+	answer_text text not null,
+	qid int not null,
+	postedby_uid int not null,
+	primary key (aid)
 
 -- Answers
 create table answers (
@@ -50,8 +66,8 @@ create table answers (
 	answer_text text not null,
 	qid int not null,
 	postedby_uid int not null,
-	constraint fk_answers_question foreign key (qid)
-	references questions(qid),
+	--constraint fk_answers_question foreign key (qid)
+	--references questions(qid),
 	constraint fk_answer_postedby foreign key (postedby_uid)
 	references sxusers(uid),
 	primary key (aid)
@@ -59,8 +75,7 @@ create table answers (
 
 -- JobPostings
 create table jobpostings (
-	jpid int not null auto_increment,
-	linkedinid int not null unique,
+	jpid int not null unique,
 	date_posted date,
 	headline varchar(100),
 	description text,

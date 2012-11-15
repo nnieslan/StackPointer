@@ -13,8 +13,9 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import stackpointer.common.Location;
 import stackpointer.common.SXUser;
+import stackpointer.database.DBUtils;
 import stackpointer.database.DatabaseConnectionInfo;
-import stackpointer.database.MySQLDatabaseFacade;
+import stackpointer.database.SXDatabaseFacade;
 import stackpointer.googlemaps.GoogleMapsInterface;
 
 /**
@@ -24,7 +25,6 @@ import stackpointer.googlemaps.GoogleMapsInterface;
  */
 public class StackExchangeInterface {
     private static ArrayList<Question> top100Questions = new ArrayList<Question>();
-    private static MySQLDatabaseFacade db = new MySQLDatabaseFacade(DatabaseConnectionInfo.createDefault());
     final static String baseUrl = "https://api.stackexchange.com/2.1/";
     final static String sxKey = "ubwVxucHGeVndxd5knjnMg((";
     final static String qFilter = "!*dP_kUhzr8b7po)234wUBU01ttKHwGgK3Nzyb";
@@ -75,6 +75,7 @@ public class StackExchangeInterface {
                 toAdd.setAskedBy(owner);
                 toAdd.setqTitle(jQuestion.getString("title"));
                 toAdd.setqText(jQuestion.getString("body"));
+                toAdd.setQid(jQuestion.getInt("question_id"));
                 owner.addQuestion(toAdd);
                 owners.put(owner.getSXid(), owner);
                 parsed.add(toAdd);
@@ -143,18 +144,13 @@ public class StackExchangeInterface {
     public static boolean persistTopQuestions()
     {
         boolean success = false;
+        SXDatabaseFacade db = new SXDatabaseFacade();
         top100Questions  = getQuestionsFromServer();
         if(top100Questions!=null)
         {
             if(!top100Questions.isEmpty())
             {
-                for(Question q:top100Questions)
-                {
-                    if(db.addQuestion(q)==false)
-                    {
-                        System.out.println("Error saving question "+q);
-                    }
-                }
+                int numAdded = db.syncQuestions(top100Questions);
                 success = true;
             }
         }
@@ -164,7 +160,8 @@ public class StackExchangeInterface {
     //Get the local copies of the top 100 questions
     public void retrieveTopQuestions()
     {
-        List<Question> q = db.retrieveQuestions();
+        SXDatabaseFacade db = new SXDatabaseFacade();
+        List<Question> q = db.retrieveTop100Questions();
         if(q != null && !q.isEmpty())
         {   
             top100Questions.clear();
