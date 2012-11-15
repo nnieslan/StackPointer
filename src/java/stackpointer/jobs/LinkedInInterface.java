@@ -30,6 +30,8 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.*;
 import java.awt.GridLayout;
 import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -211,20 +213,23 @@ public class LinkedInInterface {
     {
         return allJobPostings;
     }
-    
 
-    //Update the local copies of the top 100 questions
+    //Update the local copies of job postings
     public boolean updateJobPostings()
     {
-//        List<JobPosting> j = db.retrieveJobPostings();
-//        if(j != null && !j.isEmpty())
-//        {
-//        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
-//        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
-//        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
-//        }
-//        return true;
-        throw new NotImplementedException();
+        try {
+            JobsDatabaseFacade db = new JobsDatabaseFacade();
+            List<JobPosting> j = db.retrieveAllJobPostings();
+            if(j != null && !j.isEmpty())
+            {
+            allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+            allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+            allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(LinkedInInterface.class.getName()).log(Level.SEVERE, null, ex);
+        }
+           return true;
     }
     
     static String getVerifier(String url) throws Exception {
