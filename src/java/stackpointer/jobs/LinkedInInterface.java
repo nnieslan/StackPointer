@@ -53,7 +53,7 @@ public class LinkedInInterface {
     private boolean connected;
     private ArrayList<JobPosting> allJobPostings;
     //   private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs,facets)?facet=location,us:100";
-    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description))";
+    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description-snippet))";
 
     
     //Return Closest 10 Jobs to the SXUser
@@ -133,7 +133,7 @@ public class LinkedInInterface {
                 toAdd.setLoc(jobLoc);
                 toAdd.setHeadline(jJob.getJSONObject("position").getString("title"));
                 toAdd.setLinkedInId(jJob.getInt("id"));
-                toAdd.setDescription(jJob.getString("description"));
+                toAdd.setDescription(jJob.getString("descriptionSnippet"));
                 Date jobDate = new Date(jJob.getJSONObject("postingDate").getInt("year"), 
                         jJob.getJSONObject("postingDate").getInt("month"), 
                         jJob.getJSONObject("postingDate").getInt("day"));       
