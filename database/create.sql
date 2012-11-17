@@ -23,7 +23,7 @@ create table splog (
 -- SXUsers
 create table sxusers (
 	uid int not null unique,
-	display_name varchar(20),
+	display_name varchar(50),
 	location_text varchar(50),
 	location_lat double,
 	location_lon double,
@@ -34,30 +34,13 @@ create table sxusers (
 create table questions (
 	qid int not null unique,
 	postedTimestamp timestamp not null,
-	title varchar(100) not null,
+	title varchar(200) not null,
 	question_text text,
 	postedby_uid int not null,
 	--constraint fk_question_postedby foreign key (postedby_uid)
 	--references sxusers(uid),
 	primary key(qid)
 );
-
-create table questions (
-	qid int not null unique,
-	postedTimestamp timestamp not null,
-	title varchar(100) not null,
-	question_text text,
-	postedby_uid int not null,
-	primary key(qid)
-);
-
-create table answers (
-	aid int not null auto_increment,
-	postedTimestamp timestamp not null,
-	answer_text text not null,
-	qid int not null,
-	postedby_uid int not null,
-	primary key (aid)
 
 -- Answers
 create table answers (
