@@ -180,7 +180,7 @@ public class LinkedInInterface {
             if(!allJobPostings.isEmpty())
             {
                 int numAdded = db.syncJobPostings(allJobPostings);
-                success = true;
+                success = numAdded != -1;
             }
         }
         return success;
@@ -191,13 +191,8 @@ public class LinkedInInterface {
     {
         List<JobPosting> j = null;
         
-        try {
-            JobsDatabaseFacade db = new JobsDatabaseFacade();
-            j = db.retrieveAllJobPostings();
-        } catch (SQLException ex) {
-            System.err.println(ex);
-            return false;
-        }
+        JobsDatabaseFacade db = new JobsDatabaseFacade();
+        j = db.retrieveAllJobPostings();
         
         if(j != null && !j.isEmpty())
         {   
@@ -217,19 +212,16 @@ public class LinkedInInterface {
     //Update the local copies of job postings
     public boolean updateJobPostings()
     {
-        try {
-            JobsDatabaseFacade db = new JobsDatabaseFacade();
-            List<JobPosting> j = db.retrieveAllJobPostings();
-            if(j != null && !j.isEmpty())
-            {
-            allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
-            allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
-            allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
-            }
-        } catch (SQLException ex) {
-            Logger.getLogger(LinkedInInterface.class.getName()).log(Level.SEVERE, null, ex);
+        JobsDatabaseFacade db = new JobsDatabaseFacade();
+        List<JobPosting> j = db.retrieveAllJobPostings();
+        if(j != null && !j.isEmpty())
+        {
+        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
+        allJobPostings.add(new JobPosting(new Location(0,0,0), new Date(), "Headline1", "Desc1", "Company1"));
         }
-           return true;
+        
+        return true;
     }
     
     static String getVerifier(String url) throws Exception {

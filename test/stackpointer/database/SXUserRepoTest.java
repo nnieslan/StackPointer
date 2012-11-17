@@ -59,7 +59,7 @@ public class SXUserRepoTest {
         System.out.println("add");
         
         u.setUid(AddTestUid);
-        u.setUsername(AddTestUsername);
+        u.setDisplayName(AddTestUsername);
         u.setLocationText(AddTestLocationText);
         u.setLocationLat(AddTestLocationLat);
         u.setLocationLon(AddTestLocationLon);
@@ -73,7 +73,7 @@ public class SXUserRepoTest {
         /******************/
         System.out.println("update");
         
-        u.setUsername(UpdateTestUsername);
+        u.setDisplayName(UpdateTestUsername);
         u.setLocationText(UpdateTestLocationText);
         u.setLocationLat(UpdateTestLocationLat);
         u.setLocationLon(UpdateTestLocationLon);
@@ -97,7 +97,7 @@ public class SXUserRepoTest {
         assertEquals("retrieve - uid not equal",
                 expected.getUid(), u.getUid());
         assertEquals("retrieve - username not equal",
-                expected.getUsername(), UpdateTestUsername);
+                expected.getDisplayName(), UpdateTestUsername);
         assertEquals("retrieve - location text not equal",
                 expected.getLocationText(), UpdateTestLocationText);
         assertEquals("retrieve - location lat not equal",

@@ -5,10 +5,12 @@ package stackpointer.database;
  * 
  * This class models a row from the sxusers table in the database.
  */
-public class SXUserEntity {
-
+public class SXUserEntity implements DBEntity {
+    
+    private final int MaxDisplayNameLen = 50;
+    
     int uid;
-    String username;
+    String displayName;
     String locationText;
     double locationLat;
     double locationLon; 
@@ -21,12 +23,12 @@ public class SXUserEntity {
         this.uid = uid;
     }
 
-    public String getUsername() {
-        return username;
+    public String getDisplayName() {
+        return displayName;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
     }
 
     public String getLocationText() {
@@ -51,6 +53,16 @@ public class SXUserEntity {
 
     public void setLocationLon(double locationLon) {
         this.locationLon = locationLon;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        if (displayName != null && displayName.length() > MaxDisplayNameLen) {
+            displayName = displayName.substring(0, MaxDisplayNameLen-1);
+        }
     }
     
 }

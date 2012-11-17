@@ -83,5 +83,10 @@ public class JobPosting {
     public void setjobText(String jobText) {
         this.jobText = jobText;
     }
+
+    @Override
+    public String toString() {
+        return headline;
+    }
     
 }

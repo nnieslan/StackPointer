@@ -7,8 +7,10 @@ import java.util.Date;
  * 
  * This class models a row from the questions table in the database.
  */
-public class QuestionEntity {
+public class QuestionEntity implements DBEntity {
 
+    private final int MaxTitleLen = 200;
+    
     int qid;
     Date postedTimestamp;
     String title;
@@ -53,6 +55,16 @@ public class QuestionEntity {
 
     public void setPostedByUserId(int postedByUserId) {
         this.postedByUserId = postedByUserId;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        if (title != null && title.length() > MaxTitleLen) {
+            title = title.substring(0, MaxTitleLen-1);
+        }
     }
    
 }

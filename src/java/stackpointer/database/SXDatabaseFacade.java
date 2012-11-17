@@ -23,27 +23,36 @@ public class SXDatabaseFacade {
      * are ignored.
      * 
      * @param questionList List of questions, most likely from the API
-     * @return number of questions added to the database
-     */
+     * @return number of questions added to the database, or -1 means failure
+     */  
     public int syncQuestions(List<Question> questionList) {
-        int numAdded = 0;
+        int numQuestionsAdded = 0;
+        int numUsersAdded = 0;
+        Connection connection = null;
         
         if (questionList == null) {
             return 0;
         }
         
-        Connection connection = DBUtils.openConnection(
-                DatabaseConnectionInfo.createDefault());
-        if (connection == null) {
-            return -1;
+        try {
+            connection = DBUtils.openConnection(
+                    DatabaseConnectionInfo.createDefault());
+            if (connection == null) {
+                return -1;
+            }
+            connection.setAutoCommit(false);
+        } catch (SQLException ex) {
+            System.err.println("Failed to open/initialize database connection");
+            System.err.println(ex);
         }
         
+        SXUserRepo userRepo = new SXUserRepo(connection);
         QuestionRepo questionRepo = new QuestionRepo(connection);
         
         try {
             for (Question question : questionList) {
                 
-                if (question == null || question.getQid() <= 0) {
+                if (!isValidForSaving(question)) {
                     // skip invalid questions
                     continue;
                 } else if (questionRepo.exists(question.getQid())) {
@@ -51,23 +60,73 @@ public class SXDatabaseFacade {
                     continue;
                 }
                 
+                // First save off the user
+                SXUser user = question.getAskedBy();
+                if (!userRepo.exists(user.getSXid())) {
+                    SXUserEntity userEntity = translateToEntity(user);
+                    boolean userSuccess = userRepo.add(userEntity);
+                    if (!userSuccess) {
+                        continue;
+                    } else {
+                        numUsersAdded++;
+                    }
+                }
+                
+                // Now we can save off the qeustion
                 QuestionEntity questionEntity = translateToEntity(question);
                 boolean success = questionRepo.add(questionEntity);
                 if (success) {
-                    numAdded++;
+                    numQuestionsAdded++;
                 }
             }
+            
+            // Now that we've made it through everything we can commit
+            connection.commit();
+            
         } catch (SQLException ex) {
-            String message = String.format("%d questions added to the database before failing", numAdded);
-            DBUtils.logMessageToDatabase(message);
-            System.err.println(ex);
+            try {
+                connection.rollback();
+                System.err.println("rolling back syncQuestions transaction");
+                System.err.println("SQL Exception occurred");
+                System.err.println(ex);
+            } catch (SQLException rollbackEx) {
+                System.err.println("Failed to rollback syncQuestions transaction");
+                System.err.println(rollbackEx);
+            }
+            DBUtils.logMessageToDatabase("SQLException occurred in syncQuestions");
             return -1;
         }
         
-        String message = String.format("%d questions added to the database", numAdded);
-        DBUtils.logMessageToDatabase(message);
+        String uMessage = String.format("%d sxusers added to the database", numUsersAdded);
+        String qMessage = String.format("%d questions added to the database", numQuestionsAdded);
+        System.out.println(uMessage);
+        System.out.println(qMessage);
+        DBUtils.logMessageToDatabase(qMessage);
         
-        return numAdded;
+        return numQuestionsAdded;
+    }
+    
+    private boolean isValidForSaving(Question q) {
+        // null question
+        if (q == null) {
+            return false;
+        }
+        // no question id
+        if (q.getQid() <= 0) {
+            return false;
+        }
+        
+        // no user attached
+        SXUser u = q.getAskedBy();
+        if (u == null) {
+            return false;
+        }
+        // invalid user id
+        if (u.getSXid() <= 0) {
+            return false;
+        }
+        
+        return true;
     }
     
     /**
@@ -160,7 +219,7 @@ public class SXDatabaseFacade {
         SXUserEntity entity = new SXUserEntity();
         
         entity.setUid(user.getSXid());
-        entity.setUsername(user.getUserName());
+        entity.setDisplayName(user.getSXname());
         
         Location location = user.getLoc();
         if (location != null) {

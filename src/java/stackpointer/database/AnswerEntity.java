@@ -7,7 +7,7 @@ import java.util.Date;
  * 
  * This class models a row from the answers table in the database.
  */
-public class AnswerEntity {
+public class AnswerEntity implements DBEntity {
 
     int aid;
     String text;
@@ -53,5 +53,13 @@ public class AnswerEntity {
 
     public void setPostedTimestamp(Date postedTimestamp) {
         this.postedTimestamp = postedTimestamp;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        
     }
 }

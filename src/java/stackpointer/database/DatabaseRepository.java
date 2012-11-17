@@ -42,6 +42,10 @@ public abstract class DatabaseRepository<T> {
         this.connection = connection;
     }
     
+    public Connection getConnection() {
+        return this.connection;
+    }
+    
     /**
      * Closes the database connection, if open.
      */

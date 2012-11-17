@@ -74,7 +74,7 @@ public class SXUserRepo extends DatabaseRepository<SXUserEntity> {
             PreparedStatement stmt = connection.prepareStatement(insertText);
             
             stmt.setInt(1, userEntity.getUid());
-            stmt.setString(2, userEntity.getUsername());
+            stmt.setString(2, userEntity.getDisplayName());
             
             if (userEntity.getLocationText() == null || userEntity.getLocationText().isEmpty()) {
               stmt.setNull(3, java.sql.Types.INTEGER);
@@ -107,7 +107,7 @@ public class SXUserRepo extends DatabaseRepository<SXUserEntity> {
                     "WHERE uid = ?";
 
             PreparedStatement stmt = connection.prepareStatement(updateText);
-            stmt.setString(1, userEntity.getUsername());
+            stmt.setString(1, userEntity.getDisplayName());
             stmt.setString(2, userEntity.getLocationText());
             stmt.setDouble(3, userEntity.getLocationLat());
             stmt.setDouble(4, userEntity.getLocationLon());
@@ -185,7 +185,7 @@ public class SXUserRepo extends DatabaseRepository<SXUserEntity> {
                 double locationLon = results.getDouble("location_lon");
                 SXUserEntity userEntity = new SXUserEntity();
                 userEntity.setUid(uid);
-                userEntity.setUsername(displayName);
+                userEntity.setDisplayName(displayName);
                 userEntity.setLocationText(locationText);
                 userEntity.setLocationLat(locationLat);
                 userEntity.setLocationLon(locationLon);

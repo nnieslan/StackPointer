@@ -151,7 +151,7 @@ public class StackExchangeInterface {
             if(!top100Questions.isEmpty())
             {
                 int numAdded = db.syncQuestions(top100Questions);
-                success = true;
+                success = numAdded != -1;
             }
         }
         return success;

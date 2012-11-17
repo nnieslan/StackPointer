@@ -7,7 +7,7 @@ import java.util.Date;
  * 
  * This class models a row from the jobpostings table in the database.
  */
-public class JobPostingEntity {
+public class JobPostingEntity implements DBEntity {
     
     int jpid;
     Date datePosted;
@@ -80,6 +80,14 @@ public class JobPostingEntity {
 
     public void setLocationLon(double locationLon) {
         this.locationLon = locationLon;
+    }
+    
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void prepare() {
+        
     }
 
 }

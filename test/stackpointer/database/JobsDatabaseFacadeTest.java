@@ -89,13 +89,9 @@ public class JobsDatabaseFacadeTest {
      */
     @Test
     public void testRetrieveAllJobPostings() {
-        try {
-            JobsDatabaseFacade jobsDB = new JobsDatabaseFacade();
-            List<JobPosting> jobsList = jobsDB.retrieveAllJobPostings();
-            assertNotNull(jobsList);
-            assertTrue(jobsList.size() >= 0);
-        } catch (SQLException ex) {
-            fail("SQLException thrown");
-        }
+        JobsDatabaseFacade jobsDB = new JobsDatabaseFacade();
+        List<JobPosting> jobsList = jobsDB.retrieveAllJobPostings();
+        assertNotNull(jobsList);
+        assertTrue(jobsList.size() >= 0);
     }
 }

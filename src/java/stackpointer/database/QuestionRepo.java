@@ -60,6 +60,8 @@ public class QuestionRepo extends DatabaseRepository<QuestionEntity> {
         boolean success = false;
 
         if (connection != null) {
+            questionEntity.prepare();
+            
             String insertText =
                     "INSERT INTO questions "
                     + "(qid, postedTimestamp, title, question_text, postedby_uid) "
