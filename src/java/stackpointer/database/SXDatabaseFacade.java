@@ -3,7 +3,9 @@ package stackpointer.database;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import stackpointer.common.Location;
 import stackpointer.common.SXUser;
 import stackpointer.stackexchange.Question;
@@ -12,9 +14,8 @@ import stackpointer.stackexchange.Question;
  * @author Andrew
  */
 public class SXDatabaseFacade {
-
+    
     public SXDatabaseFacade() {
-        
     }
     
     /**
@@ -137,15 +138,23 @@ public class SXDatabaseFacade {
      */
     public List<Question> retrieveTop100Questions() {
         QuestionRepo questionRepo = null;
+        Set<SXUser> userCache = new HashSet<SXUser>();
         List<Question> questionList = new ArrayList<Question>();
+        Connection connection = DBUtils.openConnection(
+                DatabaseConnectionInfo.createDefault());
         
         try {
-            questionRepo = new QuestionRepo(DatabaseConnectionInfo.createDefault());
-            
+            questionRepo = new QuestionRepo(connection);
             List<QuestionEntity> questionEntities = questionRepo.retrieveLast100();
             
             for (QuestionEntity qe : questionEntities) {
                 Question q = translateToQuestion(qe);
+                
+                SXUser u = q.getAskedBy();
+                if (u != null) {
+                    userCache.add(u);
+                }
+                
                 questionList.add(q);
             }
             
@@ -155,7 +164,48 @@ public class SXDatabaseFacade {
             questionList = null;
         }
         
+        // Now that we've gathered all of the questions let's go back
+        // and populate the user details.
+        try {
+            populateSXUserDetails(connection, userCache);
+        } catch (SQLException ex) {
+            System.err.println("Failed to populate sxuser details");
+            System.err.println(ex);
+            questionList = null;
+        }
+        
         return questionList;
+    }
+    
+    /**
+     * Populates the detailed data for each of the users in the given set.
+     * Because the users are passed by reference, they will automatically have
+     * the data populated on the question object as well.
+     * 
+     * @param connection database connection
+     * @param userSet set of users to retrieve details for
+     * @throws SQLException if something went wrong
+     */
+    private void populateSXUserDetails(Connection connection, Set<SXUser> userSet) throws SQLException {
+        SXUserRepo userRepo = new SXUserRepo(connection);
+        
+        // Gather up the user ids
+        Set<Integer> userIds = new HashSet<Integer>();
+        for (SXUser u : userSet) {
+            userIds.add(u.getSXid());
+        }
+        
+        // Retrieve the user entities
+        List<SXUserEntity> userEntityList = userRepo.retrieve(userIds);
+        
+        // Match up the entity with the user
+        for (SXUserEntity ue : userEntityList) {
+            for (SXUser u : userSet) {
+                if (ue.getUid() == u.getSXid()) {
+                    translateEntityToSXUser(ue, u);
+                }
+            }
+        }
     }
     
     /**
@@ -233,6 +283,28 @@ public class SXDatabaseFacade {
         }
         
         return entity;
+    }
+    
+    /**
+     * Translate from a database object to a domain model object.
+     * 
+     * @param entity
+     * @param user 
+     */
+    private void translateEntityToSXUser(SXUserEntity entity, SXUser user) {
+        user.setSXid(entity.getUid());
+        user.setUserName(entity.getDisplayName());
+        
+        if ((entity.getLocationText() != null && !entity.getLocationText().isEmpty()) ||
+                entity.getLocationLat() != 0.0 ||
+                entity.getLocationLon() != 0.0) {
+            Location loc = new Location(entity.getLocationText());
+            loc.setLat(entity.getLocationLat());
+            loc.setLon(entity.getLocationLon());
+            user.setLoc(loc);
+        } else {
+            user.setLoc(null);
+        }
     }
 
 }

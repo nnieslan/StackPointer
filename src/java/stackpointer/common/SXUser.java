@@ -100,6 +100,15 @@ public class SXUser {
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (obj instanceof SXUser) {
+            return this.getSXid() == ((SXUser)obj).getSXid();
+        } else {
+            return super.equals(obj);
+        }
+    }
+
+    @Override
     public String toString() {
         return "User{" + "userName=" + userName + ", SXname=" + SXname + ", loc=" + loc + '}';
     }
