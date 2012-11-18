@@ -102,21 +102,39 @@ public class GoogleMapsInterface {
     {
         StringBuilder toReturn = new StringBuilder();
         
+        int i=0;
+        
         for (Question q : questions)
         {
             if(q.hasLocation())
             {
+                ++i;
                 //the location
-                toReturn.append("var myLatlng = new google.maps.LatLng(");
+                toReturn.append("var myLatlng").append(i).append(" = new google.maps.LatLng(");
                 toReturn.append(q.getAskedBy().getLoc().getLat()).append(',').append(q.getAskedBy().getLoc().getLon()).append(");\n");
 
                 //the marker
-                toReturn.append("var marker = new google.maps.Marker({"+'\n'+
-                "    position: myLatlng,"+'\n'+
+                toReturn.append("var marker").append(i).append(" = new google.maps.Marker({"+'\n'+
+                "    position: myLatlng").append(i).append(","+'\n'+
                 "    map: map,"+'\n'+
                 "    title:\"");
                 toReturn.append(q.getqTitle());
                 toReturn.append("\""+'\n'+
+                "});"+'\n');
+                
+                //infowindow content
+                toReturn.append("var contentString").append(i).append("='<b>Question: </b>");
+                toReturn.append(q.getqTitle());
+                toReturn.append("<br><b>Asked By: </b>").append(q.getAskedBy().getSXname()).append("\';\n");
+                
+                //the infowindow
+                toReturn.append("var infowindow").append(i).append(" = new google.maps.InfoWindow({"+'\n'+
+                    "content: contentString").append(i).append('\n'+
+                "});"+'\n');
+                
+                //infowindow click function
+                toReturn.append("google.maps.event.addListener(marker").append(i).append(", 'click', function() {"+'\n'+
+                "infowindow").append(i).append(".open(map,marker").append(i).append(");"+'\n'+
                 "});"+'\n');
             }
         }
