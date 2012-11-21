@@ -9,6 +9,8 @@ import java.util.Date;
  */
 public class JobPostingEntity implements DBEntity {
     
+    final static int MaxCompanyLen = 30;
+    
     int jpid;
     Date datePosted;
     String headline;
@@ -87,7 +89,9 @@ public class JobPostingEntity implements DBEntity {
      */
     @Override
     public void prepare() {
-        
+        if (company != null && company.length() > MaxCompanyLen) {
+            company = company.substring(0, MaxCompanyLen-1);
+        }
     }
 
 }
