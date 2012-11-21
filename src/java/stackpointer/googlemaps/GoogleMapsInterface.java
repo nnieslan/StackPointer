@@ -15,6 +15,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import stackpointer.common.Location;
 import stackpointer.stackexchange.Question;
+import stackpointer.jobs.JobPosting;
         
 /**
  *
@@ -135,6 +136,35 @@ public class GoogleMapsInterface {
                 //infowindow click function
                 toReturn.append("google.maps.event.addListener(marker").append(i).append(", 'click', function() {"+'\n'+
                 "infowindow").append(i).append(".open(map,marker").append(i).append(");"+'\n'+
+                "});"+'\n');
+            }
+        }
+        
+        return toReturn.toString();
+    }
+    
+    public static String generateJobMarkers(Collection<JobPosting> jobs)
+    {
+        StringBuilder toReturn = new StringBuilder();
+        
+        int i=0;
+        
+        for (JobPosting j : jobs)
+        {
+            if(j.hasLocation())
+            {
+                ++i;
+                //the location
+                toReturn.append("var myLatlng").append(i).append(" = new google.maps.LatLng(");
+                toReturn.append(j.getLoc().getLat()).append(',').append(j.getLoc().getLon()).append(");\n");
+
+                //the marker
+                toReturn.append("var marker").append(i).append(" = new google.maps.Marker({"+'\n'+
+                "    position: myLatlng").append(i).append(","+'\n'+
+                "    map: map,"+'\n'+
+                "    title:\"");
+                toReturn.append(j.getHeadline());
+                toReturn.append("\""+'\n'+
                 "});"+'\n');
             }
         }
