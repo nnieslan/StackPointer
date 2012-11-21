@@ -5,6 +5,7 @@ import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
+import stackpointer.jobs.PullFromLinkedInTask;
 import stackpointer.stackexchange.PullFromStackExchangeTask;
 
 /**
@@ -20,6 +21,7 @@ public class PeriodicTaskRunner implements ServletContextListener {
         System.out.println("Initializing periodic task runner.");
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new PullFromStackExchangeTask(), 1, 10, TimeUnit.MINUTES);
+        //scheduler.scheduleAtFixedRate(new PullFromLinkedInTask(), 1, 10, TimeUnit.MINUTES);
     }
     
     @Override

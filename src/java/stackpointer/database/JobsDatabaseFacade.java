@@ -12,10 +12,6 @@ import stackpointer.jobs.JobPosting;
  */
 public class JobsDatabaseFacade {
     
-    public JobsDatabaseFacade() {
-        
-    }
-    
     /**
      * Synchronizes the passed list of job postings with the database.
      * New jobs postings are added and existing or duplicates are ignored.
