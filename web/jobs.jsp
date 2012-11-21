@@ -45,7 +45,7 @@
             <script type='text/javascript'>
               $(function() {
                 <%=GoogleMapsInterface.setupMap("map_canvas")%>
-                /*%=GoogleMapsInterface.generateMarkers(jobs)%>*/
+                <%=GoogleMapsInterface.generateJobMarkers(jobs)%>
               });
             </script>
             </center>
