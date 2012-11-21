@@ -261,6 +261,26 @@ public class LinkedInInterface {
           return verifier;
       }
     
+    public static ArrayList<JobPosting> getJobLocations(JSONObject json)
+    {
+        ArrayList<JobPosting> locations = new ArrayList<JobPosting>();
+        try
+        {
+            JSONArray jobs = json.getJSONArray("values");
+            for(int j=0; j<jobs.length(); j++)
+            {
+                JSONObject jJob = jobs.getJSONObject(j);
+                //System.out.println(GoogleMapsInterface.geocode(jJob.getString("locationDescription")));
+                GoogleMapsInterface.geocode(jJob.getString("locationDescription"));             
+            }
+        }
+        catch (JSONException e)
+        {
+            System.out.println("Error parsing Job locations: "+e);
+        }
+        return locations;
+    }
+    
    //Function to update current values from LinkedIn in local database
    //boolean cleanDatabase()
    //{
