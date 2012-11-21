@@ -14,7 +14,6 @@ public class JobPosting {
     String headline;
     String description;
     String company;
-    String jobText;
 
     public JobPosting() {
     }
@@ -76,13 +75,18 @@ public class JobPosting {
         this.linkedInId = linkedInId;
     }
     
-    public String getjobText() {
-        return jobText;
+    public boolean hasLocation() {
+        boolean hasLoc = false;
+        if(this.getCompany()!=null)
+        {
+            if(this.getLoc()!=null)
+            {
+                hasLoc = true;
+            }
+        }
+        return hasLoc;
     }
 
-    public void setjobText(String jobText) {
-        this.jobText = jobText;
-    }
 
     @Override
     public String toString() {
