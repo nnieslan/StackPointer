@@ -52,7 +52,14 @@ public class Question {
     }
     
     public boolean isAnswered() {
-        return !answers.isEmpty();
+        if(answers == null)
+        {
+            return false;
+        }
+        else
+        {
+            return !answers.isEmpty();
+        }
     }
 
     public String getqTitle() {

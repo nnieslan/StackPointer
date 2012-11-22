@@ -112,13 +112,17 @@ public class GoogleMapsInterface {
                 //the location
                 toReturn.append("var myLatlng").append(i).append(" = new google.maps.LatLng(");
                 toReturn.append(q.getAskedBy().getLoc().getLat()).append(',').append(q.getAskedBy().getLoc().getLon()).append(");\n");
+                
+                //the marker icon
+                toReturn.append("var icon").append(i).append(" = \"images/").append(q.isAnswered()?"green":"red").append(".png\";"+'\n');
 
                 //the marker
                 toReturn.append("var marker").append(i).append(" = new google.maps.Marker({"+'\n'+
-                "    position: myLatlng").append(i).append(","+'\n'+
+                "    position: myLatlng").append(i).append("," + '\n' + 
                 "    map: map,"+'\n'+
+                "    icon: icon").append(i).append(","+'\n'+
                 "    title:\"");
-                toReturn.append(q.getqTitle());
+                toReturn.append(q.getPostedTimestamp());
                 toReturn.append("\""+'\n'+
                 "});"+'\n');
                 

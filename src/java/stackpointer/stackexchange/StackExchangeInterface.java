@@ -5,16 +5,14 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import stackpointer.common.Location;
 import stackpointer.common.SXUser;
-import stackpointer.database.DBUtils;
-import stackpointer.database.DatabaseConnectionInfo;
 import stackpointer.database.SXDatabaseFacade;
 import stackpointer.googlemaps.GoogleMapsInterface;
 
@@ -76,6 +74,7 @@ public class StackExchangeInterface {
                 toAdd.setqTitle(jQuestion.getString("title"));
                 toAdd.setqText(jQuestion.getString("body"));
                 toAdd.setQid(jQuestion.getInt("question_id"));
+                toAdd.setPostedTimestamp(new Date((jQuestion.getLong("creation_date")*1000)));
                 owner.addQuestion(toAdd);
                 owners.put(owner.getSXid(), owner);
                 parsed.add(toAdd);
