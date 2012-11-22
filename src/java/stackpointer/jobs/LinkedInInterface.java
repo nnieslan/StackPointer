@@ -138,8 +138,8 @@ public class LinkedInInterface {
                         jJob.getJSONObject("postingDate").getInt("month"), 
                         jJob.getJSONObject("postingDate").getInt("day"));       
                 toAdd.setDatePosted(jobDate);
-                
                 parsed.add(toAdd);
+                getJobLocations(jJob);
             }
         }
         catch (JSONException e)
