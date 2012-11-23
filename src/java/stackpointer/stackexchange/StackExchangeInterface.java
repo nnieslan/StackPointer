@@ -25,7 +25,7 @@ public class StackExchangeInterface {
     private static ArrayList<Question> top100Questions = new ArrayList<Question>();
     final static String baseUrl = "https://api.stackexchange.com/2.1/";
     final static String sxKey = "ubwVxucHGeVndxd5knjnMg((";
-    final static String qFilter = "!*dP_kUhzr8b7po)234wUBU01ttKHwGgK3Nzyb";
+    final static String qFilter = "!WnfFymBLMEKO)0sTDgTEhkA051aV27yclvUi-EY";
     final static String uFilter = "!)RwcIFebx-BtQG9xWNeFFySy";
 
     public StackExchangeInterface()
@@ -75,6 +75,26 @@ public class StackExchangeInterface {
                 toAdd.setqText(jQuestion.getString("body"));
                 toAdd.setQid(jQuestion.getInt("question_id"));
                 toAdd.setPostedTimestamp(new Date((jQuestion.getLong("creation_date")*1000)));
+                toAdd.setUrl(jQuestion.getString("link"));
+                if(jQuestion.has("tags"))
+                {
+                    JSONArray jTags = jQuestion.getJSONArray("tags"); 
+                    List<String> tags = new ArrayList<String>();
+                    for(int i=0; i<jTags.length(); i++)
+                    {
+                        tags.add(jTags.getString(i));
+                    }
+                    toAdd.setTags(tags);
+                }
+                if(jQuestion.getBoolean("is_answered"))
+                {
+                    List<Answer> answers  = parseAnswersFromJson(jQuestion.getJSONArray("answers"));
+                    toAdd.setAnswers(answers);
+                    for(Answer a:toAdd.getAnswers())
+                    {
+                        a.setAnswering(toAdd);
+                    }
+                }
                 owner.addQuestion(toAdd);
                 owners.put(owner.getSXid(), owner);
                 parsed.add(toAdd);
@@ -101,6 +121,33 @@ public class StackExchangeInterface {
             System.out.println("Error parsing JSON question string: "+e);
         }
         return user;
+    }
+    
+    public static ArrayList<Answer> parseAnswersFromJson(JSONArray ans)
+    {
+        ArrayList<Answer> toReturn = new ArrayList<Answer>();
+        Answer answer;
+        JSONObject jAns;
+        try
+        {
+            for (int a=0; a<ans.length(); a++)
+            {
+                jAns = ans.getJSONObject(a);
+                answer = new Answer();
+                answer.setAid(jAns.getInt("answer_id"));
+                answer.setAnsText(jAns.getString("body"));
+                answer.setAnsweredBy(parseUserFromJson(jAns.getJSONObject("owner")));
+                answer.setAccepted(jAns.getBoolean("is_accepted"));
+                answer.setScore(jAns.getInt("score"));
+                toReturn.add(answer);
+            }
+        }
+        catch (JSONException e)
+        {
+            System.out.println("Error parsing JSON answer: "+e);
+        }
+        
+        return toReturn;
     }
     
     public static void populateLocations(HashMap<Integer, SXUser> owners)

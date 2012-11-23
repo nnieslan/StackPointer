@@ -15,6 +15,8 @@ public class Answer {
     SXUser answeredBy;
     String ansText;
     Question answering;
+    boolean accepted;
+    int score;
 
     public Answer() {
     }
@@ -49,6 +51,22 @@ public class Answer {
 
     public void setAnswering(Question answering) {
         this.answering = answering;
+    }
+
+    public boolean isAccepted() {
+        return accepted;
+    }
+
+    public void setAccepted(boolean accepted) {
+        this.accepted = accepted;
+    }
+
+    public int getScore() {
+        return score;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
     }
     
     

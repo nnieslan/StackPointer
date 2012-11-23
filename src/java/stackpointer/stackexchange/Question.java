@@ -19,6 +19,8 @@ public class Question {
     String qTitle; //the question title
     String qText; //the question text
     List <Answer> answers;
+    String url;
+    List <String> tags;
 
     public Question() {
     }
@@ -84,6 +86,22 @@ public class Question {
 
     public void setAnswers(List<Answer> answers) {
         this.answers = answers;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags;
     }
     
     public boolean hasLocation() {

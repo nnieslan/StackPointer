@@ -128,7 +128,8 @@ public class GoogleMapsInterface {
                 
                 //infowindow content
                 toReturn.append("var contentString").append(i).append("='<b>Question: </b>");
-                toReturn.append(q.getqTitle());
+                toReturn.append("<a href = \"").append(q.getUrl()).append("\">");
+                toReturn.append(q.getqTitle()).append("</a>");
                 toReturn.append("<br><b>Asked By: </b>").append(q.getAskedBy().getSXname()).append("\';\n");
                 
                 //the infowindow
