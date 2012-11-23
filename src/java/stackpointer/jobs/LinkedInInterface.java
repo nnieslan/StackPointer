@@ -227,9 +227,10 @@ public class LinkedInInterface {
     static String getVerifier(String url) throws Exception {
     
       
-          String LINKEDIN_USERNAME = JOptionPane.showInputDialog("Login with LinkedIn Username");
-          String LINKEDIN_PASSWORD = JOptionPane.showInputDialog("Enter LinkedIn Password");
-
+          //String LINKEDIN_USERNAME = JOptionPane.showInputDialog("Login with LinkedIn Username");
+          //String LINKEDIN_PASSWORD = JOptionPane.showInputDialog("Enter LinkedIn Password");
+          String LINKEDIN_USERNAME = "stackpointermashup@gmail.com";
+          String LINKEDIN_PASSWORD = "lokiju*&";
 	  final WebClient webClient = new WebClient();
           webClient.setJavaScriptEnabled(false);
 
