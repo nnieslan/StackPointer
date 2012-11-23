@@ -45,7 +45,7 @@
             <script type='text/javascript'>
               $(function() {
                 <%=GoogleMapsInterface.setupMap("map_canvas")%>
-                /*%=GoogleMapsInterface.generateMarkers(jobs)%>*/
+                <%=GoogleMapsInterface.generateJobMarkers(jobs)%>
               });
             </script>
             </center>
@@ -90,7 +90,7 @@
                     List<JobPosting> jobsList = databaseFacade.retrieveAllJobPostings();
                     int idx = 1;
                     for (JobPosting job : jobsList) {
-                        out.println(String.format("%d.  %s <br>", idx, job.getHeadline()));
+                        out.println(String.format("%d.  %s <br><br><br>", idx, job.getDescription()));
                         idx++;
                     }
                 %>

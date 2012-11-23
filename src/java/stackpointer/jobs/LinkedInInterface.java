@@ -138,8 +138,8 @@ public class LinkedInInterface {
                         jJob.getJSONObject("postingDate").getInt("month"), 
                         jJob.getJSONObject("postingDate").getInt("day"));       
                 toAdd.setDatePosted(jobDate);
-                
                 parsed.add(toAdd);
+                getJobLocations(jJob);
             }
         }
         catch (JSONException e)
@@ -227,9 +227,10 @@ public class LinkedInInterface {
     static String getVerifier(String url) throws Exception {
     
       
-          String LINKEDIN_USERNAME = JOptionPane.showInputDialog("Login with LinkedIn Username");
-          String LINKEDIN_PASSWORD = JOptionPane.showInputDialog("Enter LinkedIn Password");
-
+          //String LINKEDIN_USERNAME = JOptionPane.showInputDialog("Login with LinkedIn Username");
+          //String LINKEDIN_PASSWORD = JOptionPane.showInputDialog("Enter LinkedIn Password");
+          String LINKEDIN_USERNAME = "stackpointermashup@gmail.com";
+          String LINKEDIN_PASSWORD = "lokiju*&";
 	  final WebClient webClient = new WebClient();
           webClient.setJavaScriptEnabled(false);
 
@@ -260,6 +261,26 @@ public class LinkedInInterface {
  
           return verifier;
       }
+    
+    public static ArrayList<JobPosting> getJobLocations(JSONObject json)
+    {
+        ArrayList<JobPosting> locations = new ArrayList<JobPosting>();
+        try
+        {
+            JSONArray jobs = json.getJSONArray("values");
+            for(int j=0; j<jobs.length(); j++)
+            {
+                JSONObject jJob = jobs.getJSONObject(j);
+                //System.out.println(GoogleMapsInterface.geocode(jJob.getString("locationDescription")));
+                GoogleMapsInterface.geocode(jJob.getString("locationDescription"));             
+            }
+        }
+        catch (JSONException e)
+        {
+            System.out.println("Error parsing Job locations: "+e);
+        }
+        return locations;
+    }
     
    //Function to update current values from LinkedIn in local database
    //boolean cleanDatabase()
