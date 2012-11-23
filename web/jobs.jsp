@@ -33,8 +33,9 @@
         <script type="text/javascript" src="http://platform.linkedin.com/in.js">api_key:v6xty7mvo61a</script>
  
       <link href="styles/menu.css" type="text/css" rel="stylesheet" />
+      <link href="styles/jobButtons.css" type="text/css" rel="stylesheet" />
     </head>
-    <body>
+    <body style="text-align: center">
         <% System.setProperty("java.awt.headless", "false");%>
         <% //set up data here!
         ArrayList<JobPosting> jobs = LinkedInInterface.getJobPostings();
@@ -70,18 +71,22 @@
         <span id="map">
             <br />
             <center>
-            <h2><i>Geographic representation of the latest Job Postings</i></h2>
-            <div id="map_canvas" style="width:800px; height:600px"></div>
-            <h3>These are recent jobs posted on <a href="http://linkedin.com">LinkedIn</a>
-                shown on <a href="http://maps.google.com">Google Maps</a>.</h3><br>
+                <h2><i>Geographic representation of the latest Job Postings</i></h2>
+                <div id="map_canvas" style="width:800px; height:600px"></div>
+                <div class="jobButtons" style="width:800px; margin: auto;">
+                <h3>These are recent jobs posted on <a href="http://linkedin.com">LinkedIn</a> shown on <a href="http://maps.google.com">Google Maps</a>.</h3>
+                <br />
+                <br />  
+                <% for(JobPosting j : jobs) { %>
+                    <div class="button">
+                        <a href ="http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(j.getLinkedInId());%>"><b><%out.println(j.getHeadline());%> - <%out.println(j.getCompany());%></b><br />
+                        <%out.println(j.getLoc());%><br />
+                        <%out.println(j.getDatePosted());%><br />
+                        <%out.println(j.getDescription());%><br /></a>
+                    </div>
+                <% } %>
+                </div>
             </center>
-                <%  
-                    for(JobPosting j : jobs)
-                    {
-                        out.println("<br>*************<br>");
-                        out.println(j);
-                    }
-                %>
         </span>
         <center>
             <span id="jobs">

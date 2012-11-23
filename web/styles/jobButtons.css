@@ -1,0 +1,44 @@
+.jobButtons
+{
+        padding: 10px;
+        width: 800px;
+        margin-left: auto;
+        margin-right: auto;
+}
+
+.jobButtons a
+{
+        color: black;
+}
+
+.jobButtons a:hover
+{
+        color: black;
+}
+
+.jobButtons .button a
+{
+        display: block;
+        border: 3px outset #e5e6e7;
+        margin: 3px;
+        background: #f4f5f6;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        float: left;
+        width: 788px;
+}
+
+.jobButtons .button a:hover
+{
+        border: 3px inset #e5e6e7;
+        background: white;
+        color: black;
+}
+
+.jobButtons ul
+{
+        padding: 0;
+        margin: 2px 0 4px 20px;
+        font-size: 75%;
+}
