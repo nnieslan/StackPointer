@@ -66,7 +66,7 @@ function loadData() {
             <div class="button">
                 <a href="index.jsp">Home</a>
             </div>
-            <div class="button">
+            <div class="currentbutton">
                 <a href="login.jsp">Login</a>
             </div>
             <div class="button">

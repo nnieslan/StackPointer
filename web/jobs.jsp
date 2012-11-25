@@ -58,7 +58,7 @@
             <div class="button">
                 <a href="login.jsp">Login</a>
             </div>
-            <div class="button">
+            <div class="currentbutton">
                 <a href="jobs.jsp">Job Opportunities</a>
             </div>
             <div class="button">
@@ -68,38 +68,26 @@
                 <a href="userinfo.jsp">User Information</a>
             </div>
         </div>          
-        <span id="map">
+        <div id="map">
             <br />
             <center>
-                <h2><i>Geographic representation of the latest Job Postings</i></h2>
+                <h3><i>Geographic representation of the latest <a href="http://linkedin.com">LinkedIn</a> Job Postingsshown on <a href="http://maps.google.com">Google Maps</a>.</i></h3>
                 <div id="map_canvas" style="width:800px; height:600px"></div>
-                <div class="jobButtons" style="width:800px; margin: auto;">
-                <h3>These are recent jobs posted on <a href="http://linkedin.com">LinkedIn</a> shown on <a href="http://maps.google.com">Google Maps</a>.</h3>
-                <br />
-                <br />  
-                <% for(JobPosting j : jobs) { %>
-                    <div class="button">
-                        <a href ="http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(j.getLinkedInId());%>"><b><%out.println(j.getHeadline());%> - <%out.println(j.getCompany());%></b><br />
-                        <%out.println(j.getLoc());%><br />
-                        <%out.println(j.getDatePosted());%><br />
-                        <%out.println(j.getDescription());%><br /></a>
-                    </div>
-                <% } %>
-                </div>
             </center>
-        </span>
-        <center>
-            <span id="jobs">
-                <%
-                    JobsDatabaseFacade databaseFacade = new JobsDatabaseFacade();
-                    List<JobPosting> jobsList = databaseFacade.retrieveAllJobPostings();
-                    int idx = 1;
-                    for (JobPosting job : jobsList) {
-                        out.println(String.format("%d.  %s <br><br><br>", idx, job.getDescription()));
-                        idx++;
-                    }
-                %>
-            </span>
-        </center>
+        </div>
+        <div class="jobButtons" style="width:800px; margin: auto;">
+            <br />
+            <% LinkedInInterface databaseFacade = new LinkedInInterface(); %>
+            <% ArrayList<JobPosting> jobsList = databaseFacade.getJobPostings(); %>
+            <% int idx = 1; %>
+            <% for(JobPosting job : jobsList) { %>
+                <div class="button">
+                    <a href ="http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%>"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
+                    <% if (job.hasLocation()) { out.println(job.getLoc()); %> <br /> <% } %>
+                    <% out.println(job.getDatePosted());%><br /></a>
+                    <% idx++; %>
+                </div>
+            <% } %>
+        </div>
     </body>
 </html>

@@ -5,6 +5,7 @@
     Author     : Phil
 --%>
 
+<%@page import="stackpointer.database.JobsDatabaseFacade"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="stackpointer.googlemaps.GoogleMapsInterface"%>
 <%@page import="stackpointer.stackexchange.Question"%>
@@ -54,9 +55,6 @@ function loadData() {
       <link href="styles/menu.css" type="text/css" rel="stylesheet" />
     </head>
     <body>
-        <% //set up data here!
-        ArrayList<Question> questions = StackExchangeInterface.getQuestionsFromServer();
-        %>
         <span id="welcome">
             <center>
             <img src ="images/banner.jpg" width="800" />
@@ -75,14 +73,29 @@ function loadData() {
             <div class="button">
                 <a href="stackexchange.jsp">Stack Exchange</a>
             </div>
-            <div class="button">
+            <div class="currentbutton">
                 <a href="userinfo.jsp">User Information</a>
             </div>
-        </div>          
+        </div>      
         <span id="userinfo">
             <br />
+            <br />
+            <br />
             <center>
-            <h2><i>Data</i></h2>
+                <table>
+                    <tr>
+                        <td align = "right"><b>First Name:</b></td><td align = "left"><i>Data</i></td>
+                    </tr>
+                    <tr>
+                        <td align = "right"><b>Last Name:</b></td><td align = "left"><i>Data</i></td>
+                    </tr>
+                    <tr>
+                        <td align = "right"><b>LinkedIn ID:</b></td><td align = "left"><i>Data</i></td>
+                    </tr>
+                    <tr>
+                        <td align = "right"><b>StackExchange ID:</b></td><td align = "left"><i>Data</i></td>
+                    </tr>
+                </table>
             </center>
         </span>
     </body>

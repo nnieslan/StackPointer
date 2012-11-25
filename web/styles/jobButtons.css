@@ -21,7 +21,7 @@
         display: block;
         border: 3px outset #e5e6e7;
         margin: 3px;
-        background: #f4f5f6;
+        background: #e6e5e5;
         color: black;
         text-align: center;
         text-decoration: none;
@@ -30,6 +30,46 @@
 }
 
 .jobButtons .button a:hover
+{
+        border: 3px inset #e5e6e7;
+        background: white;
+        color: black;
+}
+
+.jobButtons .unansweredbutton a
+{
+        display: block;
+        border: 3px outset #e5e6e7;
+        margin: 3px;
+        background: #f99696;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        float: left;
+        width: 788px;
+}
+
+.jobButtons .unansweredbutton a:hover
+{
+        border: 3px inset #e5e6e7;
+        background: white;
+        color: black;
+}
+
+.jobButtons .answeredbutton a
+{
+        display: block;
+        border: 3px outset #e5e6e7;
+        margin: 3px;
+        background: #94f989;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        float: left;
+        width: 788px;
+}
+
+.jobButtons .answeredbutton a:hover
 {
         border: 3px inset #e5e6e7;
         background: white;

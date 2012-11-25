@@ -70,7 +70,7 @@ function loadData() {
             </center>
         </span>
         <div class="menu_content">
-            <div class="button">
+            <div class="currentbutton">
                 <a href="index.jsp">Home</a>
             </div>
             <div class="button">
@@ -89,25 +89,9 @@ function loadData() {
         <span id="map">
             <br />
             <center>
-            <h2><i>Geographic representation of the last 100 StackOverflow Questions</i></h2>
+            <h3><i>Geographic representation of the last 100 <a href="http://stackoverflow.com">StackOverflow</a> Questions shown on <a href="http://maps.google.com">Google Maps</a>.</i></h3>
             <div id="map_canvas" style="width:800px; height:600px"></div>
-            <h3>These are the last 100 questions asked on <a href="http://stackoverflow.com">StackOverflow</a>
-                shown on <a href="http://maps.google.com">Google Maps</a>.</h3><br>
             </center>
-                <%  
-                    //for(Question q : questions)
-                    //{
-                    //    out.println("<br>*************<br>");
-                    //    out.println(q);
-                    //}
-                %>
         </span>
-        <center>
-            <span id="jobs">
-                <h2><i>Jobs</i></h2>
-                <h3>These are job listings in your area related to these questions, powered by <a href="http://linkedin.com">LinkedIn</a></h3>
-            </span>
-            <script type="in/Login">Hello, <?js= firstName ?> <?js= lastName ?>.</script>
-        </center>
     </body>
 </html>

@@ -1,7 +1,7 @@
 .menu_content
 {
         padding: 10px;
-        width: 775px;
+        width: 800px;
         margin-left: auto;
         margin-right: auto;
 }
@@ -27,10 +27,31 @@
         text-align: center;
         text-decoration: none;
         float: left;
-        width: 143px;
+        width: 148px;
 }
 
 .menu_content .button a:hover
+{
+        border: 3px inset #6593d4;
+        background: white;
+        color: black;
+}
+
+.menu_content .currentbutton a
+{
+        display: block;
+        border: 3px inset #6593d4;
+        margin-left: 3px;
+        margin-right: 3px;
+        background: white;
+        color: black;
+        text-align: center;
+        text-decoration: none;
+        float: left;
+        width: 148px;
+}
+
+.menu_content .currentbutton a:hover
 {
         border: 3px inset #6593d4;
         background: white;

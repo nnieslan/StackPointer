@@ -53,6 +53,7 @@ function loadData() {
  
 </script>
       <link href="styles/menu.css" type="text/css" rel="stylesheet" />
+      <link href="styles/jobButtons.css" type="text/css" rel="stylesheet" />
     </head>
     <body>
         <% //set up data here!
@@ -79,7 +80,7 @@ function loadData() {
             <div class="button">
                 <a href="jobs.jsp">Job Opportunities</a>
             </div>
-            <div class="button">
+            <div class="currentbutton">
                 <a href="stackexchange.jsp">Stack Exchange</a>
             </div>
             <div class="button">
@@ -89,31 +90,27 @@ function loadData() {
         <span id="map">
             <br />
             <center>
-            <h2><i>Geographic representation of the last 100 StackOverflow Questions</i></h2>
+            <h3><i>Geographic representation of the last 100 <a href="http://stackoverflow.com">StackOverflow</a> Questions shown on <a href="http://maps.google.com">Google Maps</a>.</i></h3>
             <div id="map_canvas" style="width:800px; height:600px"></div>
-            <h3>These are the last 100 questions asked on <a href="http://stackoverflow.com">StackOverflow</a>
-                shown on <a href="http://maps.google.com">Google Maps</a>.</h3><br>
+            <br>
             </center>
-                <%  
-                    //for(Question q : questions)
-                    //{
-                    //    out.println("<br>*************<br>");
-                    //    out.println(q);
-                    //}
-                %>
         </span>
-        <center>
-            <span id="questions">
-                <%
-                    SXDatabaseFacade databaseFacade = new SXDatabaseFacade();
-                    List<Question> questionList = databaseFacade.retrieveTop100Questions();
-                    int idx = 1;
-                    for (Question question : questionList) {
-                        out.println(String.format("%d.  %s <br>", idx, question.getqText()));
-                        idx++;
-                    }
-                %>
-            </span>
-        </center>
+        <div class="jobButtons" style="width:800px; margin: auto;">
+            <br />
+            <% StackExchangeInterface sxInterface = new StackExchangeInterface(); %>
+            <% ArrayList<Question> questionList = sxInterface.getTop100Questions(); %>
+            <% int idx = 1; %>
+            <% for (Question question : questionList) { %>
+                <div class="<% if (question.isAnswered()) { %>answeredbutton<%}else{%>unansweredbutton<%}%>">
+                    <a href = "<%out.println(question.getUrl());%>"><b><%out.println(question.getqTitle());%></b><br />
+                    <% if (question.hasLocation()) { out.println(question.getAskedBy().getLoc()); %> <br /> <% } %>
+                    <b><% if (question.isAnswered()) { %> <font color="green">Answered</font> <% } else { %> <font color="red">Not Answered</font> <% } %></b> <br />
+                    Asked By: <% out.println(question.getAskedBy().getSXname()); %><br /></a>
+                    <% idx++; %>
+                </div>
+            <% } %>
+            <br />
+            <br />
+        </div>
     </body>
 </html>
