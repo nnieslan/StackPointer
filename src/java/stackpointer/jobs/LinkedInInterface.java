@@ -32,6 +32,9 @@ import java.awt.GridLayout;
 import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import stackpointer.stackexchange.StackExchangeInterface;
+import stackpointer.database.SXUserEntity;
+import stackpointer.jobs.JobPosting;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -41,6 +44,8 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 import stackpointer.database.DBUtils;
 import stackpointer.database.JobsDatabaseFacade;
+import stackpointer.database.SXDatabaseFacade;
+import stackpointer.stackexchange.Question;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 
@@ -52,9 +57,10 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class LinkedInInterface {
     private boolean connected;
     private ArrayList<JobPosting> allJobPostings;
+    static String Location = "dayton";
+  
     //   private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs,facets)?facet=location,us:100";
-    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description-snippet))";
-
+    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description-snippet))?keywords="+Location;
     
     //Return Closest 10 Jobs to the SXUser
     public static ArrayList<JobPosting> getJobPostings() throws Exception
@@ -272,7 +278,7 @@ public class LinkedInInterface {
             {
                 JSONObject jJob = jobs.getJSONObject(j);
                 //System.out.println(GoogleMapsInterface.geocode(jJob.getString("locationDescription")));
-                GoogleMapsInterface.geocode(jJob.getString("locationDescription"));             
+                System.out.println(GoogleMapsInterface.geocode(jJob.getString("locationDescription")));             
             }
         }
         catch (JSONException e)
