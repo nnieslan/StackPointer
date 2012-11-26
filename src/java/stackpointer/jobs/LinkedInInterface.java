@@ -139,6 +139,7 @@ public class LinkedInInterface {
                 toAdd.setCompany(jJob.getJSONObject("company").getString("name"));
                 Location jobLoc = new Location(jJob.getString("locationDescription"));
                 toAdd.setLoc(jobLoc);
+                toAdd.setLoc(GoogleMapsInterface.geocode(jJob.getString("locationDescription")));
                 toAdd.setHeadline(jJob.getJSONObject("position").getString("title"));
                 toAdd.setLinkedInId(jJob.getInt("id"));
                 toAdd.setDescription(jJob.getString("descriptionSnippet"));
