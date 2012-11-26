@@ -1,13 +1,19 @@
 package stackpointer.database;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 import stackpointer.common.Location;
 import stackpointer.common.SXUser;
+import stackpointer.stackexchange.Answer;
 import stackpointer.stackexchange.Question;
 
 /**
@@ -73,11 +79,25 @@ public class SXDatabaseFacade {
                     }
                 }
                 
-                // Now we can save off the qeustion
+                // Now we can save off the question
                 QuestionEntity questionEntity = translateToEntity(question);
                 boolean success = questionRepo.add(questionEntity);
                 if (success) {
                     numQuestionsAdded++;
+                    // Only if the question succeeds can we save off the tags.
+                    saveQuestionTags(connection, question.getQid(), question.getTags());
+                    // Save off each answer too.
+                    AnswerRepo answerRepo = new AnswerRepo(connection);
+                    List<Answer> answers = question.getAnswers();
+                    if (answers != null && !answers.isEmpty()) {
+                        for (Answer a : answers) {
+                            AnswerEntity entity = translateToEntity(a);
+                            if (entity.getAssociatedQid() <= 0) {
+                                entity.setAssociatedQid(question.getQid());
+                            }
+                            answerRepo.add(entity);
+                        }
+                    }
                 }
             }
             
@@ -107,6 +127,54 @@ public class SXDatabaseFacade {
         return numQuestionsAdded;
     }
     
+    /**
+     * Save question tags to the database.
+     * 
+     * @param connection
+     * @param qid
+     * @param tags
+     * @throws SQLException 
+     */
+    private void saveQuestionTags(Connection connection, int qid, List<String> tags) throws SQLException {
+        StringBuilder builder = new StringBuilder();
+        
+        if (connection == null) {
+            return;
+        }
+        
+        if (qid <= 0 || tags == null || tags.isEmpty()) {
+            return;
+        }
+        
+        builder.append("INSERT INTO tags VALUES ");
+        
+        for (String t : tags) {
+            if (t == null) {
+                continue;
+            }           
+            if (t.isEmpty()) {
+                continue;
+            }
+            builder.append("(");
+            builder.append(qid);
+            builder.append(", '");
+            builder.append(t);
+            builder.append("'),");
+        }
+        
+        // get rid of last comma
+        builder.deleteCharAt(builder.length()-1);
+        
+        String insertText = builder.toString();
+        PreparedStatement stmt = connection.prepareStatement(insertText);
+        stmt.execute();
+    }
+    
+    /**
+     * Verifies that the question is valid for saving
+     * @param q Question
+     * @return true if the question is valid for saving, otherwise false
+     */
     private boolean isValidForSaving(Question q) {
         // null question
         if (q == null) {
@@ -138,6 +206,7 @@ public class SXDatabaseFacade {
      */
     public List<Question> retrieveTop100Questions() {
         QuestionRepo questionRepo = null;
+        Set<Integer> qidCache = new HashSet<Integer>();
         Set<SXUser> userCache = new HashSet<SXUser>();
         List<Question> questionList = new ArrayList<Question>();
         Connection connection = DBUtils.openConnection(
@@ -149,6 +218,7 @@ public class SXDatabaseFacade {
             
             for (QuestionEntity qe : questionEntities) {
                 Question q = translateToQuestion(qe);
+                qidCache.add(q.getQid());
                 
                 SXUser u = q.getAskedBy();
                 if (u != null) {
@@ -170,6 +240,45 @@ public class SXDatabaseFacade {
             populateSXUserDetails(connection, userCache);
         } catch (SQLException ex) {
             System.err.println("Failed to populate sxuser details");
+            System.err.println(ex);
+            questionList = null;
+        }
+        
+        // Grab the question tags.
+        try {
+            Map<Integer, List<String>> tagMap = getQuestionTags(connection, qidCache);
+            for (Question question : questionList) {
+                List<String> tagList = tagMap.get(question.getQid());
+                question.setTags(tagList);
+            }
+        } catch (SQLException ex) {
+            System.err.println("Failed to populate question tags");
+            System.err.println(ex);
+            questionList = null;
+        }
+        
+        // Grab the answers.
+        try {
+            Map<Integer, Question> qMap = new HashMap<Integer, Question>();
+            AnswerRepo answerRepo = new AnswerRepo(connection);
+            List<AnswerEntity> answerList = answerRepo.retrieve(qidCache);
+            // woudld love to make this part cleaner, but no time now
+            // build up the question map
+            for (Question q : questionList) {
+                q.setAnswers(new ArrayList<Answer>());
+                qMap.put(q.getQid(), q);
+            }
+            // Translate each answer and add it to each 
+            for (AnswerEntity answerEntity : answerList) {
+                Answer answer = new Answer();
+                translateToAnswer(answerEntity, answer);
+                // todo - populate user details
+                Question associatedQuestion = qMap.get(answerEntity.getAssociatedQid());
+                answer.setAnswering(associatedQuestion);
+                associatedQuestion.getAnswers().add(answer);
+            }
+        } catch (SQLException ex) {
+            System.err.println("Failed to populate answes");
             System.err.println(ex);
             questionList = null;
         }
@@ -206,6 +315,54 @@ public class SXDatabaseFacade {
                 }
             }
         }
+    }
+    
+    /**
+     * Retrieve question tags from the database.
+     * 
+     * @param connection Database connection
+     * @param questionIdSet Set of question Ids to find associated tags
+     * @return Mapping of question Ids to list of tags
+     * @throws SQLException Database exception
+     */
+    private Map<Integer,List<String>> getQuestionTags(Connection connection,
+            Set<Integer> questionIdSet) throws SQLException {
+        int lastQid = 0;
+        List<String> currentTagList = null;
+        Map<Integer, List<String>> tagMap = new HashMap<Integer, List<String>>();
+        
+        if (questionIdSet == null || questionIdSet.isEmpty()) {
+            return tagMap;        
+        }
+        
+        for (Integer qid : questionIdSet) {
+            List<String> tagList = new ArrayList<String>();
+            tagMap.put(qid, tagList);
+        }
+        
+        String listString = DBUtils.collectionToCSVString(questionIdSet);
+        
+        String queryText =
+                "SELECT qid, tag_text " +
+                "FROM tags " +
+                "WHERE qid IN (" + listString + ") " +
+                "ORDER BY qid ASC";
+        
+        Statement statement = connection.createStatement();
+        ResultSet results = statement.executeQuery(queryText);
+
+        while (results.next()) {
+            int qid = results.getInt("qid");
+            String tag = results.getString("tag_text");
+            
+            if (lastQid != qid) {
+                currentTagList = tagMap.get(qid);
+            }
+            
+            currentTagList.add(tag);
+        }
+        
+        return tagMap;
     }
     
     /**
@@ -305,6 +462,29 @@ public class SXDatabaseFacade {
         } else {
             user.setLoc(null);
         }
+    }
+    
+    private void translateToAnswer(AnswerEntity entity, Answer answer) {
+        answer.setAid(entity.getAid());
+        answer.setAnsText(entity.getText());
+    }
+    
+    private AnswerEntity translateToEntity(Answer answer) {
+        AnswerEntity entity = new AnswerEntity();
+        entity.setAid(answer.getAid());
+        entity.setText(answer.getAnsText());
+        
+        SXUser user = answer.getAnsweredBy();
+        if (user != null) {
+            entity.setPostedByUserId(user.getSXid());
+        }
+        
+        Question associatedQuestion = answer.getAnswering();
+        if (associatedQuestion != null) {
+            entity.setAssociatedQid(associatedQuestion.getQid());
+        }
+        
+        return entity;
     }
 
 }

@@ -141,7 +141,8 @@ public class AnswerRepo extends DatabaseRepository<AnswerEntity> {
         String queryText =
                 "SELECT aid, postedTimestamp, answer_text, qid, postedby_uid " +
                 "FROM answers " +
-                "WHERE " + whereClause;
+                "WHERE " + whereClause + " " +
+                "ORDER BY qid ASC";
         
         if (super.connection != null && !super.connection.isClosed()) {
             Statement statement = connection.createStatement();

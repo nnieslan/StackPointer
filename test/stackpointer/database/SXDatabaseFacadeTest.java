@@ -46,6 +46,10 @@ public class SXDatabaseFacadeTest {
         System.out.println("syncQuestions");
         List<Question> questionList = new ArrayList<Question>();
         
+        List<String> tags = new ArrayList<String>();
+        tags.add(".net");
+        tags.add("mysql");
+        
         SXUser u = new SXUser();
         u.setSXid(1);
         
@@ -56,6 +60,7 @@ public class SXDatabaseFacadeTest {
         q.setqTitle("test question title 1");
         q.setAnswers(null);
         q.setAskedBy(u);
+        //q.setTags(tags);
         questionList.add(q);
         
         q = new Question();

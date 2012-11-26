@@ -10,6 +10,7 @@
 -- Drop all of the tables if they already exist.
 drop table if exists jobpostings;
 drop table if exists answers;
+drop table if exists tags;
 drop table if exists questions;
 drop table if exists sxusers;
 drop table if exists splog;
@@ -40,6 +41,15 @@ create table questions (
 	--constraint fk_question_postedby foreign key (postedby_uid)
 	--references sxusers(uid),
 	primary key(qid)
+);
+
+-- Question Tags
+create table tags (
+	qid int not null,
+	tag_text varchar(50),
+	constraint fk_tags_question foreign key (qid)
+	references questions(qid),
+	primary key(qid, tag_text)
 );
 
 -- Answers
