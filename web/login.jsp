@@ -66,19 +66,16 @@ function loadData() {
             <div class="button">
                 <a href="index.jsp">Home</a>
             </div>
-            <div class="currentbutton">
-                <a href="login.jsp">Login</a>
-            </div>
-            <div class="button">
-                <a href="jobs.jsp">Job Opportunities</a>
-            </div>
             <div class="button">
                 <a href="stackexchange.jsp">Stack Exchange</a>
             </div>
             <div class="button">
-                <a href="userinfo.jsp">User Information</a>
+                <a href="jobs.jsp">Job Opportunities</a>
             </div>
-        </div>
+            <div class="currentbutton">
+                <a href="login.jsp">Login</a>
+            </div>
+        </div>   
         <span id="login">
             <br />
             <center>

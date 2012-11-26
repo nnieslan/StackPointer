@@ -50,7 +50,14 @@ function loadData() {
       $("#search").html(profHTML);
       });
 }
- 
+
+function toggle(elementID) {
+    var element = document.getElementById(elementID);
+
+    element.className=(element.className=='hidden')?'unhidden':'hidden';
+} 
+
+
 </script>
       <link href="styles/menu.css" type="text/css" rel="stylesheet" />
       <link href="styles/jobButtons.css" type="text/css" rel="stylesheet" />
@@ -74,19 +81,16 @@ function loadData() {
             <div class="button">
                 <a href="index.jsp">Home</a>
             </div>
-            <div class="button">
-                <a href="login.jsp">Login</a>
-            </div>
-            <div class="button">
-                <a href="jobs.jsp">Job Opportunities</a>
-            </div>
             <div class="currentbutton">
                 <a href="stackexchange.jsp">Stack Exchange</a>
             </div>
             <div class="button">
-                <a href="userinfo.jsp">User Information</a>
+                <a href="jobs.jsp">Job Opportunities</a>
             </div>
-        </div>          
+            <div class="button">
+                <a href="login.jsp">Login</a>
+            </div>
+        </div>            
         <span id="map">
             <br />
             <center>
@@ -97,17 +101,26 @@ function loadData() {
         </span>
         <div class="jobButtons" style="width:800px; margin: auto;">
             <br />
-            <% StackExchangeInterface sxInterface = new StackExchangeInterface(); %>
-            <% ArrayList<Question> questionList = sxInterface.getTop100Questions(); %>
+            <% SXDatabaseFacade sxDatabaseFacade = new SXDatabaseFacade(); %>
+            <% List<Question> questionList = sxDatabaseFacade.retrieveTop100Questions(); %>
             <% int idx = 1; %>
             <% for (Question question : questionList) { %>
                 <div class="<% if (question.isAnswered()) { %>answeredbutton<%}else{%>unansweredbutton<%}%>">
-                    <a href = "<%out.println(question.getUrl());%>"><b><%out.println(question.getqTitle());%></b><br />
+                    <a id="questionButton<% out.print(idx); %>" href="javascript:toggle('questionText<% out.print(idx); %>');"><b><%out.println(question.getqTitle());%></b><br />
                     <% if (question.hasLocation()) { out.println(question.getAskedBy().getLoc()); %> <br /> <% } %>
                     <b><% if (question.isAnswered()) { %> <font color="green">Answered</font> <% } else { %> <font color="red">Not Answered</font> <% } %></b> <br />
                     Asked By: <% out.println(question.getAskedBy().getSXname()); %><br /></a>
-                    <% idx++; %>
+                    
                 </div>
+                <div id="questionText<% out.print(idx); %>" class="hidden" style = "width: 800px; align: left;;">
+                    <p>
+                        <center><a href="<% out.println(question.getUrl()); %>"><% out.println(question.getUrl()); %></a></center>
+                    </p>
+                    <p>
+                        <% out.println(String.format("%s <br>", question.getqText())); %>
+                    </p>
+                </div>
+                <% idx++; %>
             <% } %>
             <br />
             <br />

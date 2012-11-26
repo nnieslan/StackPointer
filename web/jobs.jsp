@@ -32,6 +32,13 @@
         <script type='text/javascript' src='/StackPointer/script/jquery/jquery-1.8.1.js'></script>
         <script type="text/javascript" src="http://platform.linkedin.com/in.js">api_key:v6xty7mvo61a</script>
  
+        <script type="text/javascript">
+            function toggle(elementID)
+            {
+                var element = document.getElementById(elementID);
+                element.className=(element.className=='hidden')?'unhidden':'hidden';
+            } 
+        </script>
       <link href="styles/menu.css" type="text/css" rel="stylesheet" />
       <link href="styles/jobButtons.css" type="text/css" rel="stylesheet" />
     </head>
@@ -56,18 +63,15 @@
                 <a href="index.jsp">Home</a>
             </div>
             <div class="button">
-                <a href="login.jsp">Login</a>
+                <a href="stackexchange.jsp">Stack Exchange</a>
             </div>
             <div class="currentbutton">
                 <a href="jobs.jsp">Job Opportunities</a>
             </div>
             <div class="button">
-                <a href="stackexchange.jsp">Stack Exchange</a>
+                <a href="login.jsp">Login</a>
             </div>
-            <div class="button">
-                <a href="userinfo.jsp">User Information</a>
-            </div>
-        </div>          
+        </div>           
         <div id="map">
             <br />
             <center>
@@ -77,16 +81,24 @@
         </div>
         <div class="jobButtons" style="width:800px; margin: auto;">
             <br />
-            <% LinkedInInterface databaseFacade = new LinkedInInterface(); %>
-            <% ArrayList<JobPosting> jobsList = databaseFacade.getJobPostings(); %>
+            <% JobsDatabaseFacade databaseFacade = new JobsDatabaseFacade(); %>
+            <% List<JobPosting> jobsList = databaseFacade.retrieveAllJobPostings(); %>
             <% int idx = 1; %>
             <% for(JobPosting job : jobsList) { %>
                 <div class="button">
-                    <a href ="http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%>"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
+                    <a id="linkedinButton<% out.print(idx); %>" href="javascript:toggle('linkedinText<% out.print(idx); %>');"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
                     <% if (job.hasLocation()) { out.println(job.getLoc()); %> <br /> <% } %>
                     <% out.println(job.getDatePosted());%><br /></a>
-                    <% idx++; %>
                 </div>
+                <div id="linkedinText<% out.print(idx); %>" class = "hidden">
+                    <p>
+                        <center><a href ="http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%>">http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%></a></center>
+                    </p>
+                    <p>
+                        <% out.println(String.format("%s <br>", job.getDescription())); %>
+                    </p>
+                </div>
+                <% idx++; %>
             <% } %>
         </div>
     </body>

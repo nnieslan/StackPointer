@@ -74,16 +74,13 @@ function loadData() {
                 <a href="index.jsp">Home</a>
             </div>
             <div class="button">
-                <a href="login.jsp">Login</a>
+                <a href="stackexchange.jsp">Stack Exchange</a>
             </div>
             <div class="button">
                 <a href="jobs.jsp">Job Opportunities</a>
             </div>
             <div class="button">
-                <a href="stackexchange.jsp">Stack Exchange</a>
-            </div>
-            <div class="button">
-                <a href="userinfo.jsp">User Information</a>
+                <a href="login.jsp">Login</a>
             </div>
         </div>          
         <span id="map">
