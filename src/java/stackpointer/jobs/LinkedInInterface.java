@@ -47,6 +47,7 @@ import stackpointer.database.JobsDatabaseFacade;
 import stackpointer.database.SXDatabaseFacade;
 import stackpointer.stackexchange.Question;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
+import stackpointer.common.Location;
 
 
 /**
@@ -57,10 +58,11 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 public class LinkedInInterface {
     private boolean connected;
     private ArrayList<JobPosting> allJobPostings;
-    static String Location = "dayton";
+    //static String Location = "dayton";
+    //static String Location = new stackpointer.common.Location.getLocStr();
   
     //   private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs,facets)?facet=location,us:100";
-    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description-snippet))?keywords="+Location;
+    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description-snippet))?count=20";
     
     //Return Closest 10 Jobs to the SXUser
     public static ArrayList<JobPosting> getJobPostings() throws Exception
@@ -145,7 +147,7 @@ public class LinkedInInterface {
                         jJob.getJSONObject("postingDate").getInt("day"));       
                 toAdd.setDatePosted(jobDate);
                 parsed.add(toAdd);
-                getJobLocations(jJob);
+                //getJobLocations(jJob);
             }
         }
         catch (JSONException e)
