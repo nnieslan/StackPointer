@@ -413,6 +413,11 @@ public class SXDatabaseFacade {
         
         question.setAnswers(null);
         
+        if (question.getQid() > 0) {
+            String url = String.format("http://stackoverflow.com/questions/%d", question.getQid());
+            question.setUrl(url);
+        }
+        
         return question;
     }
     
@@ -450,7 +455,7 @@ public class SXDatabaseFacade {
      */
     private void translateEntityToSXUser(SXUserEntity entity, SXUser user) {
         user.setSXid(entity.getUid());
-        user.setUserName(entity.getDisplayName());
+        user.setSXname(entity.getDisplayName());
         
         if ((entity.getLocationText() != null && !entity.getLocationText().isEmpty()) ||
                 entity.getLocationLat() != 0.0 ||
