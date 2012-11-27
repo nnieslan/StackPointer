@@ -109,7 +109,7 @@
                 <div class="button">
                     <a id="linkedinButton<% out.print(idx); %>" href="javascript:toggle('linkedinText<% out.print(idx); %>');"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
                     <% if (job.hasLocation()) { out.println(job.getLoc()); %> <br /> <% } %>
-                    <% out.println(job.getDescription());%><br /></a>
+                    <% out.println(job.getDatePosted());%><br /></a>
                 </div>
                 <div id="linkedinText<% out.print(idx); %>" class = "hidden">
                     <p>
