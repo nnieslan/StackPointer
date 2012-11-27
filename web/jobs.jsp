@@ -42,7 +42,7 @@
       <link href="styles/menu.css" type="text/css" rel="stylesheet" />
       <link href="styles/jobButtons.css" type="text/css" rel="stylesheet" />
     </head>
-    <body style="text-align: center">
+    <body>
         <% System.setProperty("java.awt.headless", "false");%>
         <% //set up data here!
         ArrayList<JobPosting> jobs = LinkedInInterface.getJobPostings();
@@ -80,29 +80,36 @@
             </center>
         </div>
         <div class="jobButtons" style="width:800px; margin: auto;">
-            <br />
+            <center><h2>The following is the list using the API calls (matches the map)</h2></center>
             <% LinkedInInterface newFacade = new LinkedInInterface(); %>
             <% ArrayList<JobPosting> jobsnewList = newFacade.getJobPostings(); %>
-            <% int odx = 1; %>
+            <% int idx = 1; %>
             <% for(JobPosting job : jobsnewList) { %>
                 <div class="button">
-                    <a href ="http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%>"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
+                    <a id="linkedinButton<% out.print(idx); %>" href="javascript:toggle('linkedinText<% out.print(idx); %>');"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
                     <% if (job.hasLocation()) { out.println(job.getLoc()); %> <br /> <% } %>
                     <% out.println(job.getDatePosted());%><br /></a>
-                    <% odx++; %>
                 </div>
+                <div id="linkedinText<% out.print(idx); %>" class = "hidden">
+                    <p>
+                        <center><a href ="http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%>">http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%></a></center>
+                    </p>
+                    <p>
+                        <% out.println(String.format("%s <br>", job.getDescription())); %>
+                    </p>
+                </div>
+                 <% idx++; %>
             <% } %>
          </div>
          <div class="jobButtons" style="width:800px; margin: auto;">
-            <br />
+             <center><h2>The following is the list using the Facade calls (does not match the map)</h2></center>
             <% JobsDatabaseFacade databaseFacade = new JobsDatabaseFacade(); %>
             <% List<JobPosting> jobsList = databaseFacade.retrieveAllJobPostings(); %>
-            <% int idx = 1; %>
             <% for(JobPosting job : jobsList) { %>
                 <div class="button">
                     <a id="linkedinButton<% out.print(idx); %>" href="javascript:toggle('linkedinText<% out.print(idx); %>');"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
                     <% if (job.hasLocation()) { out.println(job.getLoc()); %> <br /> <% } %>
-                    <% out.println(job.getDescription());%><br /></a>
+                    <% out.println(job.getDatePosted());%><br /></a>
                 </div>
                 <div id="linkedinText<% out.print(idx); %>" class = "hidden">
                     <p>

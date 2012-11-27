@@ -100,10 +100,35 @@ function toggle(elementID) {
             </center>
         </span>
         <div class="jobButtons" style="width:800px; margin: auto;">
+            <center><h2>The following is the list using the API calls (matches the map)</h2></center>
+            <% StackExchangeInterface sxInterface = new StackExchangeInterface(); %>
+            <% List<Question> newquestionList = sxInterface.getQuestionsFromServer(); %>
+            <% int idx = 1; %>
+            <% for (Question question : newquestionList) { %>
+                <div class="<% if (question.isAnswered()) { %>answeredbutton<%}else{%>unansweredbutton<%}%>">
+                    <a id="questionButton<% out.print(idx); %>" href="javascript:toggle('questionText<% out.print(idx); %>');"><b><%out.println(question.getqTitle());%></b><br />
+                    <% if (question.hasLocation()) { out.println(question.getAskedBy().getLoc()); %> <br /> <% } %>
+                    <b><% if (question.isAnswered()) { %> <font color="green">Answered</font> <% } else { %> <font color="red">Not Answered</font> <% } %></b> <br />
+                    Asked By: <% out.println(question.getAskedBy().getSXname()); %><br /></a>
+                    
+                </div>
+                <div id="questionText<% out.print(idx); %>" class="hidden" style = "width: 800px; align: left;;">
+                    <p>
+                        <center><a href="<% out.println(question.getUrl()); %>"><% out.println(question.getUrl()); %></a></center>
+                    </p>
+                    <p>
+                        <% out.println(String.format("%s <br>", question.getqText())); %>
+                    </p>
+                </div>
+                <% idx++; %>
+            <% } %>
             <br />
+            <br />
+        </div>
+        <div class="jobButtons" style="width:800px; margin: auto;">
+            <center><h2>The following is the list using the Facade calls (does not match the map)</h2></center>
             <% SXDatabaseFacade sxDatabaseFacade = new SXDatabaseFacade(); %>
             <% List<Question> questionList = sxDatabaseFacade.retrieveTop100Questions(); %>
-            <% int idx = 1; %>
             <% for (Question question : questionList) { %>
                 <div class="<% if (question.isAnswered()) { %>answeredbutton<%}else{%>unansweredbutton<%}%>">
                     <a id="questionButton<% out.print(idx); %>" href="javascript:toggle('questionText<% out.print(idx); %>');"><b><%out.println(question.getqTitle());%></b><br />

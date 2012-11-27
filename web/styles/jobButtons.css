@@ -39,9 +39,9 @@
 .jobButtons .unansweredbutton a
 {
         display: block;
-        border: 3px outset #e5e6e7;
+        border: 3px outset #f98e9f;
         margin: 3px;
-        background: #f99696;
+        background: #fcdddd;
         color: black;
         text-align: center;
         text-decoration: none;
@@ -51,7 +51,7 @@
 
 .jobButtons .unansweredbutton a:hover
 {
-        border: 3px inset #e5e6e7;
+        border: 3px inset #f98e9f;
         background: white;
         color: black;
 }
@@ -59,9 +59,9 @@
 .jobButtons .answeredbutton a
 {
         display: block;
-        border: 3px outset #e5e6e7;
+        border: 3px outset #49f47b;
         margin: 3px;
-        background: #94f989;
+        background: #a5febf;
         color: black;
         text-align: center;
         text-decoration: none;
@@ -71,7 +71,7 @@
 
 .jobButtons .answeredbutton a:hover
 {
-        border: 3px inset #e5e6e7;
+        border: 3px inset #49f47b;
         background: white;
         color: black;
 }
