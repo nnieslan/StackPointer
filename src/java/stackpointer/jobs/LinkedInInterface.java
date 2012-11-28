@@ -143,7 +143,7 @@ public class LinkedInInterface {
                 toAdd.setHeadline(jJob.getJSONObject("position").getString("title"));
                 toAdd.setLinkedInId(jJob.getInt("id"));
                 toAdd.setDescription(jJob.getString("descriptionSnippet"));
-                Date jobDate = new Date(jJob.getJSONObject("postingDate").getInt("year"), 
+                Date jobDate = new Date(jJob.getJSONObject("postingDate").getInt("year")-1900, 
                         jJob.getJSONObject("postingDate").getInt("month"), 
                         jJob.getJSONObject("postingDate").getInt("day"));       
                 toAdd.setDatePosted(jobDate);
