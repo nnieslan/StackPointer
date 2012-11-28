@@ -131,6 +131,15 @@ public class GoogleMapsInterface {
                 toReturn.append("var contentString").append(i).append("='<b>Question: </b>");
                 toReturn.append("<a href = \"").append(q.getUrl()).append("\">");
                 toReturn.append(q.getqTitle()).append("</a>");
+                if(q.getTags()!=null && !q.getTags().isEmpty())
+                {
+                    toReturn.append("<br><b>Tags: </b>");
+                    for(String tag : q.getTags())
+                    {
+                        toReturn.append("<a href=\"jobs.jsp?q=").append(tag).append("\">").append(tag).append("</a>, ");
+                    }
+                    toReturn.delete(toReturn.length()-2, toReturn.length());
+                }
                 toReturn.append("<br><b>Asked By: </b>").append(q.getAskedBy().getSXname()).append("\';\n");
                 
                 //the infowindow

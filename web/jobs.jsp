@@ -46,6 +46,7 @@
         <% System.setProperty("java.awt.headless", "false");%>
         <% //set up data here!
         ArrayList<JobPosting> jobs = LinkedInInterface.getJobPostings();
+        String queryStr = request.getParameter("q");
         %>
         <span id="welcome">
             <center>
@@ -75,7 +76,8 @@
         <div id="map">
             <br />
             <center>
-                <h3><i>Geographic representation of the latest <a href="http://linkedin.com">LinkedIn</a> Job Postingsshown on <a href="http://maps.google.com">Google Maps</a>.</i></h3>
+                <h3><i>Geographic representation of the latest <a href="http://linkedin.com">LinkedIn</a> Job Postings <% if(queryStr!=null){out.print("for "+queryStr+' ');
+                } %>shown on <a href="http://maps.google.com">Google Maps</a>.</i></h3>
                 <div id="map_canvas" style="width:800px; height:600px"></div>
             </center>
         </div>
