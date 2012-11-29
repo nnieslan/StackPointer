@@ -1,5 +1,6 @@
 package stackpointer.database;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.junit.After;
@@ -131,6 +132,21 @@ public class JobPostingRepoTest {
         
         assertTrue("delete - no record deleted", rowDeleted);
         assertTrue("delete - jpid was not reset", j.getJpid() == 0);
+    }
+    
+    /**
+     * Test of the retrieve by keywords method of class JobPostingRepo.
+     */
+    @Test
+    public void testRetrieveWithKeywords() throws Exception {
+        JobPostingRepo repo = new JobPostingRepo(
+                DatabaseConnectionInfo.createDefault());
+        
+        List<String> keywords = new ArrayList<String>();
+        keywords.add("web");
+        keywords.add("net");
+        
+        List<JobPostingEntity> jobsList = repo.retrieve();
     }
     
 }

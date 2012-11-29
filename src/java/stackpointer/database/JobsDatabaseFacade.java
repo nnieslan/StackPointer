@@ -110,7 +110,7 @@ public class JobsDatabaseFacade {
         
         entity.setJpid(jobPosting.getLinkedInId());
         entity.setDatePosted(jobPosting.getDatePosted());
-        entity.setHeadline(jobPosting.getLoc().toString());
+        entity.setHeadline(jobPosting.getHeadline());
         entity.setCompany(jobPosting.getCompany());
         entity.setDescription(jobPosting.getDescription());
         

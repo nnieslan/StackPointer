@@ -21,7 +21,7 @@ public class PeriodicTaskRunner implements ServletContextListener {
         System.out.println("Initializing periodic task runner.");
         scheduler = Executors.newSingleThreadScheduledExecutor();
         scheduler.scheduleAtFixedRate(new PullFromStackExchangeTask(), 1, 10, TimeUnit.MINUTES);
-        //scheduler.scheduleAtFixedRate(new PullFromLinkedInTask(), 1, 10, TimeUnit.MINUTES);
+        scheduler.scheduleAtFixedRate(new PullFromLinkedInTask(), 1, 10, TimeUnit.MINUTES);
     }
     
     @Override
