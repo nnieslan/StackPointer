@@ -166,7 +166,7 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
     
     public List<JobPostingEntity> retrieve() throws SQLException {
         // retrieve all
-        List<JobPostingEntity> jobList = select("1=1");
+        List<JobPostingEntity> jobList = select("1=1", 20);
         return jobList;
     }
     
@@ -189,12 +189,16 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
         }
         
         String whereClause = builder.toString();
-        List<JobPostingEntity> jobList = select(whereClause);
+        List<JobPostingEntity> jobList = select(whereClause, 20);
         
         return jobList;
     }
     
     private List<JobPostingEntity> select(String whereClause) throws SQLException {
+        return select(whereClause, -1);
+    }
+    
+    private List<JobPostingEntity> select(String whereClause, int limit) throws SQLException {
         List<JobPostingEntity> jobList = new ArrayList<JobPostingEntity>();
         
         // If no where clause is specified, we no query will be made.
@@ -206,7 +210,12 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
                 "SELECT jpid, date_posted, headline, description, " +
                 "company, location_text, location_lat, location_lon " +
                 "FROM jobpostings " +
-                "WHERE " + whereClause;
+                "WHERE " + whereClause + " " +
+                "ORDER BY date_posted DESC";
+        
+        if (limit > 0) {
+            queryText = queryText + String.format(" LIMIT %d", limit);
+        }
         
         if (super.connection != null && !super.connection.isClosed()) {
             Statement statement = connection.createStatement();

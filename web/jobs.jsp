@@ -87,9 +87,16 @@
         </div>
         <div class="jobButtons" style="width:800px; margin: auto;">
              <center><h2>The following is the list of database jobs.</h2></center>
-            <% int idx = 1; %>
-            <% JobsDatabaseFacade databaseFacade = new JobsDatabaseFacade(); %>
-            <% List<JobPosting> jobsList = databaseFacade.retrieveByKeyword(queryStr); %>
+            <%
+            int idx = 1;
+               List<JobPosting> jobsList;
+             JobsDatabaseFacade databaseFacade = new JobsDatabaseFacade();
+            if (queryStr != null && !queryStr.isEmpty()) {
+                jobsList = databaseFacade.retrieveByKeyword(queryStr);
+            } else {
+                 jobsList = databaseFacade.retrieveAllJobPostings();
+            }
+            %>
             <% for(JobPosting job : jobsList) { %>
                 <div class="button">
                     <a id="linkedinButton<% out.print(idx); %>" href="javascript:toggle('linkedinText<% out.print(idx); %>');"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
