@@ -47,6 +47,10 @@
         <% //set up data here!
         ArrayList<JobPosting> jobs = LinkedInInterface.getJobPostings();
         String queryStr = request.getParameter("q");
+        if(queryStr!=null)
+        {
+            queryStr = queryStr.replaceAll("-", " ");
+        }
         %>
         <span id="welcome">
             <center>
