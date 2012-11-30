@@ -58,11 +58,13 @@ import stackpointer.common.Location;
 public class LinkedInInterface {
     private boolean connected;
     private ArrayList<JobPosting> allJobPostings;
-    //static String Location = "dayton";
+    //static String Keyword = JOptionPane.showInputDialog("Enter Search Criteria");
     //static String Location = new stackpointer.common.Location.getLocStr();
+    static String X = JOptionPane.showInputDialog("Login with LinkedIn Username");
+    static String Y = JOptionPane.showInputDialog("Enter LinkedIn Password");
   
     //   private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs,facets)?facet=location,us:100";
-    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description))?count=20";
+    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description))?count=20&keywords=Keyword";
     
     //Return Closest 10 Jobs to the SXUser
     public static ArrayList<JobPosting> getJobPostings() throws Exception
@@ -73,7 +75,7 @@ public class LinkedInInterface {
                                 .provider(LinkedInApi.class)
                                 .apiKey("v6xty7mvo61a")
                                 .apiSecret("N6Ggy9kfyJc3fVO0")
-                             // .callback ("http://localhost:8080/StackPointer/")
+                                //.callback ("http://localhost:8080/StackPointer/")
                                 .build();
         Scanner in = new Scanner(System.in);
 
@@ -95,6 +97,7 @@ public class LinkedInInterface {
         String authUrl = service.getAuthorizationUrl(requestToken);
       
         Verifier verifier = new Verifier(getVerifier(authUrl));
+        //Verifier verifier = new Verifier(authUrl);
         //Verifier verifier = new Verifier(JOptionPane.showInputDialog("Verifier"));
 
         // Trade the Request Token and Verfier for the Access Token
@@ -237,8 +240,10 @@ public class LinkedInInterface {
       
           //String LINKEDIN_USERNAME = JOptionPane.showInputDialog("Login with LinkedIn Username");
           //String LINKEDIN_PASSWORD = JOptionPane.showInputDialog("Enter LinkedIn Password");
-          String LINKEDIN_USERNAME = "stackpointermashup@gmail.com";
-          String LINKEDIN_PASSWORD = "lokiju*&";
+          //String LINKEDIN_USERNAME = "stackpointermashup@gmail.com";
+          //String LINKEDIN_PASSWORD = "lokiju*&";
+          String LINKEDIN_USERNAME = X;
+          String LINKEDIN_PASSWORD = Y;
 	  final WebClient webClient = new WebClient();
           webClient.setJavaScriptEnabled(false);
 
