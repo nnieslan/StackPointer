@@ -89,9 +89,21 @@ public class JobsDatabaseFacadeTest {
      */
     @Test
     public void testRetrieveAllJobPostings() {
+        System.out.println("retrieveAllJobPostings");
         JobsDatabaseFacade jobsDB = new JobsDatabaseFacade();
         List<JobPosting> jobsList = jobsDB.retrieveAllJobPostings();
         assertNotNull(jobsList);
         assertTrue(jobsList.size() >= 0);
+    }
+    
+    /**
+     * Test of retrieveByKeyword method, of class JobsDatabaseFacade.
+     */
+    @Test
+    public void testRetrieveByKeyword() {
+        System.out.println("testRetrieveByKeyword");
+        JobsDatabaseFacade jobsDB = new JobsDatabaseFacade();
+        List<JobPosting> jobsList = jobsDB.retrieveByKeyword("web");
+        assertNotNull(jobsList);
     }
 }

@@ -139,14 +139,18 @@ public class JobPostingRepoTest {
      */
     @Test
     public void testRetrieveWithKeywords() throws Exception {
+        System.out.println("retrieveByKeyword");
+        
         JobPostingRepo repo = new JobPostingRepo(
                 DatabaseConnectionInfo.createDefault());
         
         List<String> keywords = new ArrayList<String>();
         keywords.add("web");
-        keywords.add("net");
+        keywords.add("developer");
         
-        List<JobPostingEntity> jobsList = repo.retrieve();
+        List<JobPostingEntity> jobsList = repo.retrieve(keywords);
+        
+        assertNotNull(jobsList);
     }
     
 }

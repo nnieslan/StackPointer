@@ -83,10 +83,10 @@
         </div>
         <div class="jobButtons" style="width:800px; margin: auto;">
             <center><h2>The following is the list using the API calls.</h2></center>
-            <% LinkedInInterface newFacade = new LinkedInInterface(); %>
-            <% ArrayList<JobPosting> jobsnewList = newFacade.getJobPostings(); %>
+            <% //LinkedInInterface newFacade = new LinkedInInterface(); %>
+            <% //ArrayList<JobPosting> jobsnewList = newFacade.getJobPostings(); %>
             <% int idx = 1; %>
-            <% for(JobPosting job : jobsnewList) { %>
+            <% for(JobPosting job : jobs) { %>
                 <div class="button">
                     <a id="linkedinButton<% out.print(idx); %>" href="javascript:toggle('linkedinText<% out.print(idx); %>');"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
                     <% if (job.hasLocation()) { out.println(job.getLoc()); %> <br /> <% } %>
@@ -106,7 +106,7 @@
          <div class="jobButtons" style="width:800px; margin: auto;">
              <center><h2>The following is the list of databased jobs.</h2></center>
             <% JobsDatabaseFacade databaseFacade = new JobsDatabaseFacade(); %>
-            <% List<JobPosting> jobsList = databaseFacade.retrieveAllJobPostings(); %>
+            <% List<JobPosting> jobsList = databaseFacade.retrieveByKeyword(queryStr); %>
             <% for(JobPosting job : jobsList) { %>
                 <div class="button">
                     <a id="linkedinButton<% out.print(idx); %>" href="javascript:toggle('linkedinText<% out.print(idx); %>');"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />

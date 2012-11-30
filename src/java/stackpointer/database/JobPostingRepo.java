@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.LinkedList;
 import java.util.List;
 
 /**
@@ -170,7 +171,6 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
     }
     
     public List<JobPostingEntity> retrieve(List<String> keywords) throws SQLException {
-        String whereClause = "";
         StringBuilder builder = new StringBuilder();
         
         if (keywords == null || keywords.isEmpty()) {
@@ -180,14 +180,15 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
         for (int i = 0; i < keywords.size(); i++) {
             // COLLATE UTF8_GENERAL_CI -- this makes the search case insensitive
             if (i == 0) {
-                builder.append("headline COLLATE UTF8_GENERAL_CI LIKE %");
+                builder.append("headline COLLATE UTF8_GENERAL_CI LIKE '%");
             } else {
-                builder.append(" OR headline COLLATE UTF8_GENERAL_CI LIKE %");
+                builder.append(" OR headline COLLATE UTF8_GENERAL_CI LIKE '%");
             }
             builder.append(keywords.get(i));
-            builder.append("%");
+            builder.append("%'");
         }
         
+        String whereClause = builder.toString();
         List<JobPostingEntity> jobList = select(whereClause);
         
         return jobList;

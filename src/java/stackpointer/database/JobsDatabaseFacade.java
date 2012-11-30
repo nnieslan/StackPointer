@@ -3,6 +3,7 @@ package stackpointer.database;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import stackpointer.common.Location;
 import stackpointer.jobs.JobPosting;
@@ -70,6 +71,32 @@ public class JobsDatabaseFacade {
         DBUtils.logMessageToDatabase(message);
 
         return numAdded;
+    }
+    
+    public List<JobPosting> retrieveByKeyword(String keyword) {
+        List<String> keywordList = new LinkedList<String>();
+        keywordList.add(keyword);
+        return retrieveByKeyword(keywordList);
+    }
+    
+    public List<JobPosting> retrieveByKeyword(List<String> keywordList) {
+        List<JobPosting> jobsList = new ArrayList<JobPosting>();
+        
+        try {
+            JobPostingRepo repo = new JobPostingRepo(
+                    DatabaseConnectionInfo.createDefault());
+            List<JobPostingEntity> entityList = repo.retrieve(keywordList);
+            
+            for (JobPostingEntity entity : entityList) {
+                JobPosting jobPosting = translateToJobPosting(entity);
+                jobsList.add(jobPosting);
+            }
+            
+        } catch (SQLException ex) {
+            System.err.println(ex);
+        }
+        
+        return jobsList;
     }
     
     /**
