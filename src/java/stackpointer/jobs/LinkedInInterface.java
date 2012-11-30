@@ -64,7 +64,7 @@ public class LinkedInInterface {
     static String Y = JOptionPane.showInputDialog("Enter LinkedIn Password");
   
     //   private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs,facets)?facet=location,us:100";
-    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description))?count=20&keywords=Keyword";
+    private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description))?count=20";
     
     //Return Closest 10 Jobs to the SXUser
     public static ArrayList<JobPosting> getJobPostings() throws Exception
