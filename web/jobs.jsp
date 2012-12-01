@@ -104,6 +104,7 @@
                 <%}
                 if(!LinkedInInterface.hasCredentials()) {%>
                 <form action="jobs.jsp" method="POST">
+                    <input type="hidden" name="q" value="<%=queryStr%>"/>
                     LinkedIn Username: <input type="text" name="username">
                     <br />
                     LinkedIn Password: <input type="password" name="password" />
