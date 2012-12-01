@@ -1,53 +1,21 @@
 package stackpointer.jobs;
 
-import java.io.BufferedReader;
-import java.util.Scanner;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.net.URLConnection;
-import java.net.URLEncoder;
+import com.gargoylesoftware.htmlunit.WebClient;
+import com.gargoylesoftware.htmlunit.html.*;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
-import java.util.zip.GZIPInputStream;
+import java.util.Scanner;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import java.util.ArrayList;
-import java.util.Scanner;
 import org.scribe.builder.*;
 import org.scribe.builder.api.*;
 import org.scribe.model.*;
 import org.scribe.oauth.*;
 import stackpointer.common.Location;
-import stackpointer.database.DatabaseConnectionInfo;
-import java.util.Date;
-import java.util.HashMap;
-import javax.swing.JOptionPane;
-import stackpointer.common.Location;
-import stackpointer.common.SXUser;
-import stackpointer.googlemaps.GoogleMapsInterface;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.*;
-import java.awt.GridLayout;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import stackpointer.stackexchange.StackExchangeInterface;
-import stackpointer.database.SXUserEntity;
-import stackpointer.jobs.JobPosting;
-
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
-import stackpointer.database.DBUtils;
 import stackpointer.database.JobsDatabaseFacade;
-import stackpointer.database.SXDatabaseFacade;
-import stackpointer.stackexchange.Question;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-import stackpointer.common.Location;
+import stackpointer.googlemaps.GoogleMapsInterface;
 
 
 /**
@@ -60,8 +28,8 @@ public class LinkedInInterface {
     private ArrayList<JobPosting> allJobPostings;
     //static String Keyword = JOptionPane.showInputDialog("Enter Search Criteria");
     //static String Location = new stackpointer.common.Location.getLocStr();
-    static String X = JOptionPane.showInputDialog("Login with LinkedIn Username");
-    static String Y = JOptionPane.showInputDialog("Enter LinkedIn Password");
+    static String X = null;//JOptionPane.showInputDialog("Login with LinkedIn Username");
+    static String Y = null;//JOptionPane.showInputDialog("Enter LinkedIn Password");
   
     //   private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs,facets)?facet=location,us:100";
     private static final String PROTECTED_RESOURCE_URL = "http://api.linkedin.com/v1/job-search:(jobs:(id,posting-date,company,position,location-description,description))?count=20";
@@ -69,8 +37,7 @@ public class LinkedInInterface {
     //Return Closest 10 Jobs to the SXUser
     public static ArrayList<JobPosting> getJobPostings() throws Exception
     {
-        ArrayList<JobPosting> parsedJobs = null;
-        JSONObject json = null;   
+        ArrayList<JobPosting> parsedJobs = new ArrayList<JobPosting>();
         OAuthService service = new ServiceBuilder()
                                 .provider(LinkedInApi.class)
                                 .apiKey("v6xty7mvo61a")
@@ -96,34 +63,38 @@ public class LinkedInInterface {
         //System.out.println();
         String authUrl = service.getAuthorizationUrl(requestToken);
       
-        Verifier verifier = new Verifier(getVerifier(authUrl));
-        //Verifier verifier = new Verifier(authUrl);
-        //Verifier verifier = new Verifier(JOptionPane.showInputDialog("Verifier"));
-
-        // Trade the Request Token and Verfier for the Access Token
-        System.out.println("Trading the Request Token for an Access Token...");
-        Token accessToken = service.getAccessToken(requestToken, verifier);
-        System.out.println("Got the Access Token!");
-        System.out.println("(Access Token: " + accessToken + " )");
-        System.out.println();
-
-        // Access Linked In URL!
-        System.out.println("Contact API URL");
-        OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
-
-        // Pull results in JSON format
-        request.addHeader("x-li-format", "json");
-        service.signRequest(accessToken, request);
-        Response response = request.send();
-        System.out.println(response.getBody());    
-        try
+        if(X!=null && Y!=null)
         {
-            JSONObject linkedInJson = new JSONObject(response.getBody()).getJSONObject("jobs");
-            parsedJobs = parseJobsFromJson(linkedInJson);
-        }
-        catch (JSONException e)
-        {
-            System.out.println("Error retrieving Jobs from LinkedIn:\n"+e);
+            Verifier verifier = new Verifier(getVerifier(authUrl));
+
+            //Verifier verifier = new Verifier(authUrl);
+            //Verifier verifier = new Verifier(JOptionPane.showInputDialog("Verifier"));
+
+            // Trade the Request Token and Verfier for the Access Token
+            System.out.println("Trading the Request Token for an Access Token...");
+            Token accessToken = service.getAccessToken(requestToken, verifier);
+            System.out.println("Got the Access Token!");
+            System.out.println("(Access Token: " + accessToken + " )");
+            System.out.println();
+
+            // Access Linked In URL!
+            System.out.println("Contact API URL");
+            OAuthRequest request = new OAuthRequest(Verb.GET, PROTECTED_RESOURCE_URL);
+
+            // Pull results in JSON format
+            request.addHeader("x-li-format", "json");
+            service.signRequest(accessToken, request);
+            Response response = request.send();
+            System.out.println(response.getBody());    
+            try
+            {
+                JSONObject linkedInJson = new JSONObject(response.getBody()).getJSONObject("jobs");
+                parsedJobs = parseJobsFromJson(linkedInJson);
+            }
+            catch (JSONException e)
+            {
+                System.out.println("Error retrieving Jobs from LinkedIn:\n"+e);
+            }
         }
         return parsedJobs;
     }
@@ -275,10 +246,28 @@ public class LinkedInInterface {
           return verifier;
       }
     
+    public static void setLoginCredentials(String username, String pass)
+    {
+        X=username;
+        Y=pass;
+    }
+    
    //Function to update current values from LinkedIn in local database
    //boolean cleanDatabase()
    //{
    //TODO - validate all current local data
    //  return false;
    //}
+
+    public static String getX() {
+        return X;
+    }
+
+    public static String getY() {
+        return Y;
+    }
+    
+    public static boolean hasCredentials() {
+        return (X!=null && Y!=null);
+    }
 }
