@@ -72,7 +72,19 @@ public class LinkedInInterface {
 
             // Trade the Request Token and Verfier for the Access Token
             System.out.println("Trading the Request Token for an Access Token...");
-            Token accessToken = service.getAccessToken(requestToken, verifier);
+            Token accessToken = null;
+            try
+            {
+                accessToken = service.getAccessToken(requestToken, verifier);
+            }
+            catch (Exception e)
+            {
+                //reset login info
+                X=null;
+                Y=null;
+                //throw exception
+                throw new Exception("Problem Logging In! Try again.");
+            }
             System.out.println("Got the Access Token!");
             System.out.println("(Access Token: " + accessToken + " )");
             System.out.println();

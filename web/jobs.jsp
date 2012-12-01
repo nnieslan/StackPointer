@@ -53,7 +53,16 @@
         {
             LinkedInInterface.setLoginCredentials(null, null);
         }
-        ArrayList<JobPosting> jobs = LinkedInInterface.getJobPostings();
+        ArrayList<JobPosting> jobs = new ArrayList<JobPosting>();
+        String errMsg = null;
+        try 
+        {
+            jobs = LinkedInInterface.getJobPostings();
+        }
+        catch (Exception e)
+        {
+            errMsg = e.getMessage();
+        }
         String queryStr = request.getParameter("q");
         if(queryStr!=null)
         {
@@ -88,7 +97,12 @@
         <div id="map">
             <br />
             <center>
-                <% if(!LinkedInInterface.hasCredentials()) {%>
+                <% 
+                if(errMsg != null)
+                {%>
+                <span style="color: red">Error: <%=errMsg%></span> 
+                <%}
+                if(!LinkedInInterface.hasCredentials()) {%>
                 <form action="jobs.jsp" method="POST">
                     LinkedIn Username: <input type="text" name="username">
                     <br />
