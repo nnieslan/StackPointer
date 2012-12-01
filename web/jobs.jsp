@@ -104,6 +104,11 @@
                     <h3><i>Geographic representation of the latest <a href="http://linkedin.com">LinkedIn</a> Job Postings <% if(queryStr!=null){out.print("for "+queryStr+' ');
                     } %>shown on <a href="http://maps.google.com">Google Maps</a>.</i></h3>
                     <div id="map_canvas" style="width:800px; height:600px"></div>
+                    <form action="jobs.jsp" method="GET">
+                    Search Jobs: <input type="text" name="q">
+                    <br />
+                    <input type="submit" value="Submit" />
+                </form>
                 </center>
             </div>
             <div class="jobButtons" style="width:800px; margin: auto;">
