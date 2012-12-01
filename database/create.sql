@@ -78,3 +78,14 @@ create table jobpostings (
 	location_lon double,
 	primary key (jpid)
 );
+
+-------------
+-- INDEXES --
+-------------
+
+create unique index sxuser_idx on sxusers (uid);
+create unique index question_idx on questions (qid);
+create index tags_idx on tags (qid);
+create unique index answer_idx on answers (aid);
+create index answer_question_idx on answers (qid);
+create unique index jobs_idx on jobpostings (jpid);
