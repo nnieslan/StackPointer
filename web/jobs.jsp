@@ -48,7 +48,7 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
         %>
 
 <% if (!LinkedInInterface.hasCredentials()) { 
-        response.setStatus(301);
+        response.setStatus(307);
         response.setHeader( "Location", redir );
         response.setHeader( "Connection", "close" );
     }
@@ -101,7 +101,7 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
             if(!LinkedInInterface.hasCredentials())
             {
                 redir+="&errMsg="+errMsg;
-                response.setStatus(301);
+                response.setStatus(307);
                 response.setHeader( "Location", redir );
                 response.setHeader( "Connection", "close" );
             }

@@ -114,7 +114,7 @@ function loadData() {
                     </form>
                     <% } else { %>
                     <br /><br />
-                    <strong><% out.println(request.getParameter("username")); %></strong> successfully logged In!!
+                    <strong>You have already successfully logged In!!
                 <% } %>
             </center>
         </span>
