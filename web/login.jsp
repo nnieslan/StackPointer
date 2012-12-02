@@ -5,6 +5,7 @@
     Author     : Phil
 --%>
 
+<%@page import="stackpointer.jobs.LinkedInInterface"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="stackpointer.googlemaps.GoogleMapsInterface"%>
 <%@page import="stackpointer.stackexchange.Question"%>
@@ -54,7 +55,23 @@ function loadData() {
       <link href="styles/menu.css" type="text/css" rel="stylesheet" />
     </head>
     <body>
+        <% System.setProperty("java.awt.headless", "false");%>
         <% //set up data here!
+        if(request.getParameter("username")!=null && request.getParameter("password")!=null)
+        {
+            LinkedInInterface.setLoginCredentials(request.getParameter("username"), request.getParameter("password"));
+        }
+        else if(request.getParameter("logout")!=null && request.getParameter("logout").equals("true"))
+        {
+            LinkedInInterface.setLoginCredentials(null, null);
+        }
+        
+        String queryStr = request.getParameter("q");
+        if(queryStr!=null)
+        {
+            queryStr = queryStr.replaceAll("-", " ");
+        }
+
         ArrayList<Question> questions = StackExchangeInterface.getQuestionsFromServer();
         %>
         <span id="welcome">
@@ -73,14 +90,29 @@ function loadData() {
                 <a href="jobs.jsp">Job Opportunities</a>
             </div>
             <div class="currentbutton">
-                <a href="login.jsp">Login</a>
+                <% if (LinkedInInterface.hasCredentials()) { %>
+                  <a href="login.jsp?logout=true">Log Out</a>
+                <% } else { %>
+                  <a href="login.jsp?logout=false">Log In</a>
+                <% } %>
             </div>
         </div>   
         <span id="login">
             <br />
             <center>
-            <h2><i>Login</i></h2>
-            <script type="in/Login">Hello, <?js= firstName ?> <?js= lastName ?>.</script>
+                <%if(!LinkedInInterface.hasCredentials()) {%>
+                    <br /><br />
+                    Please enter your LinkedIn credentials:<br />
+                    <form action="jobs.jsp" method="POST">
+                        <input type="hidden" name="q" value="<%=queryStr%>"/>
+                        Username: <input type="text" name="username"><br />
+                        Password: <input type="password" name="password" /><br />
+                        <input type="submit" value="Submit" />
+                    </form>
+                    <% } else { %>
+                    <br /><br />
+                    <strong><% out.println(request.getParameter("username")); %></strong> successfully logged In!!
+                <% } %>
             </center>
         </span>
     </body>

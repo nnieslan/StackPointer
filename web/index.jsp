@@ -5,6 +5,7 @@
     Author     : Phil
 --%>
 
+<%@page import="stackpointer.jobs.LinkedInInterface"%>
 <%@page import="stackpointer.database.SXDatabaseFacade"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="stackpointer.googlemaps.GoogleMapsInterface"%>
@@ -56,7 +57,9 @@ function loadData() {
     </head>
     <body>
         <% //set up data here!
-        ArrayList<Question> questions = StackExchangeInterface.getQuestionsFromServer();
+         SXDatabaseFacade sxDatabaseFacade = new SXDatabaseFacade();
+         List<Question> questionList = sxDatabaseFacade.retrieveTop100Questions();
+         //ArrayList<Question> questions = StackExchangeInterface.getQuestionsFromServer();
         %>
         <span id="welcome">
             <center>
@@ -64,7 +67,7 @@ function loadData() {
             <script type='text/javascript'>
               $(function() {
                 <%=GoogleMapsInterface.setupMap("map_canvas")%>
-                <%=GoogleMapsInterface.generateMarkers(questions)%>
+                <%=GoogleMapsInterface.generateMarkers(questionList)%>
               });
             </script>
             </center>
@@ -80,7 +83,11 @@ function loadData() {
                 <a href="jobs.jsp">Job Opportunities</a>
             </div>
             <div class="button">
-                <a href="login.jsp">Login</a>
+                <% if (LinkedInInterface.hasCredentials()) { %>
+                  <a href="login.jsp?logout=true">Log Out</a>
+                <% } else { %>
+                  <a href="login.jsp?logout=false">Log In</a>
+                <% } %>
             </div>
         </div>          
         <span id="map">
