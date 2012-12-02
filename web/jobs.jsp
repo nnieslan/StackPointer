@@ -112,8 +112,9 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
             <img src ="images/banner.jpg" width="800" />
             <script type='text/javascript'>
               $(function() {
+                <%List<JobPosting> jobsForMap = LinkedInInterface.getJobPostings();%>
                 <%=GoogleMapsInterface.setupMap("map_canvas")%>
-                <%=GoogleMapsInterface.generateJobMarkers(jobsList)%>
+                <%=GoogleMapsInterface.generateJobMarkers(jobsForMap)%>
               });
             </script>
             </center>
