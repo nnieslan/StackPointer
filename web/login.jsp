@@ -71,8 +71,7 @@ function loadData() {
         {
             queryStr = queryStr.replaceAll("-", " ");
         }
-
-        ArrayList<Question> questions = StackExchangeInterface.getQuestionsFromServer();
+        String errMsg = request.getParameter("errMsg");
         %>
         <span id="welcome">
             <center>
@@ -101,7 +100,11 @@ function loadData() {
             <br />
             <center>
                 <%if(!LinkedInInterface.hasCredentials()) {%>
-                    <br /><br />
+                    <br />
+                    <% if(errMsg != null) { %>
+                        <span style="color: red">Error: <%=errMsg%></span> 
+                    <% } %>
+                    <br />
                     Please enter your LinkedIn credentials:<br />
                     <form action="jobs.jsp" method="POST">
                         <input type="hidden" name="q" value="<%=queryStr%>"/>

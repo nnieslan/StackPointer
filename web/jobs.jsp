@@ -28,17 +28,31 @@ if(request.getParameter("username")!=null && request.getParameter("password")!=n
 else if(request.getParameter("logout")!=null && request.getParameter("logout").equals("true"))
 {
     LinkedInInterface.setLoginCredentials(null, null);
-} %>
+} 
 
-<% if (!LinkedInInterface.hasCredentials()) { %>
-<html>
-    <head>
-        <meta HTTP-EQUIV="REFRESH" content="0; url=login.jsp?logout=false" />
-        <title>StackPointer</title>
-    </head>
-    <body></body>
-</html>
-<%}  else { %>
+        boolean searchParameterUsed = request.getParameterMap().containsKey("q");
+        String queryStr = request.getParameter("q");
+        if(queryStr != null)
+        {
+            queryStr = queryStr.replaceAll("-", " ");
+        }
+        else
+        {
+            queryStr = "null";
+        }
+        String redir = "login.jsp?logout=false";
+        if(searchParameterUsed)
+        {
+            redir+="&q="+queryStr;
+        }
+        %>
+
+<% if (!LinkedInInterface.hasCredentials()) { 
+        response.setStatus(301);
+        response.setHeader( "Location", redir );
+        response.setHeader( "Connection", "close" );
+    }
+    else { %>
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -65,21 +79,12 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
     <body>
         <% //set up data here!
         JobsDatabaseFacade databaseFacade = new JobsDatabaseFacade();
-        List<JobPosting> jobsList = LinkedInInterface.getJobPostings();
+        List<JobPosting> jobsList = new ArrayList<JobPosting>();
         String errMsg = null;
-        boolean searchParameterUsed = request.getParameterMap().containsKey("q");
-        String queryStr = request.getParameter("q");
-        if(queryStr != null)
-        {
-            queryStr = queryStr.replaceAll("-", " ");
-        }
-        else
-        {
-            queryStr = "null";
-        }
 
         try 
         {
+            jobsList = LinkedInInterface.getJobPostings();
             if (searchParameterUsed && !queryStr.equals("null")) {
                 String trimmedQueryString = queryStr.trim();
                 String[] keywordsArray = trimmedQueryString.split(" ");
@@ -93,6 +98,13 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
         catch (Exception e)
         {
             errMsg = e.getMessage();
+            if(!LinkedInInterface.hasCredentials())
+            {
+                redir+="&errMsg="+errMsg;
+                response.setStatus(301);
+                response.setHeader( "Location", redir );
+                response.setHeader( "Connection", "close" );
+            }
         }
         %>
         <span id="welcome">
@@ -120,72 +132,68 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
                 <a href="login.jsp?logout=true">Log Out</a>
             </div>
         </div>
-        <% if(errMsg != null) { %>
-            <span style="color: red">Error: <%=errMsg%></span> 
-        <% } else { %>
-            <div id="map">
-                <br />
-                <center>
-                    <h3><i>Geographic representation of the latest <a href="http://linkedin.com">LinkedIn</a> job postings for
-                            <% if (searchParameterUsed && !queryStr.contains("null")) { %> '<%out.print(queryStr);%>' <% } else { out.print("your location"); } %> shown on <a href="http://maps.google.com">Google Maps</a>.</i></h3>
-                    <div id="map_canvas" style="width:800px; height:600px"></div>
-                    <br />&nbsp;<br />
-                    <form action="jobs.jsp" method="GET">
-                        Search Jobs: <input type="text" name="q"><input type="submit" value="Submit" />
-                    </form>
-                </center>
-            </div>
-            <div class="jobButtons" style="width:800px; margin: auto;">
-                <%
-                int idx = 1;
-                   //List<JobPosting> jobsList;
-                 //JobsDatabaseFacade databaseFacade = new JobsDatabaseFacade();
-                //if (searchParameterUsed) {
-                  //  jobsList = databaseFacade.retrieveByKeyword(queryStr);
-                //} else {
-                //     jobsList = databaseFacade.retrieveAllJobPostings();
-               // }
-                %>
-                <% for(JobPosting job : jobsList) { %>
-                    <div class="button">
-                        <a id="linkedinButton<% out.print(idx); %>" href="javascript:toggle('linkedinText<% out.print(idx); %>');"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
-                        <% if (job.hasLocation()) { out.println(job.getLoc()); %> <br /> <% } %>
-                        <% out.println(job.getDatePosted());%><br /></a>
-                    </div>
-                    <div id="linkedinText<% out.print(idx); %>" class = "hidden">
-                        <p>
-                            <center><a href ="http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%>">http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%></a></center>
-                        </p>
-                        <p>
-                            <% out.println(String.format("%s <br>", job.getDescription())); %>
-                        </p>
-                    </div>
-                    <% idx++; %>
-                <% } %>
-            </div>
-            <% if (false) { %>
-            <div class="jobButtons" style="width:800px; margin: auto;">
-                <center><h2>The following is the list using the API calls.</h2></center>
-                <% //LinkedInInterface newFacade = new LinkedInInterface(); %>
-                <% //ArrayList<JobPosting> jobsnewList = newFacade.getJobPostings(); %>
-                <% for(JobPosting job : jobsList) { %>
-                    <div class="button">
-                        <a id="linkedinButton<% out.print(idx); %>" href="javascript:toggle('linkedinText<% out.print(idx); %>');"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
-                        <% if (job.hasLocation()) { out.println(job.getLoc()); %> <br /> <% } %>
-                        <% out.println(job.getDatePosted());%><br /></a>
-                    </div>
-                    <div id="linkedinText<% out.print(idx); %>" class = "hidden">
-                        <p>
-                            <center><a href ="http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%>">http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%></a></center>
-                        </p>
-                        <p>
-                            <% out.println(String.format("%s <br>", job.getDescription())); %>
-                        </p>
-                    </div>
-                    <% idx++; %>
-                <% } %>
-            </div>
+        <div id="map">
+            <br />
+            <center>
+                <h3><i>Geographic representation of the latest <a href="http://linkedin.com">LinkedIn</a> job postings for
+                        <% if (searchParameterUsed && !queryStr.contains("null")) { %> '<%out.print(queryStr);%>' <% } else { out.print("your location"); } %> shown on <a href="http://maps.google.com">Google Maps</a>.</i></h3>
+                <div id="map_canvas" style="width:800px; height:600px"></div>
+                <br />&nbsp;<br />
+                <form action="jobs.jsp" method="GET">
+                    Search Jobs: <input type="text" name="q"><input type="submit" value="Submit" />
+                </form>
+            </center>
+        </div>
+        <div class="jobButtons" style="width:800px; margin: auto;">
+            <%
+            int idx = 1;
+               //List<JobPosting> jobsList;
+             //JobsDatabaseFacade databaseFacade = new JobsDatabaseFacade();
+            //if (searchParameterUsed) {
+              //  jobsList = databaseFacade.retrieveByKeyword(queryStr);
+            //} else {
+            //     jobsList = databaseFacade.retrieveAllJobPostings();
+           // }
+            %>
+            <% for(JobPosting job : jobsList) { %>
+                <div class="button">
+                    <a id="linkedinButton<% out.print(idx); %>" href="javascript:toggle('linkedinText<% out.print(idx); %>');"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
+                    <% if (job.hasLocation()) { out.println(job.getLoc()); %> <br /> <% } %>
+                    <% out.println(job.getDatePosted());%><br /></a>
+                </div>
+                <div id="linkedinText<% out.print(idx); %>" class = "hidden">
+                    <p>
+                        <center><a href ="http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%>">http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%></a></center>
+                    </p>
+                    <p>
+                        <% out.println(String.format("%s <br>", job.getDescription())); %>
+                    </p>
+                </div>
+                <% idx++; %>
             <% } %>
+        </div>
+        <% if (false) { %>
+        <div class="jobButtons" style="width:800px; margin: auto;">
+            <center><h2>The following is the list using the API calls.</h2></center>
+            <% //LinkedInInterface newFacade = new LinkedInInterface(); %>
+            <% //ArrayList<JobPosting> jobsnewList = newFacade.getJobPostings(); %>
+            <% for(JobPosting job : jobsList) { %>
+                <div class="button">
+                    <a id="linkedinButton<% out.print(idx); %>" href="javascript:toggle('linkedinText<% out.print(idx); %>');"><b><%out.println(job.getHeadline());%> - <%out.println(job.getCompany());%></b><br />
+                    <% if (job.hasLocation()) { out.println(job.getLoc()); %> <br /> <% } %>
+                    <% out.println(job.getDatePosted());%><br /></a>
+                </div>
+                <div id="linkedinText<% out.print(idx); %>" class = "hidden">
+                    <p>
+                        <center><a href ="http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%>">http://www.linkedin.com/jobs?viewJob=&jobId=<%out.println(job.getLinkedInId());%></a></center>
+                    </p>
+                    <p>
+                        <% out.println(String.format("%s <br>", job.getDescription())); %>
+                    </p>
+                </div>
+                <% idx++; %>
+            <% } %>
+        </div>
         <% } %>
     </body>
 </html>
