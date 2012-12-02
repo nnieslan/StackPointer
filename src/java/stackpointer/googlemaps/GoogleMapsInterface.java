@@ -104,7 +104,7 @@ public class GoogleMapsInterface {
         StringBuilder toReturn = new StringBuilder();
         
         int i=0;
-        
+        toReturn.append("var openInfoWin = null;");
         for (Question q : questions)
         {
             if(q.hasLocation())
@@ -149,8 +149,9 @@ public class GoogleMapsInterface {
                 
                 //infowindow click function
                 toReturn.append("google.maps.event.addListener(marker").append(i).append(", 'click', function() {"+'\n'+
+                "if(openInfoWin!=null){openInfoWin.close();}\n"+
                 "infowindow").append(i).append(".open(map,marker").append(i).append(");"+'\n'+
-                "});"+'\n');
+                "openInfoWin = infowindow").append(i).append(";\n});"+'\n');
             }
         }
         
