@@ -4,6 +4,8 @@
     Author     : Joe
 --%>
 
+<%@page import="java.util.Collections"%>
+<%@page import="java.util.Arrays"%>
 <%@page import="stackpointer.database.JobsDatabaseFacade"%>
 <%@page import="org.apache.bcel.generic.AALOAD"%>
 <%@page import="java.util.ArrayList"%>
@@ -81,8 +83,12 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
         try 
         {
             //List<JobPosting> jobsList;
-            if (searchParameterUsed) {
-                jobsList = databaseFacade.retrieveByKeyword(queryStr);
+            if (searchParameterUsed && !queryStr.equals("null")) {
+                String trimmedQueryString = queryStr.trim();
+                String[] keywordsArray = trimmedQueryString.split(" ");
+                List<String> keywordList = new ArrayList<String>();
+                Collections.addAll(keywordList, keywordsArray);
+                jobsList = databaseFacade.retrieveByKeyword(keywordList);
             } else {
                 jobsList = databaseFacade.retrieveAllJobPostings();
             }

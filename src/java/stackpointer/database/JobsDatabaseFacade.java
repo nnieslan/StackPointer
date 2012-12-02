@@ -6,7 +6,11 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import stackpointer.common.Location;
+import stackpointer.jobs.IJobPostingScorer;
 import stackpointer.jobs.JobPosting;
+import stackpointer.jobs.JobRelevanceComparator;
+import stackpointer.jobs.KeywordJobPostingScorer;
+import stackpointer.jobs.Score;
 
 /**
  * @author Andrew
@@ -92,6 +96,26 @@ public class JobsDatabaseFacade {
                 jobsList.add(jobPosting);
             }
             
+            List<Score> jobScoreList = new ArrayList<Score>();
+            IJobPostingScorer scorer = new KeywordJobPostingScorer(keywordList);
+            
+            // Loop over the jobs from the database and compute a score
+            for (JobPosting j : jobsList) {
+                Score jobScore = new Score(j);
+                jobScore.compute(scorer);
+                jobScoreList.add(jobScore);
+            }
+            
+            // Sort the jobs based on the scores we computed
+            JobRelevanceComparator comparator = new JobRelevanceComparator(keywordList);
+            java.util.Collections.sort(jobScoreList, comparator);
+            
+            // Clear the job list and re-add the jobs in sorted order
+            jobsList.clear();
+            for (Score s : jobScoreList) {
+                jobsList.add(s.getJobPosting());
+            }
+            
         } catch (SQLException ex) {
             System.err.println(ex);
         }
@@ -168,6 +192,19 @@ public class JobsDatabaseFacade {
         jobPosting.setHeadline(entity.getHeadline());
         jobPosting.setCompany(entity.getCompany());
         jobPosting.setDescription(entity.getDescription());
+        
+        if (entity.getLocationText() != null && !entity.getLocationText().isEmpty()) {
+            Location loc = new Location(entity.getLocationText());
+            loc.setLat(entity.getLocationLat());
+            loc.setLon(entity.getLocationLon());
+            jobPosting.setLoc(loc);
+        } else {
+            Location loc = new Location("");
+            loc.setLat(0.0);
+            loc.setLon(0.0);
+            jobPosting.setLoc(loc);
+        }
+        
         return jobPosting;
     }
     

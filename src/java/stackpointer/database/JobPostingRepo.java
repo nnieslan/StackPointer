@@ -181,11 +181,19 @@ public class JobPostingRepo extends DatabaseRepository<JobPostingEntity> {
             // COLLATE UTF8_GENERAL_CI -- this makes the search case insensitive
             if (i == 0) {
                 builder.append("headline COLLATE UTF8_GENERAL_CI LIKE '%");
+                builder.append(keywords.get(i));
+                builder.append("%'");
+                builder.append(" OR description COLLATE UTF8_GENERAL_CI LIKE '%");
+                builder.append(keywords.get(i));
+                builder.append("%'");
             } else {
                 builder.append(" OR headline COLLATE UTF8_GENERAL_CI LIKE '%");
+                builder.append(keywords.get(i));
+                builder.append("%'");
+                builder.append(" OR description COLLATE UTF8_GENERAL_CI LIKE '%");
+                builder.append(keywords.get(i));
+                builder.append("%'");
             }
-            builder.append(keywords.get(i));
-            builder.append("%'");
         }
         
         String whereClause = builder.toString();
