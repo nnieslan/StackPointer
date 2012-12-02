@@ -63,9 +63,8 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
      </head>
     <body>
         <% //set up data here!
-        //ArrayList<JobPosting> jobs = new ArrayList<JobPosting>();
         JobsDatabaseFacade databaseFacade = new JobsDatabaseFacade();
-        List<JobPosting> jobsList = databaseFacade.retrieveAllJobPostings();
+        List<JobPosting> jobsList = LinkedInInterface.getJobPostings();
         String errMsg = null;
         boolean searchParameterUsed = request.getParameterMap().containsKey("q");
         String queryStr = request.getParameter("q");
@@ -80,11 +79,9 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
 
         try 
         {
-            //List<JobPosting> jobsList;
             if (searchParameterUsed) {
+                jobsList.clear();
                 jobsList = databaseFacade.retrieveByKeyword(queryStr);
-            } else {
-                jobsList = databaseFacade.retrieveAllJobPostings();
             }
         }
         catch (Exception e)

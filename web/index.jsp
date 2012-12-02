@@ -57,9 +57,7 @@ function loadData() {
     </head>
     <body>
         <% //set up data here!
-         SXDatabaseFacade sxDatabaseFacade = new SXDatabaseFacade();
-         List<Question> questionList = sxDatabaseFacade.retrieveTop100Questions();
-         //ArrayList<Question> questions = StackExchangeInterface.getQuestionsFromServer();
+         List<Question> questionList = StackExchangeInterface.getQuestionsFromServer();
         %>
         <span id="welcome">
             <center>
