@@ -163,7 +163,7 @@ public class GoogleMapsInterface {
         StringBuilder toReturn = new StringBuilder();
         
         int i=0;
-        
+        toReturn.append("var openInfoWin = null;");
         for (JobPosting j : jobs)
         {
             if(j.hasLocation())
@@ -179,9 +179,25 @@ public class GoogleMapsInterface {
                 "    map: map,"+'\n'+
                 "    icon: \"images/blue.png\","+'\n'+
                 "    title:\"");
-                toReturn.append(j.getHeadline());
+                toReturn.append(j.getDatePosted());
                 toReturn.append("\""+'\n'+
                 "});"+'\n');
+                
+                //infowindow content
+                toReturn.append("var contentString").append(i).append("='<b>Headline: </b>");
+                toReturn.append(j.getHeadline());
+                toReturn.append("<br><b>Posted By: </b>").append(j.getCompany()).append("\';\n");
+                
+                //the infowindow
+                toReturn.append("var infowindow").append(i).append(" = new google.maps.InfoWindow({"+'\n'+
+                    "content: contentString").append(i).append('\n'+
+                "});"+'\n');
+                
+                //infowindow click function
+                toReturn.append("google.maps.event.addListener(marker").append(i).append(", 'click', function() {"+'\n'+
+                "if(openInfoWin!=null){openInfoWin.close();}\n"+
+                "infowindow").append(i).append(".open(map,marker").append(i).append(");"+'\n'+
+                "openInfoWin = infowindow").append(i).append(";\n});"+'\n');
             }
         }
         
