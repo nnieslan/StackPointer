@@ -114,7 +114,7 @@ function loadData() {
                     </form>
                     <% } else { %>
                     <br /><br />
-                    <strong>You have already successfully logged In!!
+                    <strong>You have already successfully logged In!!</strong>
                 <% } %>
             </center>
         </span>
