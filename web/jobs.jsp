@@ -48,7 +48,7 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
         %>
 
 <% if (!LinkedInInterface.hasCredentials()) { 
-        response.setStatus(301);
+        response.setStatus(307);
         response.setHeader( "Location", redir );
         response.setHeader( "Connection", "close" );
     }
@@ -101,7 +101,7 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
             if(!LinkedInInterface.hasCredentials())
             {
                 redir+="&errMsg="+errMsg;
-                response.setStatus(301);
+                response.setStatus(307);
                 response.setHeader( "Location", redir );
                 response.setHeader( "Connection", "close" );
             }
@@ -112,9 +112,8 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
             <img src ="images/banner.jpg" width="800" />
             <script type='text/javascript'>
               $(function() {
-                <%List<JobPosting> jobsForMap = LinkedInInterface.getJobPostings();%>
                 <%=GoogleMapsInterface.setupMap("map_canvas")%>
-                <%=GoogleMapsInterface.generateJobMarkers(jobsForMap)%>
+                <%=GoogleMapsInterface.generateJobMarkers(jobsList)%>
               });
             </script>
             </center>

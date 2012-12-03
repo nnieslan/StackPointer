@@ -177,6 +177,7 @@ public class GoogleMapsInterface {
                 toReturn.append("var marker").append(i).append(" = new google.maps.Marker({"+'\n'+
                 "    position: myLatlng").append(i).append(","+'\n'+
                 "    map: map,"+'\n'+
+                "    icon: \"images/blue.png\","+'\n'+
                 "    title:\"");
                 toReturn.append(j.getHeadline());
                 toReturn.append("\""+'\n'+
