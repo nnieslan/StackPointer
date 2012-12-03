@@ -92,7 +92,7 @@ else if(request.getParameter("logout")!=null && request.getParameter("logout").e
                 Collections.addAll(keywordList, keywordsArray);
                 jobsList = databaseFacade.retrieveByKeyword(keywordList);
             } else {
-                jobsList = databaseFacade.retrieveAllJobPostings();
+                jobsList = LinkedInInterface.getJobPostings();
             }
         }
         catch (Exception e)
