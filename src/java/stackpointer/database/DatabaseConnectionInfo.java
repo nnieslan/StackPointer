@@ -54,6 +54,6 @@ public class DatabaseConnectionInfo {
         return new DatabaseConnectionInfo(
                 "jdbc:mysql://mysql.philhurwitz.com/stackpointer",
                 "philhurwitzcom",
-                "zv4NLgN6");
+                "xxxPASSWORDxxx");
     }
 }
